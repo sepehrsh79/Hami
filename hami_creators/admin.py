@@ -1,3 +1,6 @@
 from django.contrib import admin
+from .models import Creator
 
-# Register your models here.
+@admin.register(Creator)
+class CreatorAdmin (admin.ModelAdmin):
+    list_display = ('name', 'id', 'phone')

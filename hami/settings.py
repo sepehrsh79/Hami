@@ -38,6 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'hami_projects.apps.HamiProjectsConfig',
+    'hami_creators.apps.HamiCreatorsConfig',
+    'hami_sponsors.apps.HamiSponsorsConfig',
+    'hami_supports.apps.HamiSupportsConfig',
+
 ]
 
 MIDDLEWARE = [
