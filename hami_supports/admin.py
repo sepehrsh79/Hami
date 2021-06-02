@@ -3,4 +3,4 @@ from .models import Support
 
 @admin.register(Support)
 class SupportAdmin (admin.ModelAdmin):
-    list_display = ('name', 'card_id', 'phone')
+    list_display = ('lname', 'phone', 'email')

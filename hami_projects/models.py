@@ -1,10 +1,5 @@
 from django.db import models
 
-objects = [
-    ('game', 'بازی'),
-    ('book', 'کتاب'),
-    ('cosial', 'اجتماعی')
-]
 
 city = [
     ('esf', 'اصفهان'),
@@ -15,18 +10,32 @@ city = [
 status = [
     ('enable', 'فعال'),
     ('disable', 'غیر فعال'),
-    ('success', 'موفق'),
-    ('failed', 'شکست خورده'),
+    
 ]
 
+class Group (models.Model):
+    title = models.CharField(max_length=120, verbose_name='عنوان')
+    discribtion = models.TextField(verbose_name='توضیحات')
+    image = models.ImageField(upload_to=None, blank=True, null=True, verbose_name='عکس ')
+
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = 'دسته بندی'
+        verbose_name_plural = 'دسته بندی ها'
+
 class Project (models.Model):
-    name = models.CharField(max_length=25,verbose_name='عنوان')
-    Groups = models.CharField(max_length=35, choices=objects, verbose_name='دسته بندی')
-    discribtion = models.CharField(max_length=250, verbose_name='شرح کامل')
-    #creat class for project team
-    budget = models.PositiveIntegerField(verbose_name='بودجه مورد نیاز')
-    needed_time =  models.PositiveIntegerField(verbose_name='مدت زمان مورد نیاز (روز)')
-    #needed time by date
+    name = models.CharField(max_length=25,verbose_name='عنوان مدیریتی')
+    name_show = models.CharField(max_length=25,verbose_name='عنوان قابل نمایش')
+    Groups = models.ForeignKey(Group, on_delete=models.CASCADE, verbose_name='دسته بندی')
+    discribtion = models.TextField(max_length=250, verbose_name='شرح مدیریتی')
+    discribtion_show = models.TextField(max_length=250, verbose_name='شرح قابل نمایش')
+    order = models.IntegerField(verbose_name='وزن')
+    budget = models.PositiveIntegerField(verbose_name='مبلغ مورد نیاز')
+    Currentـbudget = models.PositiveIntegerField(verbose_name='مبلغ جمع شده', blank=True, null=True, default=0)
+    needed_time =  models.DateField(verbose_name='مدت زمان مورد نیاز ')
     site = models.CharField(max_length=35, verbose_name='سایت')
     email = models.CharField(max_length=35, verbose_name='ایمیل')
     place = models.CharField(max_length=35, choices=city, verbose_name='محل اجرا') 
@@ -40,7 +49,7 @@ class Project (models.Model):
     def __str__(self):
         return self.name
 
-
+#maybe we dont need
 class Reward (models.Model):
     name = models.CharField(max_length=25,verbose_name='عنوان')
     project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name='پروژه مرتبط')
@@ -68,3 +77,7 @@ class Comment (models.Model):
 
     def __str__(self):
         return self.name
+
+
+
+

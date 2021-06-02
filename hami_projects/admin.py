@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Reward, Project, Comment
+from .models import Reward, Project, Comment, Group
 
 class RewardInLine (admin.StackedInline):
     model = Reward
@@ -8,10 +8,11 @@ class RewardInLine (admin.StackedInline):
 @admin.register(Project)
 class ProjectAdmin (admin.ModelAdmin):
     fieldsets = (
-            ('اطلاعات', {'fields' : ('name', 'Groups', 'discribtion', 'place', 'logo')}),
+            ('اطلاعات', {'fields' : ('name', 'name_show','Groups', 'discribtion', 'discribtion_show', 
+            'place')}),
             ('وضعیت هزینه و زمان',{'fields' : ('budget', 'needed_time')}),
-            ('ابزار ها',{'fields' : ('site', 'email')}),
-            ('وضعیت',{'fields' : ('status',)}),
+            ('ابزار ها',{'fields' : ('site', 'email', 'logo')}),
+            ('وضعیت',{'fields' : ('status', 'order')}),
             )
     list_display = ('name', 'Groups', 'budget', 'status')
     inlines = [RewardInLine]
@@ -23,3 +24,7 @@ class RewardAdmin (admin.ModelAdmin):
 @admin.register(Comment)
 class CommentAdmin (admin.ModelAdmin):
     list_display = ('name', 'date')
+
+@admin.register(Group)
+class GroupAdmin (admin.ModelAdmin):
+    pass

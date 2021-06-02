@@ -1,0 +1,35 @@
+{% load static %}
+    <div class="header-middle"><!--header-middle-->
+        <div class="container">
+            <div class="row reverse">
+                <div class=" header-middle-menu ">
+                    <div class="col-md-4 logo pull-right">
+                        <a href="index.html"><img src="{{ setting.logo_image.url }}" alt="Logo" height="35px" width="130px"
+                                                 /></a>
+                    </div>
+                    <div class="col-md-5 mainmenu pull-right">
+                        <ul class="nav navbar-nav collapse navbar-collapse">
+                            <li><a href="/">صفحه اصلی</a></li>
+                            <li><a href="/payment">پرداخت</a></li>
+                            <li><a href="/projects">پروژه ها</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-3 shop-menu pull-left">
+                        <ul class="nav navbar-nav">
+                            {% if request.user.is_authenticated %}
+                                <li><a href="/user"><i class="fa fa-user"></i> حساب کاربـری</a></li>
+                            {% endif %}
+
+                            {% if not request.user.is_authenticated %}
+                                <li><a href="/login"><i class="fa fa-lock"></i>ورود</a></li>
+                                <li><a href="/register"><i class="fa fa-lock"> </i>ثبت نام</a></li>
+                            {% else %}
+                                <li><a href="/log-out"><i class="fa fa-lock"></i> خروج </a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!--/header-middle-->
+</header><!--/header-->

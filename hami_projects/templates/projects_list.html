@@ -1,0 +1,88 @@
+{% extends 'shared/_MainLayout.html' %}
+{% load static %}
+{% load render_partial %}
+
+{% block content %}
+    <section>
+        <div class="container">
+            <div class="row">
+                <h2 id="projects-list" class="title text-center">پروژه ها</h2>
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 campaign-search-page">
+
+                    <form action="filter" method="get" class="form-inline"> 
+                        {% csrf_token %}
+                        <label for="sort" class="control-label">فیلتر:</label>
+                        <div class="form-group">
+                            <div class="col-sm-12 text-right">
+                                <select name="sort" id="sort" class="form-control">
+                                    <option value="all">همه</option>
+                                    <option value="enable" selected="&quot;selected&quot;">در حال اجرا</option>
+                                    <option value="disable"> انجام شده</option>
+                                </select>
+                            </div>
+                        </div>
+                    
+                        <input type="submit" value="جستجو" class="btn btn-sm btn-primary"></button>
+                    </form>
+                    
+                </div>
+                <div  class="col-sm-8 pull-right">
+                    <div class="features_items"><!--features_items-->
+                        {% for project in page_obj %}
+                        <div class="col-sm-4 ">
+                            <div class="product-image-wrapper">
+                                <div class="single-products">
+                                    <div class="productinfo text-center">
+                                        <img src="{{ project.logo.url }}" alt="">
+                                        
+                                        <p>{{ project.name_show }}</p>
+                                    </div>
+                                    <div class="product-overlay">
+                                        <div class="overlay-content">
+                                            <h2><span>بودجه:&nbsp</span>{{ project.budget }} تومان</h2>
+                                            <p>{{ project.discribtion_show }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="choose">
+                                    <ul class="nav nav-pills nav-justified">
+                                        <li><a href="{{ project.get_absolute_url }}"><i
+                                                class="fa fa-plus-square"></i>مشاهده</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+
+                        <div class="clearfix"></div>
+                        <ul class="pagination">
+                            {% if page_obj.has_previous %}
+                                <li><a href="?page={{ page_obj.previous_page_number }}">قبلی</a></li>
+                            {% endif %}
+                            {% for page in paginator.page_range %}
+                                {% if page == page_obj.number %}
+                                    <li class="active"><a href="?page={{ page }}">{{ page }}</a></li>
+                                {% else %}
+                                    <li><a href="?page={{ page }}">{{ page }}</a></li>
+                                {% endif %}
+                            {% endfor %}
+                            {% if page_obj.has_next %}
+                                <li><a href="?page={{ page_obj.next_page_number }}">بعدی</a></li>
+                            {% endif %}
+                        </ul>
+                    </div><!--features_items-->
+                </div>
+
+                <div id="projects-list" class="col-sm-4">
+                    <div class="left-sidebar">
+                        <h2 class="title text-center">پروژه ها</h2>
+                        <p></p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+{% endblock %}

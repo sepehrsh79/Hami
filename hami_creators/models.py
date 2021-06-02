@@ -2,13 +2,13 @@ from django.db import models
 from hami_projects.models import Project
 
 class Creator (models.Model):
-    name = models.CharField(max_length=25,verbose_name='نام و نام خانوادگی')
-    card_id = models.PositiveIntegerField(verbose_name='کدملی')
-    project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name='پروژه', null=True, blank=True)
+    fname = models.CharField(max_length=25,verbose_name='نام')
+    lname = models.CharField(max_length=25,verbose_name=' نام خانوادگی')
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name='پروژه')
     phone = models.PositiveIntegerField(verbose_name='شماره تماس')
     address = models.CharField(max_length=100, verbose_name='آدرس')
-    Postalـcode = models.PositiveIntegerField(verbose_name='کد پستی')
     email = models.EmailField(max_length=100, verbose_name='ایمیل')
+    identifier_code = models.PositiveIntegerField(verbose_name='کد معرف', null=True, blank=True)
 
     class Meta:
         verbose_name = 'سرپرست پروژه '
