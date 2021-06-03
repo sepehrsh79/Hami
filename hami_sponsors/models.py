@@ -14,4 +14,4 @@ class Sponsor (models.Model):
         verbose_name_plural = 'حامیان پروژه'
 
     def __str__(self):
-        return self.name
+        return self.lname

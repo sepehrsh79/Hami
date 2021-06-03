@@ -3,6 +3,8 @@ import itertools
 from hami_setting.models import SiteSetting
 from hami_sliders.models import Slider
 from hami_projects.models import Group, Project
+from hami_sponsors.models import Sponsor
+
 
 
 def header(request, *args, **kwargs):
@@ -14,8 +16,11 @@ def header(request, *args, **kwargs):
 
 def footer(request, *args, **kwargs):
     site_setting = SiteSetting.objects.first()
+    group = Group.objects.all()
+
     context = {
-        'setting': site_setting
+        'setting': site_setting,
+        'groups' : group
     }
     return render(request, 'shared/Footer.html', context)
 
@@ -30,12 +35,13 @@ def home_page(request):
     all_projects = Project.objects.all()
 
 
+
     context = {
         'slides' : slides,
         'groups' : my_grouper(4, group),
         'projects' : active_projects,
         'project_count' : all_projects.count(),
-        'enb_project_count' : all_projects.count()
+        'enb_project_count' : active_projects.count(),
     }
 
     return render(request, 'home_page.html', context)

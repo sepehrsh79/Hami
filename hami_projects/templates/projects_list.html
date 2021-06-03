@@ -7,49 +7,54 @@
         <div class="container">
             <div class="row">
                 <h2 id="projects-list" class="title text-center">پروژه ها</h2>
-
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 campaign-search-page">
-
-                    <form action="filter" method="get" class="form-inline"> 
-                        {% csrf_token %}
-                        <label for="sort" class="control-label">فیلتر:</label>
-                        <div class="form-group">
-                            <div class="col-sm-12 text-right">
-                                <select name="sort" id="sort" class="form-control">
-                                    <option value="all">همه</option>
-                                    <option value="enable" selected="&quot;selected&quot;">در حال اجرا</option>
-                                    <option value="disable"> انجام شده</option>
-                                </select>
-                            </div>
+                <form id="filter-form" action="filter" method="get" class="form-inline"> 
+                    {% csrf_token %}
+                    <label for="sort" class="control-label">فیلتر:</label>
+                    <div class="form-group">
+                        <div class="col-sm-12 text-right">
+                            <select name="sort" id="sort" class="form-control">
+                                <option value="none" selected="&quot;selected&quot;">--انتخاب کنید--</option>
+                                <option value="all">همه</option>
+                                <option value="enable" >در حال اجرا</option>
+                                <option value="disable"> انجام شده</option>
+                            </select>
                         </div>
-                    
-                        <input type="submit" value="جستجو" class="btn btn-sm btn-primary"></button>
-                    </form>
-                    
-                </div>
-                <div  class="col-sm-8 pull-right">
-                    <div class="features_items"><!--features_items-->
+                    </div>
+                
+                    <input type="submit" value="جستجو" class="btn btn-sm btn-primary"></button>
+                </form>
+                <div class="col-sm-12">
+                    <div class="features_items"> <!--features_items-->
                         {% for project in page_obj %}
-                        <div class="col-sm-4 ">
+                        <div class="col-sm-4">
                             <div class="product-image-wrapper">
                                 <div class="single-products">
                                     <div class="productinfo text-center">
                                         <img src="{{ project.logo.url }}" alt="">
-                                        
                                         <p>{{ project.name_show }}</p>
+                                        <p>{{ project.Groups }}</p>
+                                    </div>
+                                    <div  class="progress pull-left  text-center " style="width: 100%;"> 
+                                        <div id="progres" class="progress-bar " role="progressbar" style="width:{{project.percent}}%;color:black;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{project.percent}}%</div>
+                                    </div>
+                                    <br><br>
+                                    <div class="flex-row">
+                                        <p class="pull-right"><span> {{project.Currentـbudget}} تومان &nbsp</span></p>
+                                        <p class="pr-3"><span> از </span class=""><span>&nbsp {{ project.budget }} تومان </span></p>
+                                        <p class=""><span> {{project.sponsors}}</span> حمایت کننده </p>
+                                        <a class="btn btn-primary btn-block" href="{{ project.get_absolute_url }}">مشاهده </a>
+
                                     </div>
                                     <div class="product-overlay">
                                         <div class="overlay-content">
-                                            <h2><span>بودجه:&nbsp</span>{{ project.budget }} تومان</h2>
-                                            <p>{{ project.discribtion_show }}</p>
+                                            <h4><span>بودجه:&nbsp</span>{{ project.budget }} تومان</h4>
+                                            <p>{{ project.discribtion_show|truncatechars:150}}</p>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="choose">
-                                    <ul class="nav nav-pills nav-justified">
-                                        <li><a href="{{ project.get_absolute_url }}"><i
-                                                class="fa fa-plus-square"></i>مشاهده</a></li>
-                                    </ul>
+                                <div>
+
+                                    
                                 </div>
                             </div>
                         </div>
@@ -74,14 +79,6 @@
                         </ul>
                     </div><!--features_items-->
                 </div>
-
-                <div id="projects-list" class="col-sm-4">
-                    <div class="left-sidebar">
-                        <h2 class="title text-center">پروژه ها</h2>
-                        <p></p>
-                    </div>
-                </div>
-
             </div>
         </div>
     </section>

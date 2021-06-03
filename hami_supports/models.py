@@ -12,4 +12,4 @@ class Support (models.Model):
         verbose_name_plural = 'پشتیبان ها'
 
     def __str__(self):
-        return self.name
+        return self.lname

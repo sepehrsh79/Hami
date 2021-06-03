@@ -2,7 +2,7 @@
 <footer id="footer"><!--Footer-->
     <div class="footer-Before">
         
-    </div>
+    </div>s
 
     <div class="footer-top">
         <div class="container">
@@ -40,11 +40,9 @@
                     <div class="single-widget">
                         <h2>دسته بندی ها</h2>
                         <ul class="nav nav-pills nav-stacked">
-                            <li><a href="#">بازی</a></li>
-                            <li><a href="#">اجتماعی</a></li>
-                            <li><a href="#"></a></li>
-                            <li><a href="#"></a></li>
-                            <li><a href="#"></a></li>
+                            {% for group in groups %}
+                                <li><a href="/projects/{{ group.slug }}">{{group.title}}</a></li>
+                            {% endfor %}
                         </ul>
                     </div>
                 </div>
@@ -54,7 +52,7 @@
                         <ul class="nav nav-pills nav-stacked">
                             <li><a href="#">درباره</a></li>
                             <li><a href="#">پرداخت</a></li>
-                            <li><a href="#">پروژه ها</a></li>
+                            <li><a href="/projects">پروژه ها</a></li>
                            
                         </ul>
                     </div>

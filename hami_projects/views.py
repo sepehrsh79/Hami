@@ -1,29 +1,64 @@
 from django.shortcuts import render
-from .models import Project
+from .models import Project, Comment, Group
 from django.views.generic import ListView
+from django.http import Http404
+from .forms import CommentForm
+from datetime import datetime
 
 
-class ProductsList(ListView):
+class ProjectsList(ListView):
     template_name = 'projects_list.html'
     paginate_by = 6
 
     def get_queryset(self):
-        return Project.objects.filter(status='enable')
+        return Project.objects.all()
 
 
-class FilterProductsView(ListView):
+class FilterProjectsView(ListView):
     template_name = 'projects_list.html'
     paginate_by = 6
 
     def get_queryset(self, *args, **kwargs):
         request = self.request
         answer = request.GET['sort']
-
-
-        if answer is not None:
-            if answer == 'all':
-                return Project.objects.all()
-            else:
-                return Project.objects.filter(status=answer)
+        if answer  == 'all' or 'none':
+            return Project.objects.all()
+        else:
+            return Project.objects.filter(status=answer)
             
+def project_detail(request, *args, **kwargs):
+    selected_project_id = kwargs['projectID']
+    selected_project = Project.objects.get_by_id(selected_project_id)
+    if selected_project is None:
+        raise Http404('پروژه مورد نظر یافت نشد')
 
+    comments = selected_project.comment_set.all()
+
+    comment_form = CommentForm(request.POST or None)
+    if comment_form.is_valid():
+        name = comment_form.cleaned_data.get('name')
+        subject = comment_form.cleaned_data.get('subject')
+        message = comment_form.cleaned_data.get('message')
+        dateN = datetime.now()
+        
+        Comment.objects.create(name=name, subject=subject, message=message, date=dateN, project=selected_project)
+    comment_form = CommentForm()
+
+    context = {
+        'project': selected_project,
+        'comments' : comments,
+        'comments_count' : comments.count(),
+        'comment_form' : comment_form,
+        
+    }
+
+    return render(request, 'project_detail.html', context)
+
+
+class ProjectsListByGroup(ListView):
+    template_name = 'projects_list.html'
+    paginate_by = 6
+
+    def get_queryset(self):
+        group_name = self.kwargs['group_name']
+        return Project.objects.get_by_groups(group_name)

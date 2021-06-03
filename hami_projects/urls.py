@@ -1,8 +1,11 @@
 from django.urls import path
 
-from .views import ProductsList, FilterProductsView
+from .views import ProjectsList, FilterProjectsView, project_detail, ProjectsListByGroup
 
 urlpatterns = [
-    path('projects/', ProductsList.as_view()),
-    path('projects/filter', FilterProductsView.as_view()),
+    path('projects/', ProjectsList.as_view()),
+    path('projects/filter', FilterProjectsView.as_view()),
+    path('projects/<int:projectID>',project_detail),
+    path('projects/<slug:group_name>', ProjectsListByGroup.as_view()),
+
 ]

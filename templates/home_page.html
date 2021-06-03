@@ -51,7 +51,7 @@
         </div>
         <!-- change it to dynamic -->
         <div class="col-lg-4 col-6 text-center">
-            <span data-toggle="counter-up">100000000</span>
+            <span data-toggle="counter-up"> 100000000 تومان  </span>
             <p>مجموع حمایت</p>
         </div>
     </div>
@@ -65,15 +65,15 @@
                     <div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
                         <div class="carousel-inner">
                             {% for group in groups %}
-                                <div class="item {{ forloop.first|yesno:"active, "}}">
-                                    {% for project in group %}
+                                <div class="item {{ forloop.first|yesno:"active,"}}">
+                                    {% for gr in group %}
                                         <div class="col-sm-3">
                                             <div class="product-image-wrapper">
                                                 <div class="single-products">
                                                     <div class="productinfo text-center">
-                                                        <img src="{{ project.image.url }}" alt=""/>
-                                                        <p>{{ project.title }}</p>
-                                                        <a href="#" class="btn btn-default add-to-cart"><i
+                                                        <img src="{{ gr.image.url }}" alt=""/>
+                                                        <p>{{ gr.title }}</p>
+                                                        <a href="/projects/{{ gr.slug }}" class="btn btn-default add-to-cart"><i
                                                                 class="fa fa-shopping-cart"></i>مشاهده پروژه ها</a>
                                                     </div>
                                                 </div>
@@ -110,25 +110,26 @@
                                             {{ project.discribtion_show }}
                                         </p>
                                         <br>
-                                        <div  class="progress pull-left" style="width: 300px;">
-                                            <div id="progres" class="progress-bar " role="progressbar" style="width: 100%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">100%</div>
+                                        <div  class="progress pull-left  text-center " style="width: 300px;"> 
+                                            <div id="progres" class="progress-bar " role="progressbar" style="width:{{project.percent}}%;color:black;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{project.percent}}%</div>
                                         </div>
                                         
-                                        <dir class="flex-row" ><span class="pull-right"> مبلغ کل: </span class=""><span>&nbsp 110000 </span>
-                                        </dir>
-                                        <a href="{{ project.link }}" class="btn btn-default get" target="_blank">توضیحات
-                                            بیشتر</a>
-                                            <p class="pull-left"> حمایت کننده: <span> 50</span></p>
+                                        <div class="flex-row" ><span class="pull-right"> بودجه : </span class=""><span> {{project.Currentـbudget}} تومان&nbsp </span>
+                                        </div>
+                                        <a href="{{ project.get_absolute_url }}" class="btn btn-default get" target="_blank">
+                                            مشاهده</a>
+                                            <br>
+                                            <p class="pull-left"> حمایت کننده: <span> {{project.sponsors}}</span></p>
                                             
                                     </div>
                                     <div class="col-sm-6">
                                         <img src="{{ project.logo.url }}" class="girl img-responsive"
-                                             alt="{{ project.name }}" width="500px"/>
+                                             alt="{{ project.name }}" width="450px" height="450px"/>
                                     </div>
                                 </div>
                             {% endfor %}
-
                         </div>
+                        <br>
 
                         <a href="#slider-carousel2" class="left control-carousel hidden-xs" data-slide="prev">
                             <i class="fa fa-angle-left"></i>
