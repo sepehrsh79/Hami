@@ -41,8 +41,6 @@ INSTALLED_APPS = [
     'django_render_partial',
     #apps
     'hami_projects.apps.HamiProjectsConfig',
-    'hami_creators.apps.HamiCreatorsConfig',
-    'hami_sponsors.apps.HamiSponsorsConfig',
     'hami_supports.apps.HamiSupportsConfig',
     'hami_setting.apps.HamiSettingConfig',
     'hami_sliders.apps.HamiSlidersConfig',
@@ -136,3 +134,5 @@ STATICFILES_DIRS = [
 ]
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "statics", "media_root")
+
+

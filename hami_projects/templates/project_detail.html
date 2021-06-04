@@ -20,6 +20,7 @@
                                 <div>
                                     <h2>{{ project.name }}</h2>
                                     <p>دسته بندی  : {{ project.Groups }}</p>
+                                    <p>سرپرست پروژه : {{ project.supportsـfullname }}</p>
                                 </div>
                                 <hr>
                                 <div>
@@ -39,7 +40,7 @@
                                     {% else %}
                                     <p><b>وضعیت :</b> غیر فعال</p>
                                     {%endif%}
-                                    <p><b>حمایت کننده :</b> {{project.sponsors}}</p>
+                                    <p><b>حمایت کننده :</b> {{project.supports}}</p>
                                     <p><b>مدت زمان مورد نیاز:</b>{{project.needed_time}}</p>
                                     <p><b>سایت :</b>{{project.site}}</p>
                                     <p><b>ایمیل :</b>{{project.email}}</p>

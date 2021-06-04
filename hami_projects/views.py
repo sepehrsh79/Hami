@@ -1,10 +1,11 @@
-from django.db.models.deletion import PROTECT
 from django.shortcuts import redirect, render
 from .models import Project, Comment, Group
+from django.contrib.auth.models import User
 from django.views.generic import ListView
 from django.http import Http404
 from .forms import CommentForm, CreateProject
 from datetime import datetime
+
 
 class ProjectsList(ListView):
     template_name = 'projects_list.html'
@@ -65,43 +66,44 @@ class ProjectsListByGroup(ListView):
 
 
 def create_project(request):
-    print("1")
-    if request.method == "POST":
-        print("2")
-        create_project_form = CreateProject(request.POST, request.FILES)
-        print("3")
 
-        if create_project_form.is_valid():
-            print("4")
-            name_show = create_project_form.cleaned_data.get('name_show')
-            gr = create_project_form.cleaned_data.get('groups')
-            group = Group.objects.filter(slug=gr).first()
+    if request.user.is_authenticated:
+        user_id = request.user.id
+        if request.method == "POST":
+            create_project_form = CreateProject(request.POST, request.FILES)
 
-            discribtion_show = create_project_form.cleaned_data.get('discribtion_show')
-            budget = create_project_form.cleaned_data.get('budget')
-            needed_time = create_project_form.cleaned_data.get('needed_time')
-            site = create_project_form.cleaned_data.get('site')
-            email = create_project_form.cleaned_data.get('email')
-            logo = create_project_form.cleaned_data.get('logo')
+            if create_project_form.is_valid():
+                name_show = create_project_form.cleaned_data.get('name_show')
+                gr = create_project_form.cleaned_data.get('groups')
+                group = Group.objects.filter(slug=gr).first()
+                usr = User.objects.filter(id=user_id).first()
+                discribtion_show = create_project_form.cleaned_data.get('discribtion_show')
+                budget = create_project_form.cleaned_data.get('budget')
+                needed_time = create_project_form.cleaned_data.get('needed_time')
+                site = create_project_form.cleaned_data.get('site')
+                email = create_project_form.cleaned_data.get('email')
+                logo = create_project_form.cleaned_data.get('logo')
 
-            project = Project.objects.create(
-                name="پروژه جدید" , 
-                name_show=name_show, 
-                Groups=group , 
-                discribtion=None , 
-                discribtion_show=discribtion_show , 
-                order=None ,
-                budget=budget , 
-                Currentـbudget=0 , 
-                needed_time=needed_time , 
-                site=site , 
-                email=email , 
-                logo=logo, 
-                status="disable")
+                project = Project.objects.create(
+                    name="پروژه جدید" , 
+                    name_show=name_show, 
+                    Groups=group , 
+                    creator= usr ,
+                    discribtion=None , 
+                    discribtion_show=discribtion_show , 
+                    order=None ,
+                    budget=budget , 
+                    Currentـbudget=0 , 
+                    needed_time=needed_time , 
+                    site=site , 
+                    email=email , 
+                    logo=logo, 
+                    status="disable")
 
-            project.save()
-            print(project)
-    create_project_form = CreateProject()
+                project.save()
+        create_project_form = CreateProject()
+    else:
+        redirect("/login")
 
 
     context = {

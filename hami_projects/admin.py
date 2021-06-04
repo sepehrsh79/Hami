@@ -8,7 +8,7 @@ class RewardInLine (admin.StackedInline):
 @admin.register(Project)
 class ProjectAdmin (admin.ModelAdmin):
     fieldsets = (
-            ('اطلاعات', {'fields' : ('name', 'name_show','Groups', 'discribtion', 'discribtion_show', 
+            ('اطلاعات', {'fields' : ('name', 'name_show','Groups', 'creator','discribtion', 'discribtion_show', 
             )}),
             ('وضعیت هزینه و زمان',{'fields' : ('budget', 'Currentـbudget','needed_time')}),
             ('ابزار ها',{'fields' : ('site', 'email', 'logo')}),

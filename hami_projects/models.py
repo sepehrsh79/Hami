@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 city = [
@@ -41,6 +42,7 @@ class Group (models.Model):
 class Project (models.Model):
     name = models.CharField(max_length=25,verbose_name='عنوان مدیریتی', blank=True, null=True)
     name_show = models.CharField(max_length=25,verbose_name='عنوان قابل نمایش')
+    creator = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='صاحب پروژه')
     Groups = models.ForeignKey(Group, on_delete=models.CASCADE, verbose_name='دسته بندی')
     discribtion = models.TextField(max_length=250, verbose_name='شرح مدیریتی',  blank=True, null=True,)
     discribtion_show = models.TextField(max_length=250, verbose_name='شرح قابل نمایش')
@@ -63,8 +65,11 @@ class Project (models.Model):
     def __str__(self):
         return self.name_show
 
-    def sponsors(self):
-        return str(self.sponsor_set.count())
+    def supports(self):
+        return str(self.support_set.count())
+
+    def supportsـfullname(self):
+        return self.creator.get_full_name()
 
     def percent(self):
         return ((self.Currentـbudget * 100)/self.budget)
