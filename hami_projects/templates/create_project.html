@@ -1,0 +1,71 @@
+{% extends 'shared/_MainLayout.html' %}
+{% load static %}
+{% block content %}
+    <div class="container">
+        <section id="form"><!--form-->
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="signup-form"><!--sign up form-->
+                        <h2 class="title">ثبت پروژه جدیـد</h2>
+                        <form method="post" action="" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            
+                            <label for="{{ create_project_form.name_show.id_for_label }}">{{ create_project_form.name_show.label }}</label>
+                            {{ create_project_form.name_show }}
+                            {% for error in create_project_form.name_show.errors %}
+                                <p style="color: red;">{{ error }}</p>
+                            {% endfor %}
+
+                            <label for="{{ create_project_form.groups.id_for_label }}">{{ create_project_form.groups.label }}</label>
+                            {{ create_project_form.groups }}
+                            {% for error in create_project_form.groups.errors %}
+                                <p style="color: red;">{{ error }}</p>
+                            {% endfor %}
+                            
+                            <label for="{{ create_project_form.budget.id_for_label }}">{{ create_project_form.budget.label }}</label>
+                            {{ create_project_form.budget }}
+                            {% for error in create_project_form.budget.errors %}
+                            <p style="color: red;">{{ error }}</p>
+                            {% endfor %}
+                            
+                            <label for="{{ create_project_form.needed_time.id_for_label }}">{{ create_project_form.needed_time.label }}</label>
+                            {{ create_project_form.needed_time }}
+                            {% for error in create_project_form.needed_time.errors %}
+                            <p style="color: red;">{{ error }}</p>
+                            {% endfor %}
+                            
+                            <label for="{{ create_project_form.site.id_for_label }}">{{ create_project_form.site.label }}</label>
+                            {{ create_project_form.site }}
+                            {% for error in create_project_form.site.errors %}
+                            <p style="color: red;">{{ error }}</p>
+                            {% endfor %}
+                            
+                            <label for="{{ create_project_form.email.id_for_label }}">{{ create_project_form.email.label }}</label>
+                            {{ create_project_form.email }}
+                            {% for error in create_project_form.email.errors %}
+                            <p style="color: red;">{{ error }}</p>
+                            {% endfor %}
+                            
+                            <label for="{{ create_project_form.logo.id_for_label }}">{{ create_project_form.logo.label }}</label>
+                            {{ create_project_form.logo }}
+                            {% for error in create_project_form.logo.errors %}
+                            <p style="color: red;">{{ error }}</p>
+                            {% endfor %}
+
+                            <label for="{{ create_project_form.discribtion_show.id_for_label }}">{{ create_project_form.discribtion_show.label }}</label>
+                            {{ create_project_form.discribtion_show }}
+                            {% for error in create_project_form.discribtion_show.errors %}
+                                <p style="color: red;">{{ error }}</p>
+                            {% endfor %}
+                            <hr>
+                            
+                            <button type="submit" class="btn btn-default" style="width: 70%;" >ایجاد پروژه</button>
+                        </form>
+                    </div><!--/sign up form-->
+                </div>
+            </div>
+        </section>
+    </div>
+    <!--/form-->
+    
+    {% endblock %}

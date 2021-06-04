@@ -3,7 +3,6 @@ import itertools
 from hami_setting.models import SiteSetting
 from hami_sliders.models import Slider
 from hami_projects.models import Group, Project
-from hami_sponsors.models import Sponsor
 
 
 

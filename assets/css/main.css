@@ -29,7 +29,6 @@ body {
 }
 .counters span {
   font-family: "BYekan", sans-serif;
-  font-weight: ;
   font-size: 20px;
   display: block;
   color: #FE980F;
@@ -1166,8 +1165,6 @@ h2.title {
   background: #FE980F;
 }
 
-.recommended_items  h2 {
-}
 
 .our_partners{
   overflow:hidden;
@@ -1387,6 +1384,12 @@ h2.title {
   width: 50px;
 }
 
+#create-pro{
+  margin-right: 50px;
+  background-color: orange;
+  border-radius: 1em;
+  height: 35px;
+}
 .product-information span label {
   color: #696763;
   font-family: 'BYekan', sans-serif;
@@ -1548,7 +1551,7 @@ h2.title {
 #form {
   display: block;
   margin-bottom: 100px;
-  margin-top: 50px;
+  margin-top: 0px;
   overflow: hidden;
   padding: 50px;
   background: #fbfbfb;
@@ -1564,30 +1567,21 @@ h2.title {
 	font-size: 16pt;
 }
 
-.login-form {
-
-}
-
-.signup-form {
-
-}
-
 .forget-password .col-sm-6 {
 	float: right;
 }
 
 .login-form h2, .signup-form h2 {
-  color: #696763;
+  color: #fd9b18;
   font-family: 'BYekan', sans-serif;
   font-size: 20px;
   font-weight: 300;
   margin-bottom: 30px;
+  padding-right: 200px;
 }
 
-
-.login-form form input, .signup-form form input {
+.login-form form input, .signup-form form input,.signup-form form select{
   background: #F0F0E9;
-  border: medium none;
   color: #696763;
   display: block;
   font-family: 'BYekan', sans-serif;
@@ -1597,9 +1591,20 @@ h2.title {
   margin-bottom: 10px;
   outline: medium none;
   padding-right: 10px;
-  width: 100%;
+  width: 70%;
 }
 
+.signup-form form textarea{
+  background: #F0F0E9;
+  width: 70%;
+
+}
+
+.signup-form form input[type="file"]{
+  background: white !important;
+  padding-right: 0px !important ;
+
+}
 .login-form form span{
   line-height: 25px;
 }
@@ -1621,20 +1626,14 @@ h2.title {
 
 .login-form form button, .signup-form form button {
   background: #FE980F;
-  border: medium none;
   border-radius: 0;
   color: #FFFFFF;
-  display: block;
+  display: inline;
   font-family: 'BYekan', sans-serif;
   padding: 6px 25px;
 	width: 100%;
 	font-size: 16pt;
 }
-
-.login-form label{
-
-}
-
 
 .login-form label input {
   border: medium none;
@@ -1782,7 +1781,7 @@ h2.title {
   overflow: hidden;
   text-align: center;
   width: 35px;
-  float: right;
+  float:right;
 }
 
 
@@ -1933,9 +1932,6 @@ h2.title {
 .user_info > li {
   float: right;
   margin-left: 10px
-}
-
-.user_info > li > span {
 }
 
 .chose_area input, select, textarea {
@@ -2206,9 +2202,6 @@ h2.title {
   text-transform: uppercase;
   font-weight: 500;
   margin-bottom: 17px;
-}
-
-.single-blog-post > a {
 }
 
 .blog-post-area 

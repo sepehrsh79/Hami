@@ -39,19 +39,19 @@ class Group (models.Model):
         verbose_name_plural = 'دسته بندی ها'
 
 class Project (models.Model):
-    name = models.CharField(max_length=25,verbose_name='عنوان مدیریتی')
+    name = models.CharField(max_length=25,verbose_name='عنوان مدیریتی', blank=True, null=True)
     name_show = models.CharField(max_length=25,verbose_name='عنوان قابل نمایش')
     Groups = models.ForeignKey(Group, on_delete=models.CASCADE, verbose_name='دسته بندی')
-    discribtion = models.TextField(max_length=250, verbose_name='شرح مدیریتی')
+    discribtion = models.TextField(max_length=250, verbose_name='شرح مدیریتی',  blank=True, null=True,)
     discribtion_show = models.TextField(max_length=250, verbose_name='شرح قابل نمایش')
-    order = models.IntegerField(verbose_name='وزن')
+    order = models.IntegerField(verbose_name='وزن', blank=True, null=True)
     budget = models.PositiveIntegerField(verbose_name='مبلغ مورد نیاز')
     Currentـbudget = models.PositiveIntegerField(verbose_name='مبلغ جمع شده', blank=True, null=True, default=0)
     needed_time =  models.DateField(verbose_name='مدت زمان مورد نیاز ')
     site = models.CharField(max_length=35, verbose_name='سایت')
     email = models.CharField(max_length=35, verbose_name='ایمیل')
     logo = models.ImageField(upload_to=None, blank=True, null=True, verbose_name='عکس کاور')
-    status = models.CharField(max_length=35, choices=status, verbose_name='وضعیت')
+    status = models.CharField(max_length=35, choices=status, verbose_name='وضعیت', default='disable')
     
     objects = ProjectManager()
 
@@ -61,7 +61,7 @@ class Project (models.Model):
         verbose_name_plural = 'پروژه ها'
 
     def __str__(self):
-        return self.name
+        return self.name_show
 
     def sponsors(self):
         return str(self.sponsor_set.count())
