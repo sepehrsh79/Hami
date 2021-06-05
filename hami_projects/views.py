@@ -19,7 +19,7 @@ class FilterProjectsView(ListView):
     template_name = 'projects_list.html'
     paginate_by = 6
 
-    def get_queryset(self, *args, **kwargs):
+    def get_queryset(self):
         request = self.request
         answer = request.GET['sort']
         if answer  == 'all':
@@ -27,7 +27,7 @@ class FilterProjectsView(ListView):
         else:
             return Project.objects.filter(status=answer)
             
-def project_detail(request, *args, **kwargs):
+def project_detail(request, **kwargs):
     selected_project_id = kwargs['projectID']
     selected_project = Project.objects.get_by_id(selected_project_id)
     if selected_project is None:
@@ -102,11 +102,12 @@ def create_project(request):
 
                 project.save()
         create_project_form = CreateProject()
-    else:
-        redirect("/login")
-
-
-    context = {
+        context = {
         'create_project_form': create_project_form
     }
-    return render(request, 'create_project.html', context)
+        return render(request, 'create_project.html', context)
+    else:
+        return redirect("/")
+
+
+    

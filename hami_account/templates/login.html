@@ -1,19 +1,19 @@
 {% extends 'shared/_MainLayout.html' %}
-
+{% load static %}
 {% block content %}
 
     <div class="container">
         <section id="form"><!--form-->
             <div class="row">
-                <div class="col-sm-4 col-sm-offset-1">
+                <div class="col-sm-9">
                     <div class="login-form"><!--login form-->
                         <h2>ورود به حساب کاربـری :</h2>
                         <form method="post">
                             {% csrf_token %}
                             {% comment %}{{ login_form }}{% endcomment %}
-                            <label for="{{ login_form.user_name.id_for_label }}">{{ login_form.user_name.label }}</label>
-                            {{ login_form.user_name }}
-                            {% for error in login_form.user_name.errors %}
+                            <label for="{{ login_form.phone.id_for_label }}">{{ login_form.phone.label }}</label>
+                            {{ login_form.phone }}
+                            {% for error in login_form.phone.errors %}
                                 <p style="color: red;">{{ error }}</p>
                             {% endfor %}
 
@@ -28,6 +28,9 @@
                             <button type="submit" class="btn btn-default">ورود</button>
                         </form>
                     </div><!--/login form-->
+                </div>
+                <div class="col-sm-4">
+                    <!-- <img height="500px" width="250px" src="" alt=""> -->
                 </div>
             </div>
         </section>

@@ -135,4 +135,4 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "statics", "media_root")
 
-
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
