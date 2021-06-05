@@ -3,10 +3,16 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
+from sms import send_sms
+import random
 
+def verify_code_generator ():
+    n = random.randint(10000,99999)
+    return n
 
+verify_code = verify_code_generator()
 
-user_phone = None
+user_info = None
 
 def register_user(request):
 
@@ -24,16 +30,27 @@ def register_user(request):
         last_name = register_form.cleaned_data.get('last_name')
         identifier_code = register_form.cleaned_data.get('identifier_code')
 
-        global user_phone
-        def user_phone():
-            return phone
+        global user_info
+        def user_info():
+            info = {'phone':phone, 
+            'password':password, 
+            'first_name':first_name, 
+            'last_name':last_name, 
+            'identifier_code':identifier_code }
+            
+            return info
 
         user = User.objects.filter(username=phone)
-        if not user.exists():
-            User.objects.create_user(username=phone, email='', password=password, first_name=first_name, last_name=last_name)
-            return redirect('/account/verify')
+        if user.exists():
+            messages.info(request, 'متاسفانه قبلا کاربری با این شماره تماس ثبت شده است!')
         else:
-            messages.info(request, 'متاسفانه قبلا کاربری با این شاره تماس ثبت شده است!')
+            send_sms(
+                f'کد احراز هویت شما:{verify_code}',
+                '+989056967179',
+                ['+989398477890'],
+                fail_silently=False
+            )
+            return redirect('/account/verify')
 
     context['register_form'] = register_form
     return render(request, 'register.html', context)
@@ -42,23 +59,31 @@ def register_user(request):
 def verify_user(request):
     if request.user.is_authenticated:
         return redirect('/')
-    counter = 0
-    user_phone_num = user_phone()
-    user = User.objects.filter(username=user_phone_num).first()
-
+    user_informations = user_info()
+    user_phone = user_informations['phone']
+    user_password = user_informations['password']
+    user_fname = user_informations['first_name']
+    user_lname = user_informations['last_name']
+    
     verify_form = Verify(request.POST or None)
-
     if verify_form.is_valid():
         verification_code = verify_form.cleaned_data.get('verification_code')
-        
-        while counter<3:
-            if verification_code == 12345:
-                login(request, user)
-                counter += 1
-                return redirect('/')
-            else:
-                messages.success(request, 'کد پیامکی وارد شده صحیح نمی باشد!')
-        user.delete()
+        verification_code = int(verification_code)
+
+        if verification_code == verify_code:
+            user = User.objects.create_user(
+                username=user_phone, 
+                email='',
+                password=user_password, 
+                first_name=user_fname, 
+                last_name=user_lname
+            )
+
+            login(request, user)
+            return redirect('/')
+
+        else:
+            messages.success(request, 'کد پیامکی وارد شده صحیح نمی باشد!')
 
     context = {'verify_form' : verify_form}
     return render(request, 'verify.html', context)
