@@ -72,7 +72,7 @@ class Project (models.Model):
         return self.creator.get_full_name()
 
     def percent(self):
-        return ((self.Currentـbudget * 100)/self.budget)
+        return (int((self.Currentـbudget * 100)/self.budget))
     
     def get_absolute_url(self):
         return f"/projects/{self.id}"

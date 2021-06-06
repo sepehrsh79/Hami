@@ -34,6 +34,7 @@ def project_detail(request, **kwargs):
         raise Http404('پروژه مورد نظر یافت نشد')
 
     comments = selected_project.comment_set.all()
+    supports = selected_project.support_set.order_by('-date').all() #sort by date
 
     comment_form = CommentForm(request.POST or None)
     if comment_form.is_valid():
@@ -48,6 +49,7 @@ def project_detail(request, **kwargs):
     context = {
         'project': selected_project,
         'comments' : comments,
+        'supports' : supports,
         'comments_count' : comments.count(),
         'comment_form' : comment_form,
         
@@ -107,7 +109,7 @@ def create_project(request):
     }
         return render(request, 'create_project.html', context)
     else:
-        return redirect("/")
+        return redirect("/account/login")
 
 
     

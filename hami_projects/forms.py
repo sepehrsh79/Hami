@@ -24,7 +24,7 @@ class CommentForm(forms.Form):
 
     message = forms.CharField(
         widget=forms.Textarea(attrs={'placeholder': 'لطفا متن پیام خود را وارد نمایید','class': 'form-control'}),
-        label='کلمه ی عبور'
+        label='دیدگاه شما'
     )
 
 
