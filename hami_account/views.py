@@ -126,7 +126,7 @@ def admin_profile(request):
         context = {
             
         }
-        return render(request, 'admin_panel.html',context)
+        return render(request, 'panel/admin_panel.html',context)
 
 
 def logout_user(request):
