@@ -1,3 +1,4 @@
+from django.http import request
 from .forms import LoginForm, RegisterForm, Verify
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
@@ -37,7 +38,6 @@ def register_user(request):
             'first_name':first_name, 
             'last_name':last_name, 
             'identifier_code':identifier_code }
-            
             return info
 
         user = User.objects.filter(username=phone)
@@ -108,8 +108,26 @@ def login_user(request):
     }
     return render(request, 'login.html', context)
 
-def user_profile():
-    pass
+def user_profile(request):
+    if not request.user.is_authenticated :
+       return redirect("/account/login")
+    else:
+
+        context = {
+            
+        }
+        return render(request, 'user_panel.html',context)
+
+def admin_profile(request):
+    if not request.user.is_staff:
+       return redirect("/account/login")
+    else:
+
+        context = {
+            
+        }
+        return render(request, 'admin_panel.html',context)
+
 
 def logout_user(request):
     logout(request)

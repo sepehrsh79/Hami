@@ -1,6 +1,6 @@
 from django import forms
 from django.core import validators
-from .models import Group, Project
+from .models import Group
 
 groups_form = []
 

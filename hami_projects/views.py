@@ -5,6 +5,7 @@ from django.views.generic import ListView
 from django.http import Http404
 from .forms import CommentForm, CreateProject
 from datetime import datetime
+from hami_supports.forms import SupportForm
 
 
 class ProjectsList(ListView):
@@ -29,10 +30,13 @@ class FilterProjectsView(ListView):
             
 def project_detail(request, **kwargs):
     selected_project_id = kwargs['projectID']
+    support_form = SupportForm(request.POST or None, initial={'project_id':selected_project_id})
+    
     selected_project = Project.objects.get_by_id(selected_project_id)
     if selected_project is None:
         raise Http404('پروژه مورد نظر یافت نشد')
 
+    
     comments = selected_project.comment_set.all()
     supports = selected_project.support_set.order_by('-date').all() #sort by date
 
@@ -52,6 +56,7 @@ def project_detail(request, **kwargs):
         'supports' : supports,
         'comments_count' : comments.count(),
         'comment_form' : comment_form,
+        'support_form' : support_form
         
     }
 

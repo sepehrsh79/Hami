@@ -18,9 +18,13 @@
                         <div class="col-sm-7">
                             <div class="product-information"><!--/product-information-->
                                 <div>
+                                   <form action="/support" method="get">
+                                    {% csrf_token %}
+                                    {{support_form.project_id}}
                                     <button style="margin: 20px 30px ;" type="submit" class="btn cart">
                                         حمایت از پروژه
                                     </button>
+                                   </form>
                                     <h2>{{ project.name }}</h2>
                                     <p>دسته بندی  : {{ project.Groups }}</p>
                                     <p>سرپرست پروژه : {{ project.supportsـfullname }}</p>
