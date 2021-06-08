@@ -4,28 +4,22 @@
 {% block content %}
 <div class="container-fluid page-body-wrapper">
   <!-- partial:partials/_sidebar.html -->
-  <nav class="sidebar sidebar-offcanvas" id="sidebar">
+  <nav class="sidebar" id="sidebar">
     <ul class="nav">
-      <li class="nav-item">
+      <li class="navman">
         <a class="nav-link" href="/account/admin">
           <i class="mdi mdi-home menu-icon"></i>
           <span class="menu-title">منوی کاربری</span>
         </a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="pages/charts/chartjs.html">
-          <i class="mdi mdi-chart-pie menu-icon"></i>
-          <span class="menu-title">گزارش پروژه ها</span>
+      <li class="navman">
+        <a class="nav-link"  href="/account/admin">
+          <i class="mdi mdi-account menu-icon"></i>
+          <span class="menu-title">گزارش کاربران</span>
         </a>
-        <li class="nav-item">
-            <a class="nav-link"  href="#auth">
-              <i class="mdi mdi-account menu-icon"></i>
-              <span class="menu-title">گزارش کاربران</span>
-            </a>
-          </li>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="pages/tables/basic-table.html">
+      <li class="navman">
+        <a class="nav-link" href="/account/admin/edit-groups">
           <i class="mdi mdi-grid-large menu-icon"></i>
           <span class="menu-title">دسته ها</span>
         </a>
@@ -74,27 +68,37 @@
                       <div class="col-md-12 stretch-card">
                         <div class="card">
                           <div class="card-body">
-                            <p class="card-title">لیست دسته ها <span style="float: left;" ><a class="btn btn-warning" href="#">افزودن دسته</a></span></p> 
+                            <p class="card-title">لیست پروژه ها </p> 
                             <div class="table-responsive">
                               <table id="recent-purchases-listing" class="table">
                                 <thead>
                                   <tr>
-                                      <th>ردیف</th>
-                                      <th>عنوان</th>
-                                      <th>پروژه ها</th>
-                                      <th>تکمیل شده</th>
-                                      <th>توضیحات</th>
-                                  </tr>
+                                    <th>ردیف</th>
+                                    <th>عنوان</th>
+                                    <th>دسته بندی</th>
+                                    <th>وزن</th>
+                                    <th>مبلغ اولیه</th>
+                                    <th>مبلغ تکمیل شده</th>
+                                    <th>توضیحات</th>
+                                    <th>وضعیت</th>
+                                </tr>
                                 </thead>
                                 <tbody>
-                                {% for gorup in groups  %}
+                                  {% for project in projects  %}
                                   <tr>
                                     <td>{{ forloop.counter }}</td>
-                                    <td> {{gorup.title}}</td>
-                                    
-                                    <td>{{gorup.project_count}}</td>
-                                    <td>{{gorup.completed_project_count}}</td>
-                                    <td>{{gorup.discribtion|truncatewords:14}}</td>
+                                    <td> {{project.name_show}}</td>
+                                    <td> {{project.Groups}}</td>
+                                    <td>{{project.order}}</td>
+                                    <td>{{project.budget}}</td>
+                                    <td>{{project.Currentـbudget}}</td>
+                                    {% if project.status == "enable" %}
+                                      <td>فال</td>
+                                    {% else %}
+                                      <td>غیر فعال</td>
+                                    {% endif %}
+
+                                    <td>{{project.discribtion_show|truncatewords:14}}</td>
                                   </tr>
                                 {% endfor %}
                                 </tbody>

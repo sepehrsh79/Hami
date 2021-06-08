@@ -78,3 +78,25 @@ class Verify(forms.Form):
         widget=forms.TextInput(attrs={'placeholder': 'لطفا کد تایید پیامکی  را وارد نمایید', 'class':'form-control'}),
         label='کد پیامکی',
     )
+
+
+class EditGroups(forms.Form):
+
+    title = forms.CharField(
+        widget=forms.TextInput(attrs={'placeholder': 'لطفا عنوان دسته را وارد نمایید', 'class':'form-control'}),
+        label='عنوان دسته'
+    )
+    admin_title = forms.CharField(
+        widget=forms.TextInput(attrs={'placeholder': 'لطفا عنوان مدیریتی دسته را وارد نمایید', 'class':'form-control'}),
+        label='عنوان مدیریتی دسته'
+    )
+
+    discribtion = forms.CharField(
+        widget=forms.Textarea(attrs={'placeholder': 'لطفاتوضیحات را وارد نمایید', 'class':'form-control'}),
+        label='توضیحات دسته'
+    )
+
+    image = forms.ImageField(
+        label='تصویر',
+    )
+

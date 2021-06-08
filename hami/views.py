@@ -3,6 +3,9 @@ import itertools
 from hami_setting.models import SiteSetting
 from hami_sliders.models import Slider
 from hami_projects.models import Group, Project
+from hami_supports.models import Support
+from django.db.models import Sum
+
 
 
 
@@ -33,6 +36,8 @@ def home_page(request):
     active_projects = Project.objects.filter(status='enable')
     all_projects = Project.objects.all()
 
+    all_supports_amount = Support.objects.all().aggregate(Sum("price"))
+    print(all_supports_amount)
 
 
     context = {
@@ -41,6 +46,7 @@ def home_page(request):
         'projects' : active_projects,
         'project_count' : all_projects.count(),
         'enb_project_count' : active_projects.count(),
+        "price__sum":all_supports_amount['price__sum']
     }
 
     return render(request, 'home_page.html', context)

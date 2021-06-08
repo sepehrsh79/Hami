@@ -51,7 +51,11 @@
         </div>
         <!-- change it to dynamic -->
         <div class="col-lg-4 col-6 text-center">
-            <span data-toggle="counter-up"> 100000000 تومان  </span>
+            {% if price__sum == None %}
+            <span data-toggle="counter-up"> 0 تومان  </span>
+            {% else %}
+            <span data-toggle="counter-up"> {{price__sum}} تومان  </span>
+            {% endif %}
             <p>مجموع حمایت</p>
         </div>
     </div>

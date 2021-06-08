@@ -1,5 +1,5 @@
 from django.http import request
-from .forms import LoginForm, RegisterForm, Verify
+from .forms import LoginForm, RegisterForm, Verify, EditGroups
 from hami_supports.models import Support
 from hami_projects.models import Group, Project
 from django.shortcuts import render, redirect
@@ -135,14 +135,13 @@ def admin_profile(request):
         all_supports = Support.objects.all()
         today_supports = Support.objects.filter(date__iexact=today_date)
         completed_project = Project.objects.filter(status="disable")
-
-        groups = Group.objects.all()
+        projects = Project.objects.all()
 
         context = {
             'today_supports':today_supports.count(),
             'completed_project':completed_project.count(),
             'all_supports':all_supports.count(),
-            'groups':groups
+            'projects' : projects
         }
         return render(request, 'panel/admin_panel.html',context)
 
@@ -151,8 +150,25 @@ def create_group (request):
     if not request.user.is_authenticated :
        return redirect("/account/login")
     else:
+        groups = Group.objects.all()
+        if request. method == "POST":
+            edit_groups = EditGroups(request.POST, request.FILES)
+            if edit_groups.is_valid():
+                print("hello")
+                title = edit_groups.cleaned_data.get('title')
+                admin_title = edit_groups.cleaned_data.get('admin_title')
+                discribtion = edit_groups.cleaned_data.get('discribtion')
+                image = edit_groups.cleaned_data.get('image')
+
+                Group.objects.create(title=title, slug=admin_title, discribtion= discribtion, image=image)
+        edit_groups = EditGroups()
 
         context = {
-            
+            'groups': groups,
+            'edit_groups':edit_groups
         }
+
+
         return render(request, 'panel/create_group.html',context)
+        
+

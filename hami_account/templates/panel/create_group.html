@@ -4,28 +4,22 @@
 {% block content %}
 <div class="container-fluid page-body-wrapper">
   <!-- partial:partials/_sidebar.html -->
-  <nav class="sidebar sidebar-offcanvas" id="sidebar">
+  <nav class="sidebar" id="sidebar">
     <ul class="nav">
-      <li class="nav-item">
+      <li class="navman">
         <a class="nav-link" href="/account/admin">
           <i class="mdi mdi-home menu-icon"></i>
           <span class="menu-title">منوی کاربری</span>
         </a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="pages/charts/chartjs.html">
-          <i class="mdi mdi-chart-pie menu-icon"></i>
-          <span class="menu-title">گزارش پروژه ها</span>
+      <li class="navman">
+        <a class="nav-link"  href="/account/admin">
+          <i class="mdi mdi-account menu-icon"></i>
+          <span class="menu-title">گزارش کاربران</span>
         </a>
-        <li class="nav-item">
-            <a class="nav-link"  href="#auth">
-              <i class="mdi mdi-account menu-icon"></i>
-              <span class="menu-title">گزارش کاربران</span>
-            </a>
-          </li>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="pages/tables/basic-table.html">
+      <li class="navman">
+        <a class="nav-link" href="/account/admin/edit-groups">
           <i class="mdi mdi-grid-large menu-icon"></i>
           <span class="menu-title">دسته ها</span>
         </a>
@@ -44,54 +38,71 @@
                 <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
                   <div class="d-flex flex-wrap justify-content-xl-between">
                     <div class="d-none d-xl-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                        <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                            <div class="d-flex flex-column justify-content-around">
-                              <small class="mb-1 text-muted">حمایت های امروز</small>
-                              <h5 class="mt-1 text-center">{{today_supports}}</h5>
-                            </div>
-                        </div>
-                        <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                            <div class="d-flex flex-column justify-content-around">
-                              <small class="mb-1 text-muted">پروژه های تکمیل شده</small>
-                              <h5 class="mt-1 text-center">{{completed_project}}</h5>
-                            </div>
-                        </div>
-                        <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                          <div class="d-flex flex-column justify-content-around">
-                            <small class="mb-1 text-muted">مجموع حمایت ها </small>
-                            <h5 class="mt-1 text-center">{{all_supports}}</h5>
+                        
+                      <div class="col-12 grid-margin stretch-card">
+                        <div class="card">
+                          <div class="card-body">
+                            <h4 class="card-title">افزودن دسته</h4>
+                            <form class="forms-sample" action="" method="post" enctype="multipart/form-data"> {% csrf_token %}
+                              <div class="form-group">
+                                <label for="{{ edit_groups.title.id_for_label }}">{{ edit_groups.title.label }}</label>
+                                {{ edit_groups.title }}
+                                {% for error in edit_groups.title.errors %}
+                                <p style="color: red;">{{ error }}</p>
+                                {% endfor %}  
+                              </div>
+                              <div class="form-group">
+                                <label for="{{ edit_groups.admin_title.id_for_label }}">{{ edit_groups.admin_title.label }}</label>
+                                {{ edit_groups.admin_title }}
+                                {% for error in edit_groups.admin_title.errors %}
+                                <p style="color: red;">{{ error }}</p>
+                                {% endfor %}  
+                              </div>
+                              <div class="form-group">
+                                <label for="{{ edit_groups.image.id_for_label }}">{{ edit_groups.image.label }}</label>
+                                {{ edit_groups.image }}
+                                {% for error in edit_groups.image.errors %}
+                                <p style="color: red;">{{ error }}</p>
+                                {% endfor %}  
+                              </div>
+                              <div class="form-group">
+                                <label for="{{ edit_groups.discribtion.id_for_label }}">{{ edit_groups.discribtion.label }}</label>
+                                {{ edit_groups.discribtion }}
+                                {% for error in edit_groups.discribtion.errors %}
+                                <p style="color: red;">{{ error }}</p>
+                                {% endfor %}  
+                              </div>
+                              <button type="submit" class="btn btn-primary ml-2">افزودن</button>
+                              <a href="/account/admin" class="btn border" >بازگشت</a>
+                            </form>
                           </div>
-                      </div>
+                        </div>
+                      </div> 
+                       
                   </div>
                   <div class="col-md-12 stretch-card">
                     <div class="card">
-                      <div class="card-body">
-                        <p class="card-title"> نمودار مبلغ های پرداختی</p>
-                        <div id="cash-deposits-chart-legend" class="d-flex justify-content-start pt-3"></div>
-                        <canvas id="cash-deposits-chart"></canvas>
-                      </div>
                       <br>
                       <div class="col-md-12 stretch-card">
                         <div class="card">
                           <div class="card-body">
-                            <p class="card-title">لیست دسته ها <span style="float: left;" ><a class="btn btn-warning" href="#">افزودن دسته</a></span></p> 
+                            <p class="card-title">لیست دسته ها</p> 
                             <div class="table-responsive">
                               <table id="recent-purchases-listing" class="table">
                                 <thead>
                                   <tr>
-                                      <th>ردیف</th>
-                                      <th>عنوان</th>
-                                      <th>پروژه ها</th>
-                                      <th>تکمیل شده</th>
-                                      <th>توضیحات</th>
-                                  </tr>
+                                    <th>ردیف</th>
+                                    <th>عنوان</th>
+                                    <th>پروژه ها</th>
+                                    <th>تکمیل شده</th>
+                                    <th>توضیحات</th>
+                                </tr>
                                 </thead>
                                 <tbody>
-                                {% for gorup in groups  %}
+                                  {% for gorup in groups  %}
                                   <tr>
                                     <td>{{ forloop.counter }}</td>
                                     <td> {{gorup.title}}</td>
-                                    
                                     <td>{{gorup.project_count}}</td>
                                     <td>{{gorup.completed_project_count}}</td>
                                     <td>{{gorup.discribtion|truncatewords:14}}</td>

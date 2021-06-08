@@ -24,12 +24,13 @@ def support(request):
         price = support_form.cleaned_data.get('price')
         dateN = datetime.now()
 
-        #the support should create after success payment not HERE // send info with support_info func
+        #the support should create after success payment and the support addes to project ((not HERE)) // send info with support_info func
         Support.objects.create(title="حمایت جدید", price=price, project=selected_project,supporter=user, date=dateN)
-
+        total = price + selected_project.Currentـbudget 
+        selected_project.Currentـbudget = total
+        selected_project.save()
         # global support_info
         # def support_info():
-            
         #     info = {
         #     'selected_project':selected_project, 
         #     'price':price, 
