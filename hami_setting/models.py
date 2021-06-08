@@ -13,7 +13,7 @@ class SiteSetting(models.Model):
 
     class Meta:
         verbose_name = 'تنظیمات سایت'
-        verbose_name_plural = 'مدیریت تنظیمات'
+        verbose_name_plural = ' تنظیمات'
 
     def __str__(self):
         return self.title or " "

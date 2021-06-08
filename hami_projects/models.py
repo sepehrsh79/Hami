@@ -84,21 +84,6 @@ class Project (models.Model):
         return f"/projects/{self.id}"
 
 
-#maybe we dont need
-class Reward (models.Model):
-    name = models.CharField(max_length=25,verbose_name='عنوان')
-    project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name='پروژه مرتبط')
-    discribtion = models.CharField(max_length=250, verbose_name='شرح پاداش')
-    price = models.PositiveIntegerField(verbose_name='هزینه پاداش')
-    supports = models.PositiveIntegerField(verbose_name='حمایت ها')
-
-    class Meta:
-        verbose_name = 'پاداش'
-        verbose_name_plural = 'پاداش ها'
-
-    def __str__(self):
-        return self.name or " "
-
 class Comment (models.Model):
     name = models.CharField(max_length=25,verbose_name='نام و نام خانوادگی', blank=True, null=True)
     subject = models.CharField(max_length=25,verbose_name='عنوان', blank=True, null=True)
