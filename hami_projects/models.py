@@ -31,9 +31,15 @@ class Group (models.Model):
     discribtion = models.TextField(verbose_name='توضیحات')
     image = models.ImageField(upload_to=None, blank=True, null=True, verbose_name='عکس ')
 
-
     def __str__(self):
-        return self.title
+        return self.title or " "
+
+    def project_count(self):
+        return (self.project_set.count())
+
+    def completed_project_count(self):
+        return (self.project_set.filter(status='disable').count())
+
 
     class Meta:
         verbose_name = 'دسته بندی'
@@ -63,7 +69,7 @@ class Project (models.Model):
         verbose_name_plural = 'پروژه ها'
 
     def __str__(self):
-        return self.name_show
+        return self.name_show or " "
 
     def supports(self):
         return str(self.support_set.count())
@@ -91,7 +97,7 @@ class Reward (models.Model):
         verbose_name_plural = 'پاداش ها'
 
     def __str__(self):
-        return self.name
+        return self.name or " "
 
 class Comment (models.Model):
     name = models.CharField(max_length=25,verbose_name='نام و نام خانوادگی', blank=True, null=True)
@@ -105,7 +111,7 @@ class Comment (models.Model):
         verbose_name_plural = 'دیدگاه ها'
 
     def __str__(self):
-        return self.name
+        return self.name or " "
 
 
 

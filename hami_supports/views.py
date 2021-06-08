@@ -46,44 +46,44 @@ def support(request):
 
 
 MERCHANT = 'XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX'
-client = Client('https://www.zarinpal.com/pg/services/WebGate/wsdl')
+# client = Client('https://www.zarinpal.com/pg/services/WebGate/wsdl')
 amount = 0  # Toman / Required
 description = "توضیحات مربوط به تراکنش را در این قسمت وارد کنید"  # Required
 email = 'email@example.com'  # Optional
 mobile = '09123456789'  # Optional
 CallbackURL = 'http://localhost:8000/verify' # Important: need to edit for realy server.
 
-def send_request(request):
-    #get support support from support page from POST request // change action of support form to "/request"
+# def send_request(request):
+#     #get support support from support page from POST request // change action of support form to "/request"
 
-    # price = float(request.POST.get('price'))
-    # global amount
-    # amount += price
-    # print(amount)
+#     # price = float(request.POST.get('price'))
+#     # global amount
+#     # amount += price
+#     # print(amount)
 
-    result = client.service.PaymentRequest(MERCHANT, amount, description, email, mobile, CallbackURL)
-    if result.Status == 100:
-        return redirect('https://www.zarinpal.com/pg/StartPay/' + str(result.Authority))
-    else:
-        return HttpResponse('Error code: ' + str(result.Status))
+#     result = client.service.PaymentRequest(MERCHANT, amount, description, email, mobile, CallbackURL)
+#     if result.Status == 100:
+#         return redirect('https://www.zarinpal.com/pg/StartPay/' + str(result.Authority))
+#     else:
+#         return HttpResponse('Error code: ' + str(result.Status))
 
-def verify(request):
-    #supporter informations to create support in db
+# def verify(request):
+#     #supporter informations to create support in db
 
-    # support_informations = support_info()
-    # selected_project = support_informations['selected_project']
-    # price = support_informations['price']
-    # dateN = support_informations['dateN']
-    # user = support_informations['user']
+#     # support_informations = support_info()
+#     # selected_project = support_informations['selected_project']
+#     # price = support_informations['price']
+#     # dateN = support_informations['dateN']
+#     # user = support_informations['user']
 
-    if request.GET.get('Status') == 'OK':
-        result = client.service.PaymentVerification(MERCHANT, request.GET['Authority'], amount)
-        if result.Status == 100:
-            return HttpResponse('Transaction success.\nRefID: ' + str(result.RefID))
+#     if request.GET.get('Status') == 'OK':
+#         result = client.service.PaymentVerification(MERCHANT, request.GET['Authority'], amount)
+#         if result.Status == 100:
+#             return HttpResponse('Transaction success.\nRefID: ' + str(result.RefID))
             
-        elif result.Status == 101:
-            return HttpResponse('Transaction submitted : ' + str(result.Status))
-        else:
-            return HttpResponse('Transaction failed.\nStatus: ' + str(result.Status))
-    else:
-        return HttpResponse('Transaction failed or canceled by user')
+#         elif result.Status == 101:
+#             return HttpResponse('Transaction submitted : ' + str(result.Status))
+#         else:
+#             return HttpResponse('Transaction failed.\nStatus: ' + str(result.Status))
+#     else:
+#         return HttpResponse('Transaction failed or canceled by user')

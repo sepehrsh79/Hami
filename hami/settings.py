@@ -138,3 +138,7 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
 APPEND_SLASH=False
 SMS_BACKEND = 'sms.backends.console.SmsBackend'
+
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+

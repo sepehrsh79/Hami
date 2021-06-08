@@ -16,4 +16,4 @@ class SiteSetting(models.Model):
         verbose_name_plural = 'مدیریت تنظیمات'
 
     def __str__(self):
-        return self.title
+        return self.title or " "

@@ -1,18 +1,20 @@
 from django.http import request
 from .forms import LoginForm, RegisterForm, Verify
+from hami_supports.models import Support
+from hami_projects.models import Group, Project
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from sms import send_sms
 import random
+from datetime import datetime
 
 def verify_code_generator ():
     n = random.randint(10000,99999)
     return n
 
 verify_code = verify_code_generator()
-
 user_info = None
 
 def register_user(request):
@@ -108,6 +110,11 @@ def login_user(request):
     }
     return render(request, 'login.html', context)
 
+def logout_user(request):
+    logout(request)
+    return redirect('/account/login')
+
+
 def user_profile(request):
     if not request.user.is_authenticated :
        return redirect("/account/login")
@@ -118,17 +125,34 @@ def user_profile(request):
         }
         return render(request, 'user_panel.html',context)
 
+
 def admin_profile(request):
+    #check admin verification  
     if not request.user.is_staff:
+       return redirect("/account/login")
+    else:
+        today_date = datetime.now().date()
+        all_supports = Support.objects.all()
+        today_supports = Support.objects.filter(date__iexact=today_date)
+        completed_project = Project.objects.filter(status="disable")
+
+        groups = Group.objects.all()
+
+        context = {
+            'today_supports':today_supports.count(),
+            'completed_project':completed_project.count(),
+            'all_supports':all_supports.count(),
+            'groups':groups
+        }
+        return render(request, 'panel/admin_panel.html',context)
+
+
+def create_group (request):
+    if not request.user.is_authenticated :
        return redirect("/account/login")
     else:
 
         context = {
             
         }
-        return render(request, 'panel/admin_panel.html',context)
-
-
-def logout_user(request):
-    logout(request)
-    return redirect('/account/login')
+        return render(request, 'panel/create_group.html',context)
