@@ -1,3 +1,4 @@
+from hami_account.models import UserCustomize ,SubBranches
 from django.http import request
 from .forms import LoginForm, RegisterForm, Verify, EditGroups
 from hami_supports.models import Support
@@ -10,11 +11,17 @@ from sms import send_sms
 import random
 from datetime import datetime
 
+
 def verify_code_generator ():
     n = random.randint(10000,99999)
     return n
 
+def identifier_code_generator ():
+    code = random.randint(10000,99999)
+    return code
+
 verify_code = verify_code_generator()
+generated_icode = identifier_code_generator()
 user_info = None
 
 def register_user(request):
@@ -43,6 +50,7 @@ def register_user(request):
             return info
 
         user = User.objects.filter(username=phone)
+
         if user.exists():
             messages.info(request, 'متاسفانه قبلا کاربری با این شماره تماس ثبت شده است!')
         else:
@@ -66,12 +74,14 @@ def verify_user(request):
     user_password = user_informations['password']
     user_fname = user_informations['first_name']
     user_lname = user_informations['last_name']
-    
+    identifier_code = user_informations['identifier_code']
+
     verify_form = Verify(request.POST or None)
     if verify_form.is_valid():
         verification_code = verify_form.cleaned_data.get('verification_code')
         verification_code = int(verification_code)
 
+        #first check verification of code then create a user with identifier_code
         if verification_code == verify_code:
             user = User.objects.create_user(
                 username=user_phone, 
@@ -79,10 +89,18 @@ def verify_user(request):
                 password=user_password, 
                 first_name=user_fname, 
                 last_name=user_lname
-            )
+            )   
+            UserCustomize.objects.create(user=user,identifier_code=generated_icode)
 
-            login(request, user)
-            return redirect('/')
+            #second check if user identifier_code is exists then create a sub brach for him (related to head bracn)
+            head_branch_user = User.objects.filter(usercustomize__identifier_code=identifier_code).first()
+            if head_branch_user:
+                SubBranches.objects.create(head_branch=head_branch_user, sub_branch_user=user)
+                login(request, user)
+                return redirect('/')
+            else:
+                login(request, user)
+                return redirect('/')
 
         else:
             messages.success(request, 'کد پیامکی وارد شده صحیح نمی باشد!')

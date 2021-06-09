@@ -13,7 +13,6 @@ class ProjectAdmin (admin.ModelAdmin):
             )
     list_display = ('name', 'Groups', 'budget', 'status')
 
-
 @admin.register(Comment)
 class CommentAdmin (admin.ModelAdmin):
     list_display = ('name', 'date')

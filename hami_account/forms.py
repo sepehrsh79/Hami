@@ -58,8 +58,8 @@ class RegisterForm(forms.Form):
     def clean_phone(self):
         phone = self.cleaned_data.get('phone')
         phone_str = str(phone)
-        if len(phone_str) != 11:
-            raise forms.ValidationError('تعداد ارقام شماره موبایل باید ۱۱ رقم باشد')
+        if len(phone_str) != 10:
+            raise forms.ValidationError('تعداد ارقام شماره موبایل باید 10 رقم باشد')
         return phone
 
     def clean_re_password(self):
