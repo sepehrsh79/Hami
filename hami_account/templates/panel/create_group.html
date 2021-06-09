@@ -13,7 +13,7 @@
         </a>
       </li>
       <li class="navman">
-        <a class="nav-link"  href="/account/admin">
+        <a class="nav-link"  href="/account/admin/users-report">
           <i class="mdi mdi-account menu-icon"></i>
           <span class="menu-title">گزارش کاربران</span>
         </a>
@@ -59,7 +59,7 @@
                                 {% endfor %}  
                               </div>
                               <div class="form-group">
-                                <label for="{{ edit_groups.image.id_for_label }}">{{ edit_groups.image.label }}</label>
+                                <label style="padding-left:10px" for="{{ edit_groups.image.id_for_label }}">{{ edit_groups.image.label }}</label>
                                 {{ edit_groups.image }}
                                 {% for error in edit_groups.image.errors %}
                                 <p style="color: red;">{{ error }}</p>
@@ -88,7 +88,7 @@
                           <div class="card-body">
                             <p class="card-title">لیست دسته ها</p> 
                             <div class="table-responsive">
-                              <table id="recent-purchases-listing" class="table">
+                              <table id="recent-purchases-listing" class="table table-hover text-center">
                                 <thead>
                                   <tr>
                                     <th>ردیف</th>

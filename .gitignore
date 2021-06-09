@@ -1,3 +1,6 @@
-__pycache__/
+__pycache__
 statics/
 venv/
+*.sqlite3
+.vscode/
+*pyc

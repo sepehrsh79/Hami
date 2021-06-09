@@ -98,5 +98,7 @@ class EditGroups(forms.Form):
 
     image = forms.ImageField(
         label='تصویر',
+        widget=forms.FileInput(attrs={'class':'form-control btn'})
     )
+    
 

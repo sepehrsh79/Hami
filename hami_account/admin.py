@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
-from hami_account.models import UserCustomize, SubBranches
+from hami_account.models import UserCustomize, SubBranches, Branch
 
 
 class EmployeeInline(admin.StackedInline):
@@ -12,12 +12,17 @@ class EmployeeInline(admin.StackedInline):
 # add a new User admin to old user admin
 class UserAdmin(BaseUserAdmin):
     inlines = (EmployeeInline,)
-    list_display = ['username', 'first_name', 'last_name', 'is_staff', 'last_login']
+    list_display = ['username', 'first_name', 'last_name', 'is_staff']
 
 # Re-register UserAdmin and unregister old user admin
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 
+@admin.register(Branch)
+class SubBranchesAdmin (admin.ModelAdmin):
+    list_display = ('head_branch',)
+
 @admin.register(SubBranches)
 class SubBranchesAdmin (admin.ModelAdmin):
-    list_display = ('head_branch','sub_branch_user')
+    list_display = ('sub_branche_user', 'head_branch')
+

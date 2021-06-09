@@ -13,7 +13,7 @@
         </a>
       </li>
       <li class="navman">
-        <a class="nav-link"  href="/account/admin">
+        <a class="nav-link"  href="/account/admin/users-report">
           <i class="mdi mdi-account menu-icon"></i>
           <span class="menu-title">گزارش کاربران</span>
         </a>
@@ -70,7 +70,7 @@
                           <div class="card-body">
                             <p class="card-title">لیست پروژه ها </p> 
                             <div class="table-responsive">
-                              <table id="recent-purchases-listing" class="table">
+                              <table id="recent-purchases-listing" class="table table-hover text-center">
                                 <thead>
                                   <tr>
                                     <th>ردیف</th>
@@ -93,7 +93,7 @@
                                     <td>{{project.budget}}</td>
                                     <td>{{project.Currentـbudget}}</td>
                                     {% if project.status == "enable" %}
-                                      <td>فال</td>
+                                      <td>فعال</td>
                                     {% else %}
                                       <td>غیر فعال</td>
                                     {% endif %}

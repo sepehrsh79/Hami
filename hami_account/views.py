@@ -1,4 +1,4 @@
-from hami_account.models import UserCustomize ,SubBranches
+from hami_account.models import UserCustomize ,SubBranches, Branch
 from django.http import request
 from .forms import LoginForm, RegisterForm, Verify, EditGroups
 from hami_supports.models import Support
@@ -54,12 +54,6 @@ def register_user(request):
         if user.exists():
             messages.info(request, 'متاسفانه قبلا کاربری با این شماره تماس ثبت شده است!')
         else:
-            send_sms(
-                f'کد احراز هویت شما:{verify_code}',
-                '+989056967179',
-                ['+989398477890'],
-                fail_silently=False
-            )
             return redirect('/account/verify')
 
     context['register_form'] = register_form
@@ -68,7 +62,7 @@ def register_user(request):
 
 def verify_user(request):
     if request.user.is_authenticated:
-        return redirect('/')
+        return redirect('/')   
     user_informations = user_info()
     user_phone = user_informations['phone']
     user_password = user_informations['password']
@@ -76,6 +70,13 @@ def verify_user(request):
     user_lname = user_informations['last_name']
     identifier_code = user_informations['identifier_code']
 
+    send_sms(
+            f'کد احراز هویت شما:{verify_code}',
+            '+989056967179',
+            ['+989398477890'],
+            fail_silently=False
+            )
+            
     verify_form = Verify(request.POST or None)
     if verify_form.is_valid():
         verification_code = verify_form.cleaned_data.get('verification_code')
@@ -91,11 +92,12 @@ def verify_user(request):
                 last_name=user_lname
             )   
             UserCustomize.objects.create(user=user,identifier_code=generated_icode)
+            Branch.objects.create(head_branch=user, identifier_code=generated_icode)
 
             #second check if user identifier_code is exists then create a sub brach for him (related to head bracn)
-            head_branch_user = User.objects.filter(usercustomize__identifier_code=identifier_code).first()
-            if head_branch_user:
-                SubBranches.objects.create(head_branch=head_branch_user, sub_branch_user=user)
+            head_branch = Branch.objects.filter(identifier_code=identifier_code).first()
+            if head_branch:
+                SubBranches.objects.create(head_branch=head_branch, sub_branche_user=user)
                 login(request, user)
                 return redirect('/')
             else:
@@ -165,7 +167,8 @@ def admin_profile(request):
 
 
 def create_group (request):
-    if not request.user.is_authenticated :
+    #check admin verification  
+    if not request.user.is_staff:
        return redirect("/account/login")
     else:
         groups = Group.objects.all()
@@ -190,3 +193,15 @@ def create_group (request):
         return render(request, 'panel/create_group.html',context)
         
 
+def users_report(request):
+    #check admin verification  
+    if not request.user.is_staff:
+       return redirect("/account/login")
+    else: 
+        branchs = Branch.objects.all()
+        
+
+    context = {
+       'branchs' : branchs
+    }
+    return render(request, 'panel/users_report.html',context)
