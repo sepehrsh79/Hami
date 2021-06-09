@@ -2,9 +2,9 @@
 
 Hami (Crowdfunding Service)
 
-Hami is a Website that project owners can create their project there and show it to supporters.
+Hami is a Website that projects owner can create their projects and show them to supporters.
 and 
-supporters can donate to creative ideas and they help owners to run their projects.
+supporters can donate to creative ideas and help owners to run their projects.
 
 #Installation
 
