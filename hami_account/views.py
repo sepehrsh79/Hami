@@ -13,14 +13,13 @@ from datetime import datetime
 
 
 def verify_code_generator ():
-    n = random.randint(10000,99999)
+    n = random.randint(10000, 99999)
     return n
 
 def identifier_code_generator ():
-    code = random.randint(10000,99999)
+    code = random.randint(10000, 99999)
     return code
 
-verify_code = verify_code_generator()
 generated_icode = identifier_code_generator()
 user_info = None
 
@@ -62,7 +61,10 @@ def register_user(request):
 
 def verify_user(request):
     if request.user.is_authenticated:
-        return redirect('/')   
+        return redirect('/')
+
+    verify_code = verify_code_generator()
+
     user_informations = user_info()
     user_phone = user_informations['phone']
     user_password = user_informations['password']

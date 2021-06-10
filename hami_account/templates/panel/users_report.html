@@ -28,18 +28,7 @@
   </nav>
   <!-- partial -->
   <div class="main-panel">
-    <div class="content-wrapper">
-
-      <div class="row">
-        <div class="col-md-12 grid-margin stretch-card">
-          <div class="card">
-            <div class="card-body dashboard-tabs p-0">
-              <div class="tab-content py-0 px-0">
-                <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
-                  <div class="d-flex flex-wrap justify-content-xl-between">
-                    <div class="d-none d-xl-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                  </div>
-                  <div class="col-md-12 stretch-card">
+        <div class="col-md-12 stretch-card">
                     <div class="card">
                       <br>
                       <div class="col-md-12 stretch-card">
@@ -47,14 +36,14 @@
                           <div class="card-body">
                             <p class="card-title">لیست کاربران</p>
                             <div class="table-responsive">
-                              <table id="recent-purchases-listing" class="table  text-center">
+                              <table id="recent-purchases-listing" class="table table-hover text-center">
                                 <thead>
                                   <tr>
                                     <th>ردیف</th>
                                     <th>نام و نام خانوادگی</th>
-                                    <th>تعداد پروژه ها</th>
+                                    <th>تعداد سطح زیر شاخه ها</th>
                                     <th>مبلغ حمایت زیر شاخه ها</th>
-                                    <th>تعداد زیر شاخه ها</th>
+                                    <th>تعداد نفرات زیر شاخه ها</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -62,7 +51,7 @@
                                   <tr>
                                     <td>{{ forloop.counter }}</td>
                                     <td>{{branch.head_branch}}</td>
-                                    <td>{{branch.project_count}}</td>
+                                    <td>{{branch.get_subbranch_level}}</td>
                                     <td>{{ branch.get_subbranch_total_support }}</td>
                                     <td>{{branch.get_sub_branches}}</td>
                                   </tr>
@@ -75,19 +64,6 @@
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- content-wrapper ends -->
-
-  </div>
-  <!-- main-panel ends -->
-
 </div>
-<!-- page-body-wrapper ends -->
 </div>
 {% endblock %}
