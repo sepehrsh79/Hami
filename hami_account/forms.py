@@ -59,16 +59,20 @@ class RegisterForm(forms.Form):
         phone = self.cleaned_data.get('phone')
         phone_str = str(phone)
         if len(phone_str) != 10:
-            raise forms.ValidationError('تعداد ارقام شماره موبایل باید 10 رقم باشد')
+            raise forms.ValidationError('تعداد ارقام شماره موبایل باید 10 رقم باشد!')
         return phone
+
+    def clean_password(self):
+        password = self.cleaned_data.get('password')
+        if password.isdigit() or len(password) < 6 :
+            raise forms.ValidationError('کلمه عبور باید بیشتر از 5 کارکتر و شامل حروف و اعداد باشد!')
+        return password
 
     def clean_re_password(self):
         password = self.cleaned_data.get('password')
         re_password = self.cleaned_data.get('re_password')
-
         if password != re_password:
-            raise forms.ValidationError('کلمه های عبور مغایرت دارند')
-
+            raise forms.ValidationError('کلمه های عبور مغایرت دارند!')
         return password
 
 

@@ -12,12 +12,10 @@
                             {% csrf_token %}
 
                             <label for="{{ verify_form.verification_code.id_for_label }}">{{ verify_form.verification_code.label }}</label>
-                            {{ verify_form.verification_code }}
+                            {{ verify_form.verification_code}}
                             {% for error in verify_form.verification_code.errors %}
-                                <p style="color: red;">{{ error }}</p>
+                            <p style="color: red;">{{ error }}</p>
                             {% endfor %}
-
-                            <br>
                             {% if messages %}
                             <ul class="messages">
                                 {% for message in messages %}
@@ -25,7 +23,10 @@
                                 {% endfor %}
                             </ul>
                             {% endif %}
-                            <button type="submit" class="btn btn-default">ثبت نام</button>
+                            <button style="margin-bottom:5px" type="submit" class="btn btn-default">ثبت نام</button>
+                            <br>
+                            <a class="btn" style="margin-right:-10px " href="/account/verify">ارسال مجدد </a>
+
                         </form>
                     </div><!--/sign up form-->
                   

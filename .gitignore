@@ -1,6 +1,7 @@
 __pycache__
 statics/
 venv/
-*.sqlite3
+db.sqlite3
 .vscode/
 *pyc
+.idea/

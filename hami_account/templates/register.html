@@ -25,25 +25,25 @@
 
                             <label for="{{ register_form.password.id_for_label }}">{{ register_form.password.label }}</label>
                             {{ register_form.password }}
-                            {% for error in register_form.password.message %}
+                            {% for error in register_form.password.errors %}
                             <p style="color: red;">{{ error }}</p>
                             {% endfor %}
                             
                             <label for="{{ register_form.re_password.id_for_label }}">{{ register_form.re_password.label }}</label>
                             {{ register_form.re_password }}
-                            {% for error in register_form.re_password.message %}
+                            {% for error in register_form.re_password.errors %}
                             <p style="color: red;">{{ error }}</p>
                             {% endfor %}
                             
                             <label for="{{ register_form.phone.id_for_label }}">{{ register_form.phone.label }}</label>
                             {{ register_form.phone }}
-                            {% for error in register_form.phone.message %}
+                            {% for error in register_form.phone.errors %}
                                 <p style="color: red;">{{ error }}</p>
                             {% endfor %}
                             
                             <label for="{{ register_form.identifier_code.id_for_label }}">{{ register_form.identifier_code.label }}</label>
                             {{ register_form.identifier_code }}
-                            {% for error in register_form.identifier_code.message %}
+                            {% for error in register_form.identifier_code.errors %}
                                 <p style="color: red;">{{ error }}</p>
                             {% endfor %}
                             <br>

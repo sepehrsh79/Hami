@@ -49,6 +49,7 @@ def register_user(request):
             return info
 
         user = User.objects.filter(username=phone)
+        register_form = RegisterForm()
 
         if user.exists():
             messages.info(request, 'متاسفانه قبلا کاربری با این شماره تماس ثبت شده است!')
