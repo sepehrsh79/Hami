@@ -194,14 +194,39 @@ def create_group (request):
         
 
 def users_report(request):
-    #check admin verification  
+    #check admin verification
     if not request.user.is_staff:
        return redirect("/account/login")
-    else: 
+    else:
+        totall = 0
         branchs = Branch.objects.all()
-        
+        branch = branchs[0]
+        #send it to anothet view and for all subbranch in all without first do this function call
 
+        #do it in Branch mdoel from line 205
     context = {
-       'branchs' : branchs
+       'branchs' : branchs,
+        'totall':totall
     }
-    return render(request, 'panel/users_report.html',context)
+    return render(request, 'panel/users_report.html', context)
+
+#
+# def users_report(request):
+#     #check admin verification
+#     if not request.user.is_staff:
+#        return redirect("/account/login")
+#     else:
+#         totall = 0
+#         branchs = Branch.objects.all()
+#         branch = branchs[0]
+#         #send it to anothet view and for all subbranch in all without first do this function call
+#         subs = branch.subbranches_set.all()
+#         for sub in subs:
+#            totall = totall + sub.get_subbranch_sups
+#         #do it in Branch mdoel from line 205
+#     context = {
+#        'branchs' : branchs,
+#         'totall':totall
+#     }
+#     return render(request, 'panel/users_report.html',context)
+#

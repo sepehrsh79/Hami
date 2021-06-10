@@ -45,7 +45,7 @@
                       <div class="col-md-12 stretch-card">
                         <div class="card">
                           <div class="card-body">
-                            <p class="card-title">لیست کاربران</p> 
+                            <p class="card-title">لیست کاربران</p>
                             <div class="table-responsive">
                               <table id="recent-purchases-listing" class="table  text-center">
                                 <thead>
@@ -53,7 +53,7 @@
                                     <th>ردیف</th>
                                     <th>نام و نام خانوادگی</th>
                                     <th>تعداد پروژه ها</th>
-                                    <th>تعداد حمایت ها</th>
+                                    <th>مبلغ حمایت زیر شاخه ها</th>
                                     <th>تعداد زیر شاخه ها</th>
                                 </tr>
                                 </thead>
@@ -63,7 +63,7 @@
                                     <td>{{ forloop.counter }}</td>
                                     <td>{{branch.head_branch}}</td>
                                     <td>{{branch.project_count}}</td>
-                                    <td>{{gorup.project_count}}</td>
+                                    <td>{{ branch.get_subbranch_total_support }}</td>
                                     <td>{{branch.get_sub_branches}}</td>
                                   </tr>
                                 {% endfor %}

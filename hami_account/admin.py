@@ -12,14 +12,14 @@ class EmployeeInline(admin.StackedInline):
 # add a new User admin to old user admin
 class UserAdmin(BaseUserAdmin):
     inlines = (EmployeeInline,)
-    list_display = ['username', 'first_name', 'last_name', 'is_staff']
+    list_display = ['username', 'first_name', 'last_name', 'is_staff', 'last_login']
 
 # Re-register UserAdmin and unregister old user admin
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 
 @admin.register(Branch)
-class SubBranchesAdmin (admin.ModelAdmin):
+class BranchAdmin (admin.ModelAdmin):
     list_display = ('head_branch',)
 
 @admin.register(SubBranches)

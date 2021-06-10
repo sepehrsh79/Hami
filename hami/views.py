@@ -6,9 +6,6 @@ from hami_projects.models import Group, Project
 from hami_supports.models import Support
 from django.db.models import Sum
 
-
-
-
 def header(request, *args, **kwargs):
     site_setting = SiteSetting.objects.first()
     context = {
@@ -37,8 +34,6 @@ def home_page(request):
     all_projects = Project.objects.all()
 
     all_supports_amount = Support.objects.all().aggregate(Sum("price"))
-    print(all_supports_amount)
-
 
     context = {
         'slides' : slides,
