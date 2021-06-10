@@ -50,7 +50,7 @@ class Project (models.Model):
     name_show = models.CharField(max_length=25,verbose_name='عنوان قابل نمایش')
     creator = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='صاحب پروژه')
     Groups = models.ForeignKey(Group, on_delete=models.CASCADE, verbose_name='دسته بندی')
-    discribtion = models.TextField(max_length=250, verbose_name='شرح مدیریتی',  blank=True, default=0)
+    discribtion = models.TextField(max_length=250, verbose_name='شرح مدیریتی', blank=True, default=0)
     discribtion_show = models.TextField(max_length=250, verbose_name='شرح قابل نمایش')
     order = models.IntegerField(verbose_name='وزن', blank=True, null=True)
     budget = models.PositiveIntegerField(verbose_name='مبلغ مورد نیاز')

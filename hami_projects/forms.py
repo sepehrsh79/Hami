@@ -51,7 +51,7 @@ class CreateProject(forms.Form):
     )
 
     needed_time = forms.CharField(
-        widget=forms.TextInput(attrs={'placeholder': 'لطفا زمان موردنیاز پروژه خود را وارد نمایید', 'class': 'form-control'}),
+        widget=forms.TextInput(attrs={'type':'date', 'placeholder': 'لطفا زمان موردنیاز پروژه خود را وارد نمایید', 'class': 'form-control'}),
         label='زمان مورد نیاز'
     )
 
