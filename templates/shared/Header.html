@@ -17,7 +17,7 @@
                     <div class="col-md-2 shop-menu pull-left">
                         <ul class="nav navbar-nav">
                             {% if request.user.is_authenticated and not request.user.is_staff %}
-                                <li class="hidden"><a href="/account/user"><i class="fa fa-user "></i> پنل کاربـری</a></li>
+                                <li><a href="/account/user"><i class="fa fa-user "></i> پنل کاربـری</a></li>
                             {% elif request.user.is_authenticated and request.user.is_staff %}
                                 <li><a href="/account/admin"><i class="fa fa-user"></i> پنل مدیریت</a></li>
                             {% endif %}

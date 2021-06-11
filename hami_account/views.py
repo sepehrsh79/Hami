@@ -112,7 +112,6 @@ def verify_user(request):
         else:
             messages.success(request, 'کد پیامکی وارد شده صحیح نمی باشد!')
 
-
     context = {'verify_form' : verify_form}
     return render(request, 'verify.html', context)
 
@@ -145,11 +144,20 @@ def user_profile(request):
     if not request.user.is_authenticated :
        return redirect("/account/login")
     else:
+        username = request.user.username
+        user = User.objects.filter(username=username).first()
+        user_branch = Branch.objects.filter(head_branch=user).first()
 
+        user_supports = Support.objects.filter(supporter=user)
+        user_projects = Project.objects.filter(creator=user)
         context = {
-            
+            'user_branch':user_branch,
+            'user_projects':user_projects,
+            'user_supports':user_supports,
+            'user_supports_count':user_supports.count(),
+            'user_projects_count':user_projects.count()
         }
-        return render(request, 'user_panel.html',context)
+        return render(request, 'panel/user_panel.html', context)
 
 
 def admin_profile(request):
@@ -169,7 +177,7 @@ def admin_profile(request):
             'all_supports':all_supports.count(),
             'projects' : projects
         }
-        return render(request, 'panel/admin_panel.html',context)
+        return render(request, 'panel/admin_panel.html', context)
 
 
 def create_group (request):
@@ -196,7 +204,7 @@ def create_group (request):
         }
 
 
-        return render(request, 'panel/create_group.html',context)
+        return render(request, 'panel/create_group.html', context)
         
 
 def users_report(request):
@@ -204,35 +212,9 @@ def users_report(request):
     if not request.user.is_staff:
        return redirect("/account/login")
     else:
-        totall = 0
         branchs = Branch.objects.all()
-        branch = branchs[0]
-        #send it to anothet view and for all subbranch in all without first do this function call
 
-        #do it in Branch mdoel from line 205
     context = {
        'branchs' : branchs,
-        'totall':totall
     }
     return render(request, 'panel/users_report.html', context)
-
-#
-# def users_report(request):
-#     #check admin verification
-#     if not request.user.is_staff:
-#        return redirect("/account/login")
-#     else:
-#         totall = 0
-#         branchs = Branch.objects.all()
-#         branch = branchs[0]
-#         #send it to anothet view and for all subbranch in all without first do this function call
-#         subs = branch.subbranches_set.all()
-#         for sub in subs:
-#            totall = totall + sub.get_subbranch_sups
-#         #do it in Branch mdoel from line 205
-#     context = {
-#        'branchs' : branchs,
-#         'totall':totall
-#     }
-#     return render(request, 'panel/users_report.html',context)
-#

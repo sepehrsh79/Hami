@@ -9,5 +9,4 @@ class Slider(models.Model):
         verbose_name_plural = 'اسلایدرها'
 
     def __str__(self):
-        return self.title or " " 
-    
+        return self.title or " "

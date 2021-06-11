@@ -13,21 +13,9 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="pages/charts/chartjs.html">
-          <i class="mdi mdi-chart-pie menu-icon"></i>
-          <span class="menu-title">گزارش پروژه ها</span>
-        </a>
-        <li class="nav-item">
-            <a class="nav-link"  href="#auth">
-              <i class="mdi mdi-account menu-icon"></i>
-              <span class="menu-title">گزارش کاربران</span>
-            </a>
-          </li>
-      </li>
-      <li class="nav-item">
         <a class="nav-link" href="pages/tables/basic-table.html">
           <i class="mdi mdi-grid-large menu-icon"></i>
-          <span class="menu-title">دسته ها</span>
+          <span class="menu-title">ویرایش مشخصات </span>
         </a>
       </li>
     </ul>
@@ -35,7 +23,6 @@
   <!-- partial -->
   <div class="main-panel">
     <div class="content-wrapper">
-
       <div class="row">
         <div class="col-md-12 grid-margin stretch-card">
           <div class="card">
@@ -51,54 +38,101 @@
                     <div class="d-none d-xl-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
                         <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
                             <div class="d-flex flex-column justify-content-around">
-                              <small class="mb-1 text-muted">حمایت های امروز</small>
-                              <h5 class="mt-1 text-center">10</h5>
+                              <small class="mb-1 text-muted">حمایت ها</small>
+                              <h5 class="mt-1 text-center">{{ user_supports_count }}</h5>
                             </div>
                         </div>
                         <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
                             <div class="d-flex flex-column justify-content-around">
-                              <small class="mb-1 text-muted">پروژه های تکمیل شده</small>
-                              <h5 class="mt-1 text-center">5</h5>
+                              <small class="mb-1 text-muted">پروژه ها</small>
+                              <h5 class="mt-1 text-center">{{ user_projects_count }}</h5>
+                            </div>
+                        </div>
+                        <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
+                            <div class="d-flex flex-column justify-content-around">
+                              <small class="mb-1 text-muted">زیر شاخه ها</small>
+                              <h5 class="mt-1 text-center">{{ user_branch.get_sub_branches }}</h5>
+                            </div>
+                        </div>
+                       <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
+                            <div class="d-flex flex-column justify-content-around">
+                              <small class="mb-1 text-muted">حمایت زیر شاخه ها</small>
+                              <h5 class="mt-1 text-center">{{ user_branch.get_subbranch_total_support }} تومان</h5>
                             </div>
                         </div>
                   </div>
                   <div class="col-md-12 stretch-card">
                     <div class="card">
-                      <div class="card-body">
-                        <p class="card-title"> نمودار حمایت های پرداختی</p>
-                        <div id="cash-deposits-chart-legend" class="d-flex justify-content-start pt-3"></div>
-                        <canvas id="cash-deposits-chart"></canvas>
-                      </div>
                       <br>
                       <div class="col-md-12 stretch-card">
                         <div class="card">
                           <div class="card-body">
-                            <p class="card-title">لیست دسته ها <span style="float: left;" ><a class="btn btn-warning" href="#">افزودن دسته</a></span></p> 
+                            <p class="card-title">حمایت های من</p>
                             <div class="table-responsive">
-                              <table id="recent-purchases-listing" class="table">
+                              <table id="recent-purchases-listing" class="table table-hover text-center">
                                 <thead>
                                   <tr>
-                                      <th>ردیف</th>
-                                      <th>عنوان</th>
-                                      <th>پروژه ها</th>
-                                      <th>تکمیل شده</th>
-                                      <th>توضیحات</th>
-                                  </tr>
+                                    <th>ردیف</th>
+                                    <th>مبلغ حمایت</th>
+                                    <th>پروژه</th>
+                                    <th>تاریخ</th>
+                                </tr>
                                 </thead>
                                 <tbody>
+                                  {% for sup in user_supports  %}
                                   <tr>
-                                      <td>Jeremy Ortega</td>
-                                      <td>Levelled up</td>
-                                      <td>Catalinaborough</td>
-                                      <td>$790</td>
-                                      <td>06 Jan 2018</td>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{sup.price}} تومان</td>
+                                    <td>{{sup.project}}</td>
+                                    <td>{{ sup.date }}</td>
                                   </tr>
+                                {% endfor %}
                                 </tbody>
                               </table>
                             </div>
                           </div>
                         </div>
                       </div>
+                        <div class="col-md-12 stretch-card">
+                        <div class="card">
+                          <div class="card-body">
+                            <p class="card-title">پروژه های من</p>
+                            <div class="table-responsive">
+                              <table id="recent-purchases-listing" class="table table-hover text-center">
+                                <thead>
+                                  <tr>
+                                    <th>ردیف</th>
+                                    <th>عنوان پروژه</th>
+                                    <th>دسته بندی</th>
+                                    <th>مبلغ اولیه</th>
+                                    <th>مبلغ حمایت شده</th>
+                                    <th> زمان مورد نیاز </th>
+                                    <th>وضعیت</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                  {% for pro in user_projects  %}
+                                  <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{pro.name_show}}</td>
+                                    <td>{{pro.Groups}}</td>
+                                    <td>{{ pro.budget }} تومان </td>
+                                    <td>{{ pro.Currentـbudget }} تومان </td>
+                                    <td>{{ pro.needed_time }}</td>
+                                      {% if pro.status == 'disable' %}
+                                    <td>غیر فعال</td>
+                                      {% else %}
+                                    <td> فعال</td>
+                                      {% endif %}
+                                  </tr>
+                                {% endfor %}
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
                     </div>
                   </div>
                 </div>
