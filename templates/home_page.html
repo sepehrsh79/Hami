@@ -15,10 +15,10 @@
                         </ol>
                         <div class="carousel-inner">
                             {% for slide in slides %}
-                                <div class="item {{ forloop.first|yesno:"active," }}">
+                                    <div class="item {{ forloop.first|yesno:"active," }}">
                                         <img src="{{ slide.image.url }}" class="girl img-responsive"
                                              alt="{{ slide.title }}" width="1200" />
-                                </div>
+                                    </div>
                             {% endfor %}
                         </div>
                         <a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
