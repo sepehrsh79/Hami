@@ -78,7 +78,11 @@ class Project (models.Model):
         return self.creator.get_full_name()
 
     def percent(self):
-        return (int((self.Currentـbudget * 100)/self.budget))
+        convet_to_percent = (int((self.Currentـbudget * 100)/self.budget))
+        if convet_to_percent > 100:
+            return 100
+        else:
+            return convet_to_percent
     
     def get_absolute_url(self):
         return f"/projects/{self.id}"

@@ -11,16 +11,20 @@ from sms import send_sms
 import random
 from datetime import datetime
 
-
-def verify_code_generator ():
-    n = random.randint(10000, 99999)
-    return n
-
-def identifier_code_generator ():
+def code_generator ():
     code = random.randint(10000, 99999)
     return code
 
-generated_icode = identifier_code_generator()
+def sending_sms(code):
+    send_sms(
+        f'کد احراز هویت شما:{code}',
+        '+989056967179',
+        ['+989398477890'],
+    )
+    return code
+
+verify_code = None
+generated_icode = code_generator()
 user_info = None
 
 def register_user(request):
@@ -39,21 +43,24 @@ def register_user(request):
         last_name = register_form.cleaned_data.get('last_name')
         identifier_code = register_form.cleaned_data.get('identifier_code')
 
-        global user_info
-        def user_info():
-            info = {'phone':phone, 
-            'password':password, 
-            'first_name':first_name, 
-            'last_name':last_name, 
-            'identifier_code':identifier_code }
-            return info
-
         user = User.objects.filter(username=phone)
         register_form = RegisterForm()
 
         if user.exists():
             messages.info(request, 'متاسفانه قبلا کاربری با این شماره تماس ثبت شده است!')
         else:
+            code = code_generator()
+            global verify_code
+            verify_code = sending_sms(code)
+            global user_info
+            def user_info():
+                info = {'phone': phone,
+                        'password': password,
+                        'first_name': first_name,
+                        'last_name': last_name,
+                        'identifier_code': identifier_code,
+                        }
+                return info
             return redirect('/account/verify')
 
     context['register_form'] = register_form
@@ -64,22 +71,18 @@ def verify_user(request):
     if request.user.is_authenticated:
         return redirect('/')
 
-    verify_code = verify_code_generator()
-
     user_informations = user_info()
     user_phone = user_informations['phone']
     user_password = user_informations['password']
     user_fname = user_informations['first_name']
     user_lname = user_informations['last_name']
     identifier_code = user_informations['identifier_code']
+    global verify_code
 
-    send_sms(
-            f'کد احراز هویت شما:{verify_code}',
-            '+989056967179',
-            ['+989398477890'],
-            fail_silently=False
-            )
-            
+    if request.method == 'GET':
+        code = code_generator()
+        verify_code = sending_sms(code)
+
     verify_form = Verify(request.POST or None)
     if verify_form.is_valid():
         verification_code = verify_form.cleaned_data.get('verification_code')
@@ -88,13 +91,13 @@ def verify_user(request):
         #first check verification of code then create a user with identifier_code
         if verification_code == verify_code:
             user = User.objects.create_user(
-                username=user_phone, 
+                username=user_phone,
                 email='',
-                password=user_password, 
-                first_name=user_fname, 
+                password=user_password,
+                first_name=user_fname,
                 last_name=user_lname
-            )   
-            UserCustomize.objects.create(user=user,identifier_code=generated_icode)
+            )
+            UserCustomize.objects.create(user=user, identifier_code=generated_icode)
             Branch.objects.create(head_branch=user, identifier_code=generated_icode)
 
             #second check if user identifier_code is exists then create a sub brach for him (related to head bracn)
@@ -106,9 +109,9 @@ def verify_user(request):
             else:
                 login(request, user)
                 return redirect('/')
-
         else:
             messages.success(request, 'کد پیامکی وارد شده صحیح نمی باشد!')
+
 
     context = {'verify_form' : verify_form}
     return render(request, 'verify.html', context)

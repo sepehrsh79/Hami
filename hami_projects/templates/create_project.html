@@ -2,14 +2,13 @@
 {% load static %}
 {% block content %}
     <div class="container">
-        <section id="form"><!--form-->
+        <section id="form">
             <div class="row">
                 <div class="col-md-9">
-                    <div class="project-form"><!--sign up form-->
+                    <div class="project-form">
                         <h2 style="margin-right: 200px;" class="title">ایجاد پروژه جدیـد</h2>
                         <form method="post" action="" enctype="multipart/form-data">
                             {% csrf_token %}
-                            
                             <label for="{{ create_project_form.name_show.id_for_label }}">{{ create_project_form.name_show.label }}</label>
                             {{ create_project_form.name_show }}
                             {% for error in create_project_form.name_show.errors %}
@@ -58,14 +57,13 @@
                                 <p style="color: red;">{{ error }}</p>
                             {% endfor %}
                             <hr>
-                            
                             <button type="submit" class="btn btn-default" style="width: 70%;" >ایجاد پروژه</button>
                         </form>
-                    </div><!--/sign up form-->
+                    </div>
                 </div>
             </div>
         </section>
     </div>
-    <!--/form-->
+
     
     {% endblock %}

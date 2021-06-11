@@ -32,7 +32,6 @@ def home_page(request):
     group = Group.objects.all()
     active_projects = Project.objects.filter(status='enable')
     all_projects = Project.objects.all()
-
     all_supports_amount = Support.objects.all().aggregate(Sum("price"))
 
     context = {
@@ -41,7 +40,7 @@ def home_page(request):
         'projects' : active_projects,
         'project_count' : all_projects.count(),
         'enb_project_count' : active_projects.count(),
-        "price__sum":all_supports_amount['price__sum']
+        "price__sum":int(all_supports_amount['price__sum'])
     }
 
     return render(request, 'home_page.html', context)

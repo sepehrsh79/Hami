@@ -1,5 +1,5 @@
 from hami_projects.models import Project
-from .forms import SupportForm
+from django.contrib import messages
 from .models import Support
 from .forms import SupportForm
 from datetime import datetime
@@ -29,6 +29,7 @@ def support(request):
         total = price + selected_project.Currentـbudget 
         selected_project.Currentـbudget = total
         selected_project.save()
+        messages.success(request, 'حمایت شما با موفقیت انجام شد. :)')
         # global support_info
         # def support_info():
         #     info = {
@@ -46,13 +47,13 @@ def support(request):
     return render (request, 'support.html', context) 
 
 
-MERCHANT = 'XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX'
-# client = Client('https://www.zarinpal.com/pg/services/WebGate/wsdl')
-amount = 0  # Toman / Required
-description = "توضیحات مربوط به تراکنش را در این قسمت وارد کنید"  # Required
-email = 'email@example.com'  # Optional
-mobile = '09123456789'  # Optional
-CallbackURL = 'http://localhost:8000/verify' # Important: need to edit for realy server.
+# MERCHANT = 'XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX'
+#  client = Client('https://www.zarinpal.com/pg/services/WebGate/wsdl')
+# amount = 0  # Toman / Required
+# description = "توضیحات مربوط به تراکنش را در این قسمت وارد کنید"  # Required
+# email = 'email@example.com'  # Optional
+# mobile = '09123456789'  # Optional
+# CallbackURL = 'http://localhost:8000/verify' # Important: need to edit for realy server.
 
 # def send_request(request):
 #     #get support support from support page from POST request // change action of support form to "/request"

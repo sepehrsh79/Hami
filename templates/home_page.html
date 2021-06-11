@@ -9,23 +9,18 @@
                 <div class="col-sm-12">
                     <div id="slider-carousel" class="carousel slide" data-ride="carousel">
                         <ol class="carousel-indicators">
-                            <li data-target="#slider-carousel" data-slide-to="0" class="active"></li>
-                            <li data-target="#slider-carousel" data-slide-to="1"></li>
+                            {% for slide in slides %}
+                            <li data-target="#slider-carousel" data-slide-to="{{ forloop.counter }}" class="{{ forloop.first|yesno:"active," }}"></li>
+                            {% endfor %}
                         </ol>
-
                         <div class="carousel-inner">
-
                             {% for slide in slides %}
                                 <div class="item {{ forloop.first|yesno:"active," }}">
-                                    <div class="col-sm-12">
                                         <img src="{{ slide.image.url }}" class="girl img-responsive"
-                                             alt="{{ slide.title }}" width="1110px" height="450px"/>
-                                    </div>
+                                             alt="{{ slide.title }}" width="1200" />
                                 </div>
                             {% endfor %}
-
                         </div>
-
                         <a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
                             <i class="fa fa-angle-left"></i>
                         </a>
@@ -94,18 +89,12 @@
                             <i class="fa fa-angle-right"></i>
                         </a>
                     </div>
-                </div><!--/NewProduct_items-->
+                </div>
 
             <h2 class="title text-center">پروژه های درحال اجرا</h2>
             <div class="col-sm-12">
                     <div id="slider-carousel2" class="carousel slide" data-ride="carousel">
-                        <ol class="carousel-indicators">
-                            <li data-target="#slider-carousel2" data-slide-to="0" class="active"></li>
-                            <li data-target="#slider-carousel2" data-slide-to="1"></li>
-                        </ol>
-
                         <div class="carousel-inner">
-
                             {% for project in projects %}
                                 <div class="item {{ forloop.first|yesno:"active," }}">
                                     <div class="col-sm-6">
@@ -134,7 +123,6 @@
                             {% endfor %}
                         </div>
                         <br>
-
                         <a href="#slider-carousel2" class="left control-carousel hidden-xs" data-slide="prev">
                             <i class="fa fa-angle-left"></i>
                         </a>
