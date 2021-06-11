@@ -1,12 +1,13 @@
 from hami_account.models import UserCustomize ,SubBranches, Branch
-from django.http import request
-from .forms import LoginForm, RegisterForm, Verify, EditGroups
+from django.http import request, Http404
+from .forms import LoginForm, RegisterForm, Verify, EditGroups, EditAccount
 from hami_supports.models import Support
 from hami_projects.models import Group, Project
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from sms import send_sms
 import random
 from datetime import datetime
@@ -15,11 +16,11 @@ def code_generator ():
     code = random.randint(10000, 99999)
     return code
 
-def sending_sms(code):
+def sending_sms(code, phone):
     send_sms(
         f'کد احراز هویت شما:{code}',
         '+989056967179',
-        ['+989398477890'],
+        [f'+98{phone}'],
     )
     return code
 
@@ -51,7 +52,7 @@ def register_user(request):
         else:
             code = code_generator()
             global verify_code
-            verify_code = sending_sms(code)
+            verify_code = sending_sms(code, phone)
             global user_info
             def user_info():
                 info = {'phone': phone,
@@ -81,7 +82,7 @@ def verify_user(request):
 
     if request.method == 'GET':
         code = code_generator()
-        verify_code = sending_sms(code)
+        verify_code = sending_sms(code, user_phone)
 
     verify_form = Verify(request.POST or None)
     if verify_form.is_valid():
@@ -134,6 +135,31 @@ def login_user(request):
         'login_form': login_form
     }
     return render(request, 'login.html', context)
+
+@login_required(login_url='/account/login')
+def edit_account(request):
+    username = request.user.username
+    user = User.objects.get(username=username)
+
+    if user is None:
+        raise Http404('کاربر مورد نظر یافت نشد')
+    edit_form = EditAccount(request.POST or None,
+            initial={'first_name': user.first_name, 'last_name': user.last_name,
+                     'phone': user.username})
+    if edit_form.is_valid():
+        first_name = edit_form.cleaned_data.get('first_name')
+        last_name = edit_form.cleaned_data.get('last_name')
+        phone = edit_form.cleaned_data.get('phone')
+
+        user.first_name = first_name
+        user.last_name = last_name
+        user.username = int(phone)
+        user.save()
+
+
+    context = {'edit_form':edit_form}
+
+    return render(request, 'edit_account.html', context)
 
 def logout_user(request):
     logout(request)

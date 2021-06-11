@@ -105,4 +105,19 @@ class EditGroups(forms.Form):
         widget=forms.FileInput(attrs={'class':'form-control btn'})
     )
     
+class EditAccount(forms.Form):
+
+    first_name = forms.CharField(
+        widget=forms.TextInput(attrs={'placeholder': 'لطفا نام خود را وارد نمایید', 'class':'form-control'}),
+        label='نام'
+    )
+    last_name = forms.CharField(
+        widget=forms.TextInput(attrs={'placeholder': 'لطفا نام خانوادگی خود را وارد نمایید', 'class':'form-control'}),
+        label='نام خانوادگی'
+    )
+
+    phone = forms.IntegerField(
+        widget=forms.TextInput(attrs={'placeholder': 'لطفا  شماره تماس جدید را وارد نمایید', 'class': 'form-control'}),
+        label='شماره تماس جدید',
+    )
 
