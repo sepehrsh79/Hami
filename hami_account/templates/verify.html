@@ -28,7 +28,10 @@
                         </form>
                     <form method="get" action="">
                         {% csrf_token %}
-                        <input type="submit" style="width: 80px" class="btn" name="verify" value="ارسال مجدد"/>
+                        <div>
+                            <h5> رمز را دریافت نکرده اید؟ لطفا <span id="time"> </span> منتظر بمانید !</h5>
+                        </div>
+                        <input id="again" type="submit" style="width: 80px" class="btn hidden" name="verify" value="ارسال مجدد"/>
 
                     </form>
                     </div><!--/sign up form-->
