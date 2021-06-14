@@ -1,3 +1,5 @@
+import json
+
 from django.shortcuts import render
 import itertools
 from hami_setting.models import SiteSetting
@@ -40,6 +42,22 @@ def home_page(request):
         'project_count' : all_projects.count(),
         'enb_project_count' : active_projects.count(),
     }
+    if 'login_user' in request.session:
+        context['login_user'] = request.session['login_user']['status']
+        del request.session['login_user']
+
+    if 'logout_user' in request.session:
+        context['logout_user'] = request.session['logout_user']['status']
+        del request.session['logout_user']
+
+    if 'create_project' in request.session:
+        context['create_project'] = request.session['create_project']['status']
+        del request.session['create_project']
+
+    if 'register_user' in request.session:
+        context['register_user'] = request.session['register_user']['status']
+        del request.session['register_user']
+
     all_supports_amount = Support.objects.all()
     if all_supports_amount:
         support_amount = all_supports_amount.aggregate(Sum("price"))

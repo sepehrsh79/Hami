@@ -8,6 +8,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+import json
 from sms import send_sms
 import random
 from datetime import datetime
@@ -106,9 +108,13 @@ def verify_user(request):
             if head_branch:
                 SubBranches.objects.create(head_branch=head_branch, sub_branche_user=user)
                 login(request, user)
+                data = {'status': 'ok'}
+                request.session['register_user'] = data
                 return redirect('/')
             else:
                 login(request, user)
+                data = {'status': 'ok'}
+                request.session['register_user'] = data
                 return redirect('/')
         else:
             messages.success(request, 'کد پیامکی وارد شده صحیح نمی باشد!')
@@ -119,7 +125,7 @@ def verify_user(request):
 def login_user(request):
     if request.user.is_authenticated:
         return redirect('/')
-
+    context ={}
     login_form = LoginForm(request.POST or None)
     if login_form.is_valid():
         phone = login_form.cleaned_data.get('phone')
@@ -127,13 +133,13 @@ def login_user(request):
         user = authenticate(request, username=phone, password=password)
         if user is not None:
             login(request, user)
+            data = {'status':'ok'}
+            request.session['login_user'] = data
             return redirect('/')
         else:
             login_form.add_error('phone', 'کاربری با مشخصات وارد شده یافت نشد')
 
-    context = {
-        'login_form': login_form
-    }
+    context['login_form'] = login_form
     return render(request, 'login.html', context)
 
 @login_required(login_url='/account/login')
@@ -163,7 +169,9 @@ def edit_account(request):
 
 def logout_user(request):
     logout(request)
-    return redirect('/account/login')
+    data = {'status': 'ok'}
+    request.session['logout_user'] = data
+    return redirect('/')
 
 
 def user_profile(request):

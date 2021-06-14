@@ -18,6 +18,7 @@ function startTimer(duration, display) {
     }, 1000);
 }
 
+
 window.onload = function () {
     var OneMinutes = 60,
         display = document.querySelector('#time');
@@ -27,3 +28,5 @@ window.onload = function () {
 document.getElementById('#again').onclick = function (){
       startTimer(OneMinutes, display);
 }
+
+

@@ -32,9 +32,8 @@
             </div>
         </div>
     </section><!--/slider-->
-
     <hr>
-    <div class="row counters">   
+    <div class="row counters">
         <div class="col-lg-4 col-6 text-center">
             <span data-toggle="counter-up">{{enb_project_count}}</span>
             <p>پروژه های در حال اجرا</p>
@@ -134,4 +133,20 @@
             </div>
         </div>
     </section>
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+{% if login_user == 'ok' %}
+swal('خوش آمدید :)', ' ورود شما با موفقیت انجام شد.')
+{% endif %}
+{% if logout_user == 'ok' %}
+swal('خدانگهدار :(', ' خروج شما با موفقیت انجام شد.')
+{% endif %}
+{% if create_project == 'ok' %}
+swal('پروژه شما ایجاد گردید.')
+{% endif %}
+{% if register_user == 'ok' %}
+swal('ثبت نام با موفقیت انجام شد.')
+{% endif %}
+</script>
 {% endblock %}

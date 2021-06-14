@@ -108,6 +108,9 @@ def create_project(request):
                     status="disable")
 
                 project.save()
+                data = {'status': 'ok'}
+                request.session['create_project'] = data
+                return redirect('/')
         create_project_form = CreateProject()
         context = {
         'create_project_form': create_project_form

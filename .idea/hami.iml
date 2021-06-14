@@ -18,6 +18,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="jquery-3.2.1.slim" level="application" />
     <orderEntry type="library" name="popper.js" level="application" />
+    <orderEntry type="library" name="sweetalert" level="application" />
   </component>
   <component name="PyDocumentationSettings">
     <option name="format" value="PLAIN" />
