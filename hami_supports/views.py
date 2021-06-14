@@ -13,7 +13,7 @@ def support(request):
     if request.user.is_authenticated:
         user = request.user
     else:
-        user = "ناشناس"
+        user = None
 
     #get project id from project detail page with GET method
     project_id = request.GET.get('project_id')
@@ -46,6 +46,39 @@ def support(request):
     }
     return render (request, 'support.html', context) 
 
+
+def general_support(request):
+    if request.user.is_authenticated:
+        user = request.user
+    else:
+        user = None
+
+    support_form = SupportForm(request.POST or None)
+    if support_form.is_valid():
+        price = support_form.cleaned_data.get('price')
+        dateN = datetime.now()
+
+        #the support should create after success payment and the support addes to project ((not HERE)) // send info with support_info func
+        Support.objects.create(title="حمایت جدید(بدون پروژه)", price=price, project=None, supporter=user, date=dateN)
+        messages.success(request, 'حمایت شما با موفقیت انجام شد. :)')
+
+        order_project = Project.objects.order_by('order')
+        print(order_project)
+        # global support_info
+        # def support_info():
+        #     info = {
+        #     'selected_project':selected_project,
+        #     'price':price,
+        #     'dateN':dateN,
+        #     'user':user,
+        #     }
+        #     return info
+
+
+    context = {
+        'support_form':support_form
+    }
+    return render (request, 'support.html', context)
 
 # MERCHANT = 'XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX'
 #  client = Client('https://www.zarinpal.com/pg/services/WebGate/wsdl')

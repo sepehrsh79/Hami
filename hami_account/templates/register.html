@@ -40,7 +40,7 @@
                             {% for error in register_form.phone.errors %}
                                 <p style="color: red;">{{ error }}</p>
                             {% endfor %}
-                            
+
                             <label for="{{ register_form.identifier_code.id_for_label }}">{{ register_form.identifier_code.label }}</label>
                             {{ register_form.identifier_code }}
                             {% for error in register_form.identifier_code.errors %}

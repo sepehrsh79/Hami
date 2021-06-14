@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.core import validators
 from django.db import models
 
 city = [
@@ -48,11 +49,12 @@ class Group (models.Model):
 class Project (models.Model):
     name = models.CharField(max_length=25,verbose_name='عنوان مدیریتی', blank=True, null=True)
     name_show = models.CharField(max_length=25,verbose_name='عنوان قابل نمایش')
-    creator = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='صاحب پروژه')
+    creator = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='صاحب پروژه', blank=True, null=True)
     Groups = models.ForeignKey(Group, on_delete=models.CASCADE, verbose_name='دسته بندی')
     discribtion = models.TextField(max_length=250, verbose_name='شرح مدیریتی', blank=True, default=0)
     discribtion_show = models.TextField(max_length=250, verbose_name='شرح قابل نمایش')
-    order = models.IntegerField(verbose_name='وزن', blank=True, null=True)
+    order = models.IntegerField(verbose_name='وزن', blank=True, null=True, validators=[validators.MinValueValidator(0),
+                                                                     validators.MaxValueValidator(100)])
     budget = models.PositiveIntegerField(verbose_name='مبلغ مورد نیاز')
     Currentـbudget = models.PositiveIntegerField(verbose_name='مبلغ جمع شده', blank=True, null=True, default=0)
     needed_time =  models.DateField(verbose_name='مدت زمان مورد نیاز ')
