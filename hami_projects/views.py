@@ -13,7 +13,7 @@ class ProjectsList(ListView):
     paginate_by = 6
 
     def get_queryset(self):
-        return Project.objects.all()
+        return Project.objects.all().order_by('-id')
 
 
 class FilterProjectsView(ListView):

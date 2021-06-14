@@ -3,6 +3,7 @@ from django.contrib import messages
 from .models import Support
 from .forms import SupportForm
 from datetime import datetime
+from django.db.models import F
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from zeep import Client
@@ -60,10 +61,13 @@ def general_support(request):
 
         #the support should create after success payment and the support addes to project ((not HERE)) // send info with support_info func
         Support.objects.create(title="حمایت جدید(بدون پروژه)", price=price, project=None, supporter=user, date=dateN)
+        ready_to_support = Project.objects.filter(Currentـbudget__lt=F('budget'), status='enable').order_by('-order')
+        selected_project = ready_to_support.first()
+        total = price + selected_project.Currentـbudget
+        selected_project.Currentـbudget = total
+        selected_project.save()
         messages.success(request, 'حمایت شما با موفقیت انجام شد. :)')
 
-        order_project = Project.objects.order_by('order')
-        print(order_project)
         # global support_info
         # def support_info():
         #     info = {
