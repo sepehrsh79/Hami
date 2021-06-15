@@ -68,11 +68,17 @@ def general_support(request):
                 ready_to_support.save()
                 bank.price = bank.price - needed_price
                 bank.save()
+                dateN = datetime.now()
+                Support.objects.create(title="حمایت جدید", price=ready_to_support.Currentـbudget, project=ready_to_support,
+                                       supporter=user, date=dateN)
             else:
                 ready_to_support.Currentـbudget = ready_to_support.Currentـbudget + bank.price
                 ready_to_support.save()
                 bank.price = 0
                 bank.save()
+                dateN = datetime.now()
+                Support.objects.create(title="حمایت جدید", price=ready_to_support.Currentـbudget,
+                                       project=ready_to_support, supporter=user, date=dateN)
 
     support_form = SupportForm(request.POST or None)
     if support_form.is_valid():
@@ -80,7 +86,6 @@ def general_support(request):
         dateN = datetime.now()
 
         #the support should create after success payment and the support addes to project ((not HERE)) // send info with support_info func
-        Support.objects.create(title="حمایت جدید(بدون پروژه)", price=price, project=None, supporter=user, date=dateN)
         ready_to_support = Project.objects.filter(Currentـbudget__lt=F('budget'), status='enable').order_by('-order')
         if not ready_to_support:
             bank = ExtraSupport.objects.all().first()
@@ -101,6 +106,7 @@ def general_support(request):
                 if selected_project.Currentـbudget >= selected_project.budget:
                     selected_project.status = 'disable'
                     selected_project.save()
+                Support.objects.create(title="حمایت جدید", price=price, project=selected_project, supporter=user, date=dateN)
                 messages.success(request, 'حمایت شما با موفقیت انجام شد. :)')
             else:
                 total = price + selected_project.Currentـbudget
@@ -109,6 +115,7 @@ def general_support(request):
                 if selected_project.Currentـbudget >= selected_project.budget:
                     selected_project.status = 'disable'
                     selected_project.save()
+                Support.objects.create(title="حمایت جدید", price=price, project=selected_project, supporter=user, date=dateN)
                 messages.success(request, 'حمایت شما با موفقیت انجام شد. :)')
 
 
