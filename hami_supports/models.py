@@ -16,3 +16,14 @@ class Support (models.Model):
 
     def __str__(self):
         return self.title
+
+class ExtraSupport(models.Model):
+    price = models.FloatField(verbose_name='مبلغ جمع آوری شده')
+
+    class Meta:
+        verbose_name = 'بانک'
+        verbose_name_plural = 'بانک حامی'
+
+    def __str__(self):
+        return str(self.price)
+

@@ -17,13 +17,17 @@
                         <div class="col-sm-7">
                             <div class="product-information">
                                 <div>
-                                   <form action="/support/" method="get">
+                                   {% if project.status == 'disable' %}
+
+                                    {% else %}
+                                    <form action="/support/" method="get">
                                     {% csrf_token %}
                                     {{support_form.project_id}}
                                     <button style="margin: 20px 30px ;" type="submit" class="btn cart">
                                         حمایت از پروژه
                                     </button>
                                    </form>
+                                    {% endif %}
                                     <h2>{{ project.name_show }}</h2>
                                     <p>دسته بندی  : {{ project.Groups }}</p>
                                     <p>سرپرست پروژه : {{ project.supportsـfullname }}</p>

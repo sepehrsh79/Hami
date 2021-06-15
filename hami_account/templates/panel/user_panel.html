@@ -83,7 +83,11 @@
                                   <tr>
                                     <td>{{ forloop.counter }}</td>
                                     <td>{{sup.price}} تومان</td>
+                                      {% if sup.project == None %}
+                                    <td>بدون پروژه</td>
+                                      {% else %}
                                     <td>{{sup.project}}</td>
+                                      {% endif %}
                                     <td>{{ sup.date }}</td>
                                   </tr>
                                 {% endfor %}
