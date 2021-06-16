@@ -13,6 +13,11 @@ status = [
     ('disable', 'غیر فعال'),
     
 ]
+project_status = [
+    ('enable', 'در حال اجرا'),
+    ('disable', 'پایان یافته'),
+    ('notshow','غیر فعال')
+]
 
 class ProjectManager(models.Manager):
 
@@ -61,7 +66,7 @@ class Project (models.Model):
     site = models.CharField(max_length=35, verbose_name='سایت')
     email = models.CharField(max_length=35, verbose_name='ایمیل')
     logo = models.ImageField(upload_to=None, blank=True, null=True, verbose_name='عکس کاور')
-    status = models.CharField(max_length=35, choices=status, verbose_name='وضعیت', default='disable')
+    status = models.CharField(max_length=35, choices=project_status, verbose_name='وضعیت', default='disable')
     
     objects = ProjectManager()
 

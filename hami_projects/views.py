@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.shortcuts import redirect, render
 from .models import Project, Comment, Group
 from django.contrib.auth.models import User
@@ -13,7 +14,8 @@ class ProjectsList(ListView):
     paginate_by = 6
 
     def get_queryset(self):
-        return Project.objects.all().order_by('-id')
+        lookup = (Q(status='enable') | Q(status='disable'))
+        return Project.objects.filter(lookup).order_by('-id').distinct()
 
 
 class FilterProjectsView(ListView):
@@ -24,7 +26,8 @@ class FilterProjectsView(ListView):
         request = self.request
         answer = request.GET['sort']
         if answer  == 'all':
-            return Project.objects.all()
+            lookup = (Q(status='enable') | Q(status='disable'))
+            return Project.objects.filter(lookup).order_by('-id').distinct()
         else:
             return Project.objects.filter(status=answer)
             
@@ -105,7 +108,7 @@ def create_project(request):
                     site=site , 
                     email=email , 
                     logo=logo, 
-                    status="disable")
+                    status="notshow")
 
                 project.save()
                 data = {'status': 'ok'}
