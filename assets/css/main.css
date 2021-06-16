@@ -964,7 +964,11 @@ h2.title {
 	font-weight: 700;
 }
 
-
+#select_pro{
+    margin-right:50px;
+    max-height: 100px;
+    overflow-y: scroll;
+}
 
 .productinfo p{
   font-family: 'BYekan', sans-serif;

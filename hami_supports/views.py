@@ -80,44 +80,56 @@ def general_support(request):
                 Support.objects.create(title="حمایت جدید", price=ready_to_support.Currentـbudget,
                                        project=ready_to_support, supporter=user, date=dateN)
 
+    projects = Project.objects.filter(status='enable')
     support_form = SupportForm(request.POST or None)
     if support_form.is_valid():
         price = support_form.cleaned_data.get('price')
         dateN = datetime.now()
-
-        #the support should create after success payment and the support addes to project ((not HERE)) // send info with support_info func
-        ready_to_support = Project.objects.filter(Currentـbudget__lt=F('budget'), status='enable').order_by('-order')
-        if not ready_to_support:
-            bank = ExtraSupport.objects.all().first()
-            total = price + bank.price
-            bank.price = total
-            bank.save()
-            messages.success(request, 'حمایت شما با موفقیت انجام شد. :)')
-        else:
-            selected_project = ready_to_support.first()
-            total = price + selected_project.Currentـbudget
-            if total > selected_project.budget:
-                resault = total - selected_project.budget
-                selected_project.Currentـbudget = selected_project.budget
-                selected_project.save()
+        project_id = request.POST['Radio']
+        print(request.POST['Radio'])
+        if project_id == 'none':
+            #the support should create after success payment and the support addes to project ((not HERE)) // send info with support_info func
+            ready_to_support = Project.objects.filter(Currentـbudget__lt=F('budget'), status='enable').order_by('-order')
+            if not ready_to_support:
                 bank = ExtraSupport.objects.all().first()
-                bank.price = bank.price + resault
+                total = price + bank.price
+                bank.price = total
                 bank.save()
-                if selected_project.Currentـbudget >= selected_project.budget:
-                    selected_project.status = 'disable'
-                    selected_project.save()
-                Support.objects.create(title="حمایت جدید", price=price, project=selected_project, supporter=user, date=dateN)
                 messages.success(request, 'حمایت شما با موفقیت انجام شد. :)')
             else:
+                selected_project = ready_to_support.first()
                 total = price + selected_project.Currentـbudget
-                selected_project.Currentـbudget = total
-                selected_project.save()
-                if selected_project.Currentـbudget >= selected_project.budget:
-                    selected_project.status = 'disable'
+                if total > selected_project.budget:
+                    resault = total - selected_project.budget
+                    selected_project.Currentـbudget = selected_project.budget
                     selected_project.save()
-                Support.objects.create(title="حمایت جدید", price=price, project=selected_project, supporter=user, date=dateN)
-                messages.success(request, 'حمایت شما با موفقیت انجام شد. :)')
-
+                    bank = ExtraSupport.objects.all().first()
+                    bank.price = bank.price + resault
+                    bank.save()
+                    if selected_project.Currentـbudget >= selected_project.budget:
+                        selected_project.status = 'disable'
+                        selected_project.save()
+                    Support.objects.create(title="حمایت جدید", price=price, project=selected_project, supporter=user, date=dateN)
+                    messages.success(request, 'حمایت شما با موفقیت انجام شد. :)')
+                else:
+                    total = price + selected_project.Currentـbudget
+                    selected_project.Currentـbudget = total
+                    selected_project.save()
+                    if selected_project.Currentـbudget >= selected_project.budget:
+                        selected_project.status = 'disable'
+                        selected_project.save()
+                    Support.objects.create(title="حمایت جدید", price=price, project=selected_project, supporter=user, date=dateN)
+                    messages.success(request, 'حمایت شما با موفقیت انجام شد. :)')
+        else:
+            selected_project = Project.objects.filter(id=project_id).first()
+            total = price + selected_project.Currentـbudget
+            selected_project.Currentـbudget = total
+            selected_project.save()
+            if selected_project.Currentـbudget > selected_project.budget:
+                selected_project.status = 'disable'
+                selected_project.save()
+            Support.objects.create(title="حمایت جدید", price=price, project=selected_project, supporter=user, date=dateN)
+            messages.success(request, 'حمایت شما با موفقیت انجام شد. :)')
 
         # global support_info
         # def support_info():
@@ -131,10 +143,11 @@ def general_support(request):
 
 
     context = {
-        'support_form':support_form
+        'support_form':support_form,
+        'projects':projects
     }
 
-    return render (request, 'support.html', context)
+    return render (request, 'general_support.html', context)
 
 # MERCHANT = 'XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX'
 #  client = Client('https://www.zarinpal.com/pg/services/WebGate/wsdl')
