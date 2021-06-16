@@ -37,7 +37,7 @@ def project_detail(request, **kwargs):
         raise Http404('پروژه مورد نظر یافت نشد')
 
     
-    comments = selected_project.comment_set.all()
+    comments = selected_project.comment_set.filter(status='enable')
     supports = selected_project.support_set.order_by('-date').all() #sort by date
 
     comment_form = CommentForm(request.POST or None)

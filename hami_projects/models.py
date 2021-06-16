@@ -96,6 +96,7 @@ class Comment (models.Model):
     message = models.CharField(max_length=250, verbose_name='متن پیام')
     project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name='پروژه مرتبط', blank=True, null=True)
     date = models.DateField(verbose_name='تاریخ')
+    status = models.CharField(max_length=35, choices=status, verbose_name='وضعیت', default='disable')
 
     class Meta:
         verbose_name = 'دیدگاه'
