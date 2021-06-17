@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.core import validators
 from django.db import models
+from django.db.models import Q
 
 city = [
     ('esf', 'اصفهان'),
@@ -30,6 +31,12 @@ class ProjectManager(models.Manager):
 
     def get_by_groups(self, group_name):
         return self.get_queryset().filter(Groups__slug__iexact=group_name)
+
+    def search(self, query):
+        lookup = (Q(name_show__icontains=query) | Q(discribtion_show__icontains=query))
+        lookup_status = (Q(status='enable') | Q(status='disable'))
+
+        return self.get_queryset().filter(lookup, lookup_status).distinct()
 
 class Group (models.Model):
     title = models.CharField(max_length=120, unique=True, verbose_name='عنوان')
@@ -90,7 +97,7 @@ class Project (models.Model):
             return 100
         else:
             return convet_to_percent
-    
+
     def get_absolute_url(self):
         return f"/projects/{self.id}"
 

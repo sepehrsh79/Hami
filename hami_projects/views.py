@@ -17,6 +17,10 @@ class ProjectsList(ListView):
         lookup = (Q(status='enable') | Q(status='disable'))
         return Project.objects.filter(lookup).order_by('-id').distinct()
 
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['groups'] = Group.objects.all()
+        return context
 
 class FilterProjectsView(ListView):
     template_name = 'projects_list.html'
@@ -24,13 +28,92 @@ class FilterProjectsView(ListView):
 
     def get_queryset(self):
         request = self.request
-        answer = request.GET['sort']
-        if answer  == 'all':
+        status = request.GET['status']
+        group = request.GET['group']
+        range = int(request.GET['range'])
+        price_range = [100000, 500000, 1000000, 5000000, 5000000]
+        chosen_projects = []
+        if status == 'all' and group == 'all':
             lookup = (Q(status='enable') | Q(status='disable'))
-            return Project.objects.filter(lookup).order_by('-id').distinct()
-        else:
-            return Project.objects.filter(status=answer)
-            
+            projects = Project.objects.filter(lookup).order_by('-id').distinct()
+            if range == 4:
+                for project in projects:
+                    need = project.budget - project.Currentـbudget
+                    if need > price_range[range]:
+                        chosen_projects.append(project)
+            else:
+                for project in projects:
+                    need = project.budget - project.Currentـbudget
+                    if need <= price_range[range]:
+                        chosen_projects.append(project)
+
+            return chosen_projects
+
+        elif status == 'all' and group != 'all':
+            lookup = (Q(status='enable') | Q(status='disable'))
+            projects = Project.objects.filter(lookup, Groups__slug=group).order_by('-id').distinct()
+            if range == 4:
+                for project in projects:
+                    need = project.budget - project.Currentـbudget
+                    if need >= price_range[range]:
+                        chosen_projects.append(project)
+            else:
+                for project in projects:
+                    need = project.budget - project.Currentـbudget
+                    if need <= price_range[range]:
+                        chosen_projects.append(project)
+
+            return chosen_projects
+
+        elif status != 'all' and group == 'all':
+            projects = Project.objects.filter(status=status).order_by('-id').distinct()
+            if range == 4:
+                for project in projects:
+                    need = project.budget - project.Currentـbudget
+                    if need >= price_range[range]:
+                        chosen_projects.append(project)
+            else:
+                for project in projects:
+                    need = project.budget - project.Currentـbudget
+                    if need <= price_range[range]:
+                        chosen_projects.append(project)
+
+            return chosen_projects
+
+        elif status != 'all' and group != 'all':
+            projects = Project.objects.filter(status=status, Groups__slug=group)
+            if range == 4:
+                for project in projects:
+                    need = project.budget - project.Currentـbudget
+                    if need >= price_range[range]:
+                        chosen_projects.append(project)
+            else:
+                for project in projects:
+                    need = project.budget - project.Currentـbudget
+                    if need <= price_range[range]:
+                        chosen_projects.append(project)
+
+            return chosen_projects
+
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['groups'] = Group.objects.all()
+        return context
+
+
+class SearchProjectsView(ListView):
+    template_name = 'projects_list.html'
+    paginate_by = 6
+
+    def get_queryset(self):
+        request = self.request
+        query = request.GET.get('q')
+        if query is not None:
+            return Project.objects.search(query)
+        raise Http404('صفحه ی مورد نظر یافت نشد')
+
+
 def project_detail(request, **kwargs):
     selected_project_id = kwargs['projectID']
     support_form = SupportForm(request.POST or None, initial={'project_id':selected_project_id})
@@ -121,6 +204,3 @@ def create_project(request):
         return render(request, 'create_project.html', context)
     else:
         return redirect("/account/login")
-
-
-    

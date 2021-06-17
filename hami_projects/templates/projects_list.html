@@ -5,23 +5,48 @@
 {% block content %}
     <section>
         <div class="container">
-            <div class="row">
+            <div class="flex-row">
                 <h2 id="projects-list" class="title text-center">پروژه ها</h2>
-                <form id="filter-form" action="filter" method="get" class="form-inline"> 
+                <div class="flex-row">
+                    <div class="col-sm-12">
+                    <form id="filter-form" action="filter" method="get" class="form-inline">
                     {% csrf_token %}
-                    <label for="sort" class="control-label">فیلتر:</label>
-                    <div class="form-group">
-                        <div class="col-sm-12 text-right">
-                            <select name="sort" id="sort" class="form-control">
+                    <div class="col-sm-2 text-right">
+                        <div class="form-group">
+                            <label for="status" class="control-label">وضعیت:</label>
+                            <select name="status" id="status" class="form-control">
                                 <option value="all" selected="&quot;selected&quot;">همه</option>
                                 <option value="enable" >در حال اجرا</option>
                                 <option value="disable"> انجام شده</option>
                             </select>
                         </div>
                     </div>
-                
-                    <input type="submit" value="جستجو" class="btn btn-sm btn-primary"></button>
-                </form>
+                    <div class="col-sm-3 text-right">
+                        <div class="form-group">
+                            <label for="group" class="control-label">دسته بندی:</label>
+                            <select name="group" id="group" class="form-control">
+                            <option value="all" selected="&quot;selected&quot;">همه</option>
+                              {% for group in groups %}
+                                <option value="{{ group.slug }}">{{ group.title }}</option>
+                              {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-5">
+                            <div class="form-group">
+                                <label style="margin-bottom: 10px" class="form-label">مقدار حمایت مورد نیاز تا اجرایی شدن: </label>
+                                <input type="range" oninput="rangefunc(this.value)" name="range" class="form-range" min="0" max="4" step="1" value="0" id="customRange3">
+                                <p style="margin-right: 190px" id="price">کمتر از 100 هزار تومان</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-1">
+                        <div class="form-group">
+                             <input type="submit" style="width: 100px" value="جستجو" class="btn btn-primary"></button>
+                        </div>
+                    </div>
+                    </form>
+                    </div>
+                </div>
                 <div class="col-sm-12">
                     <div class="features_items"> <!--features_items-->
                         {% for project in page_obj %}
@@ -42,7 +67,6 @@
                                         <p class="pr-3"><span> از </span ><span>&nbsp {{ project.budget }} تومان </span></p>
                                         <p class=""><span> {{project.supports}}</span> حمایت </p>
                                         <a class="btn btn-primary btn-block" href="{{ project.get_absolute_url }}">مشاهده </a>
-
                                     </div>
                                     <div class="product-overlay">
                                         <div class="overlay-content">
@@ -52,14 +76,10 @@
                                     </div>
                                 </div>
                                 <div>
-
-                                    
                                 </div>
                             </div>
                         </div>
                         {% endfor %}
-
-
                         <div class="clearfix"></div>
                         <ul class="pagination">
                             {% if page_obj.has_previous %}
@@ -81,4 +101,20 @@
             </div>
         </div>
     </section>
+    <script>
+        function rangefunc(val){
+            var show = document.getElementById('price');
+            if (val == 0) {
+                show.innerHTML = "کمتر از 100 هزار تومان";
+            }else if(val == 1) {
+                show.innerHTML = "کمتر از 500 هزار تومان";
+            }else if(val == 2){
+                show.innerHTML = "کمتر از 1 میلیون تومان";
+            }else if(val == 3){
+                show.innerHTML = "کمتر از 5 میلیون تومان";
+            }else {
+                show.innerHTML = "بالای 5 میلیون تومان";
+            }
+        }
+    </script>
 {% endblock %}

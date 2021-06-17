@@ -296,6 +296,10 @@ a#scrollUp i{
 	color:#fdb45e;
 }
 
+input[type="range" i]{
+    height: 10px;
+}
+
 .search_box input {
   text-align: right;
   background: #F0F0E9;
@@ -304,10 +308,11 @@ a#scrollUp i{
   font-family: 'BYekan';
   font-size: 12px;
   font-weight: 300;
-  height: 35px;
+  height: 30px;
   outline: medium none;
   padding-right: 10px;
-  width: 155px;
+  margin-top: 10px;
+  width: 245px;
   background-image: url(../images/home/searchicon.png);
   background-repeat: no-repeat;
   background-position: 10px;

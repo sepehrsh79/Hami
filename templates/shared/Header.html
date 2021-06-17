@@ -10,6 +10,13 @@
                             <li><a href="/general-support/">حمایت</a></li>
                             <li id="create-pro"><a href="/projects/create/">ایجاد پروژه</a></li>
                         </ul>
+                        <form id="filter-form" action="/projects/search" method="get" class="form-inline">
+                            <div class="col-sm-3">
+                                <div class="search_box">
+                                    <input type="text" placeholder="جستـجو" value="{{ request.GET.q }}" name="q"/>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                     <div id="logohead" class="col-md-2 logo ">
                         <a href="/"><img src="{{ setting.logo_image.url }}" alt="Logo" height="100px" width="100px" style="margin-top:-30px ;margin-right:50px"
@@ -30,6 +37,8 @@
                                 <li><a href="/account/logout"><i class="fa fa-lock"></i> خروج </a></li>
                             {% endif %}
                         </ul>
+                        <div class="col-sm-2">
+                </div>
                     </div>
                     
                 </div>
