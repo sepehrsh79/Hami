@@ -104,7 +104,7 @@
     <script>
         function rangefunc(val){
             var show = document.getElementById('price');
-            if (val == 0) {
+            if (val == 0 ) {
                 show.innerHTML = "کمتر از 100 هزار تومان";
             }else if(val == 1) {
                 show.innerHTML = "کمتر از 500 هزار تومان";
@@ -115,6 +115,23 @@
             }else {
                 show.innerHTML = "بالای 5 میلیون تومان";
             }
-        }
+        };
+        document.addEventListener("DOMContentLoaded", function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const myParam = urlParams.get('range');
+            var show = document.getElementById('price');
+            if (myParam == 0 || myParam == undefined ) {
+                show.innerHTML = "کمتر از 100 هزار تومان";
+            }else if(myParam == 1) {
+                show.innerHTML = "کمتر از 500 هزار تومان";
+            }else if(myParam == 2){
+                show.innerHTML = "کمتر از 1 میلیون تومان";
+            }else if(myParam == 3){
+                show.innerHTML = "کمتر از 5 میلیون تومان";
+            }else {
+                show.innerHTML = "بالای 5 میلیون تومان";
+            }
+  });
+
     </script>
 {% endblock %}
