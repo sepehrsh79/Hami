@@ -1,22 +1,21 @@
-from hami_account.models import UserCustomize ,SubBranches, Branch
-from django.http import request, Http404
-from .forms import LoginForm, RegisterForm, Verify, EditGroups, EditAccount
+from django.http import Http404
+from .forms import LoginForm, RegisterForm, Verify, EditProjectCategory, EditAccount
 from hami_supports.models import Support
-from hami_projects.models import Group, Project
+from hami_projects.models import ProjectCategory, Project
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
-import json
 from sms import send_sms
 import random
 from datetime import datetime
 
-def code_generator ():
+
+def code_generator():
     code = random.randint(10000, 99999)
     return code
+
 
 def sending_sms(code, phone):
     send_sms(
@@ -26,12 +25,12 @@ def sending_sms(code, phone):
     )
     return code
 
+
 verify_code = None
-generated_icode = code_generator()
 user_info = None
 
-def register_user(request):
 
+def register_user(request):
     if request.user.is_authenticated:
         return redirect('/')
     context = {}
@@ -56,6 +55,7 @@ def register_user(request):
             global verify_code
             verify_code = sending_sms(code, phone)
             global user_info
+
             def user_info():
                 info = {'phone': phone,
                         'password': password,
@@ -64,6 +64,7 @@ def register_user(request):
                         'identifier_code': identifier_code,
                         }
                 return info
+
             return redirect('/account/verify')
 
     context['register_form'] = register_form
@@ -79,7 +80,6 @@ def verify_user(request):
     user_password = user_informations['password']
     user_fname = user_informations['first_name']
     user_lname = user_informations['last_name']
-    identifier_code = user_informations['identifier_code']
     global verify_code
 
     if request.method == 'GET':
@@ -91,7 +91,6 @@ def verify_user(request):
         verification_code = verify_form.cleaned_data.get('verification_code')
         verification_code = int(verification_code)
 
-        #first check verification of code then create a user with identifier_code
         if verification_code == verify_code:
             user = User.objects.create_user(
                 username=user_phone,
@@ -100,32 +99,22 @@ def verify_user(request):
                 first_name=user_fname,
                 last_name=user_lname
             )
-            UserCustomize.objects.create(user=user, identifier_code=generated_icode)
-            Branch.objects.create(head_branch=user, identifier_code=generated_icode)
 
-            #second check if user identifier_code is exists then create a sub brach for him (related to head bracn)
-            head_branch = Branch.objects.filter(identifier_code=identifier_code).first()
-            if head_branch:
-                SubBranches.objects.create(head_branch=head_branch, sub_branche_user=user)
-                login(request, user)
-                data = {'status': 'ok'}
-                request.session['register_user'] = data
-                return redirect('/')
-            else:
-                login(request, user)
-                data = {'status': 'ok'}
-                request.session['register_user'] = data
-                return redirect('/')
+            login(request, user)
+            data = {'status': 'ok'}
+            request.session['register_user'] = data
+            return redirect('/')
         else:
             messages.success(request, 'کد پیامکی وارد شده صحیح نمی باشد!')
 
-    context = {'verify_form' : verify_form}
+    context = {'verify_form': verify_form}
     return render(request, 'verify.html', context)
+
 
 def login_user(request):
     if request.user.is_authenticated:
         return redirect('/')
-    context ={}
+    context = {}
     login_form = LoginForm(request.POST or None)
     if login_form.is_valid():
         phone = login_form.cleaned_data.get('phone')
@@ -133,7 +122,7 @@ def login_user(request):
         user = authenticate(request, username=phone, password=password)
         if user is not None:
             login(request, user)
-            data = {'status':'ok'}
+            data = {'status': 'ok'}
             request.session['login_user'] = data
             return redirect('/')
         else:
@@ -142,16 +131,15 @@ def login_user(request):
     context['login_form'] = login_form
     return render(request, 'login.html', context)
 
+
 @login_required(login_url='/account/login')
 def edit_account(request):
     username = request.user.username
     user = User.objects.get(username=username)
-
     if user is None:
         raise Http404('کاربر مورد نظر یافت نشد')
-    edit_form = EditAccount(request.POST or None,
-            initial={'first_name': user.first_name, 'last_name': user.last_name,
-                     'phone': user.username})
+    edit_form = EditAccount(request.POST or None, initial={'first_name': user.first_name, 'last_name': user.last_name,
+                                                           'phone': user.username})
     if edit_form.is_valid():
         first_name = edit_form.cleaned_data.get('first_name')
         last_name = edit_form.cleaned_data.get('last_name')
@@ -162,10 +150,9 @@ def edit_account(request):
         user.username = int(phone)
         user.save()
 
-
-    context = {'edit_form':edit_form}
-
+    context = {'edit_form': edit_form}
     return render(request, 'edit_account.html', context)
+
 
 def logout_user(request):
     logout(request)
@@ -175,29 +162,27 @@ def logout_user(request):
 
 
 def user_profile(request):
-    if not request.user.is_authenticated :
-       return redirect("/account/login")
+    if not request.user.is_authenticated:
+        return redirect("/account/login")
     else:
         username = request.user.username
         user = User.objects.filter(username=username).first()
-        user_branch = Branch.objects.filter(head_branch=user).first()
 
         user_supports = Support.objects.filter(supporter=user)
         user_projects = Project.objects.filter(creator=user)
         context = {
-            'user_branch':user_branch,
-            'user_projects':user_projects,
-            'user_supports':user_supports,
-            'user_supports_count':user_supports.count(),
-            'user_projects_count':user_projects.count()
+            'user_projects': user_projects,
+            'user_supports': user_supports,
+            'user_supports_count': user_supports.count(),
+            'user_projects_count': user_projects.count()
         }
         return render(request, 'panel/user_panel.html', context)
 
 
 def admin_profile(request):
-    #check admin verification  
+    # check admin verification
     if not request.user.is_staff:
-       return redirect("/account/login")
+        return redirect("/account/login")
     else:
         today_date = datetime.now().date()
         all_supports = Support.objects.all()
@@ -206,49 +191,34 @@ def admin_profile(request):
         projects = Project.objects.all()
 
         context = {
-            'today_supports':today_supports.count(),
-            'completed_project':completed_project.count(),
-            'all_supports':all_supports.count(),
-            'projects' : projects
+            'today_supports': today_supports.count(),
+            'completed_project': completed_project.count(),
+            'all_supports': all_supports.count(),
+            'projects': projects
         }
         return render(request, 'panel/admin_panel.html', context)
 
 
-def create_group (request):
-    #check admin verification  
+def create_group(request):
+    # check admin verification
     if not request.user.is_staff:
-       return redirect("/account/login")
+        return redirect("/account/login")
     else:
-        groups = Group.objects.all()
-        if request. method == "POST":
-            edit_groups = EditGroups(request.POST, request.FILES)
+        project_categories = ProjectCategory.objects.all()
+        if request.method == "POST":
+            edit_groups = EditProjectCategory(request.POST, request.FILES)
             if edit_groups.is_valid():
-                print("hello")
                 title = edit_groups.cleaned_data.get('title')
                 admin_title = edit_groups.cleaned_data.get('admin_title')
-                discribtion = edit_groups.cleaned_data.get('discribtion')
+                description = edit_groups.cleaned_data.get('description')
                 image = edit_groups.cleaned_data.get('image')
 
-                Group.objects.create(title=title, slug=admin_title, discribtion= discribtion, image=image)
-        edit_groups = EditGroups()
+                ProjectCategory.objects.create(title=title, slug=admin_title, description=description, image=image)
+        edit_groups = EditProjectCategory()
 
         context = {
-            'groups': groups,
-            'edit_groups':edit_groups
+            'project_categories': project_categories,
+            'edit_groups': edit_groups
         }
 
-
         return render(request, 'panel/create_group.html', context)
-        
-
-def users_report(request):
-    #check admin verification
-    if not request.user.is_staff:
-       return redirect("/account/login")
-    else:
-        branchs = Branch.objects.all()
-
-    context = {
-       'branchs' : branchs,
-    }
-    return render(request, 'panel/users_report.html', context)

@@ -35,20 +35,20 @@
     <hr>
     <div class="row counters">
         <div class="col-lg-4 col-6 text-center">
-            <span data-toggle="counter-up">{{enb_project_count}}</span>
+            <span data-toggle="counter-up">{{ enb_project_count }}</span>
             <p>پروژه های در حال اجرا</p>
         </div>
 
         <div class="col-lg-4 col-6 text-center">
-            <span data-toggle="counter-up">{{project_count}}</span>
+            <span data-toggle="counter-up">{{ project_count }}</span>
             <p>پروژه</p>
         </div>
         <!-- change it to dynamic -->
         <div class="col-lg-4 col-6 text-center">
-            {% if price__sum == None %}
+            {% if amount__sum == None %}
             <span data-toggle="counter-up"> 0 تومان  </span>
             {% else %}
-            <span data-toggle="counter-up"> {{price__sum}} تومان  </span>
+            <span data-toggle="counter-up"> {{ amount__sum }} تومان  </span>
             {% endif %}
             <p>مجموع حمایت</p>
         </div>
@@ -98,14 +98,14 @@
                                     <div class="col-sm-6">
                                         <h2>{{ project.name_show }}</h2>
                                         <p>
-                                            {{ project.discribtion_show }}
+                                            {{ project.description_show }}
                                         </p>
                                         <br>
                                         <div  class="progress pull-left  text-center " style="width: 300px;"> 
                                             <div id="progres" class="progress-bar " role="progressbar" style="width:{{project.percent}}%;color:black;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{project.percent}}%</div>
                                         </div>
                                         
-                                        <div class="flex-row" ><span> &nbsp {{ project.Currentـbudget}}</span> <span> از </span><span> {{ project.budget }} &nbsp تومان</span>
+                                        <div class="flex-row" ><span> &nbsp {{ project.current_budget}}</span> <span> از </span><span> {{ project.budget }} &nbsp تومان</span>
                                         </div>
                                         <a href="{{ project.get_absolute_url }}" class="btn btn-default get">
                                             مشاهده</a>

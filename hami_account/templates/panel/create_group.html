@@ -106,13 +106,13 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                  {% for gorup in groups  %}
+                                  {% for category in project_categories  %}
                                   <tr>
                                     <td>{{ forloop.counter }}</td>
-                                    <td> {{gorup.title}}</td>
-                                    <td>{{gorup.project_count}}</td>
-                                    <td>{{gorup.completed_project_count}}</td>
-                                    <td>{{gorup.discribtion|truncatewords:14}}</td>
+                                    <td>{{category.title}}</td>
+                                    <td>{{category.project_count}}</td>
+                                    <td>{{category.completed_project_count}}</td>
+                                    <td>{{category.discribtion|truncatewords:14}}</td>
                                   </tr>
                                 {% endfor %}
                                 </tbody>

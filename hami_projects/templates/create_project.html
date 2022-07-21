@@ -15,9 +15,9 @@
                                 <p style="color: red;">{{ error }}</p>
                             {% endfor %}
 
-                            <label for="{{ create_project_form.groups.id_for_label }}">{{ create_project_form.groups.label }}</label>
-                            {{ create_project_form.groups }}
-                            {% for error in create_project_form.groups.errors %}
+                            <label for="{{ create_project_form.project_category.id_for_label }}">{{ create_project_form.project_category.label }}</label>
+                            {{ create_project_form.project_category }}
+                            {% for error in create_project_form.project_category.errors %}
                                 <p style="color: red;">{{ error }}</p>
                             {% endfor %}
                             
@@ -51,9 +51,9 @@
                             <p style="color: red;">{{ error }}</p>
                             {% endfor %}
 
-                            <label for="{{ create_project_form.discribtion_show.id_for_label }}">{{ create_project_form.discribtion_show.label }}</label>
-                            {{ create_project_form.discribtion_show }}
-                            {% for error in create_project_form.discribtion_show.errors %}
+                            <label for="{{ create_project_form.description_show.id_for_label }}">{{ create_project_form.description_show.label }}</label>
+                            {{ create_project_form.description_show }}
+                            {% for error in create_project_form.description_show.errors %}
                                 <p style="color: red;">{{ error }}</p>
                             {% endfor %}
                             <hr>

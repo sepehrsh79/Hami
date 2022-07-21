@@ -23,11 +23,11 @@
                     </div>
                     <div class="col-sm-3 text-right">
                         <div class="form-group">
-                            <label for="group" class="control-label">دسته بندی:</label>
-                            <select name="group" id="group" class="form-control">
-                            <option value="all" {% select_check request 'group' 'all' %}>همه</option>
-                              {% for group in groups %}
-                                <option value="{{ group.slug }}" {% select_check request 'group' group.slug  %} >{{ group.title }}</option>
+                            <label for="project_category" class="control-label">دسته بندی:</label>
+                            <select name="project_category" id="project_category" class="form-control">
+                            <option value="all" {% select_check request 'project_category' 'all' %}>همه</option>
+                              {% for category in project_categories %}
+                                <option value="{{ category.slug }}" {% select_check request 'project_category' category.slug  %} >{{ category.title }}</option>
                               {% endfor %}
                             </select>
                         </div>
@@ -56,14 +56,14 @@
                                     <div class="productinfo text-center">
                                         <img src="{{ project.logo.url }}" alt="">
                                         <p>{{ project.name_show }}</p>
-                                        <p>{{ project.Groups }}</p>
+                                        <p>{{ project.project_category }}</p>
                                     </div>
                                     <div  class="progress pull-left  text-center " style="width: 100%;"> 
                                         <div id="progres" class="progress-bar " role="progressbar" style="width:{{project.percent}}%;color:black;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{project.percent}}%</div>
                                     </div>
                                     <br><br>
                                     <div class="flex-row">
-                                        <p class="pull-right"><span> {{project.Currentـbudget}} تومان &nbsp</span></p>
+                                        <p class="pull-right"><span> {{project.current_budget}} تومان &nbsp</span></p>
                                         <p class="pr-3"><span> از </span ><span>&nbsp {{ project.budget }} تومان </span></p>
                                         <p class=""><span> {{project.supports}}</span> حمایت </p>
                                         <a class="btn btn-primary btn-block" href="{{ project.get_absolute_url }}">مشاهده </a>
@@ -71,7 +71,7 @@
                                     <div class="product-overlay">
                                         <div class="overlay-content">
                                             <h4><span>بودجه:&nbsp</span>{{ project.budget }} تومان</h4>
-                                            <p>{{ project.discribtion_show|truncatechars:150}}</p>
+                                            <p>{{ project.description_show|truncatechars:150}}</p>
                                         </div>
                                     </div>
                                 </div>

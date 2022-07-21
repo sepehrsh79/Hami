@@ -39,11 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_render_partial',
-    #apps
+    # apps
     'hami_projects.apps.HamiProjectsConfig',
     'hami_supports.apps.HamiSupportsConfig',
     'hami_setting.apps.HamiSettingConfig',
-    'hami_sliders.apps.HamiSlidersConfig',
     'hami_account.apps.HamiAccountConfig',
 ]
 
@@ -136,7 +135,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "statics", "media_root")
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
-APPEND_SLASH=False
+APPEND_SLASH = False
 SMS_BACKEND = 'sms.backends.console.SmsBackend'
 
 

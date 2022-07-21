@@ -48,18 +48,6 @@
                               <h5 class="mt-1 text-center">{{ user_projects_count }}</h5>
                             </div>
                         </div>
-                        <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                            <div class="d-flex flex-column justify-content-around">
-                              <small class="mb-1 text-muted">زیر شاخه ها</small>
-                              <h5 class="mt-1 text-center">{{ user_branch.get_sub_branches }}</h5>
-                            </div>
-                        </div>
-                       <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                            <div class="d-flex flex-column justify-content-around">
-                              <small class="mb-1 text-muted">حمایت زیر شاخه ها</small>
-                              <h5 class="mt-1 text-center">{{ user_branch.get_subbranch_total_support }} تومان</h5>
-                            </div>
-                        </div>
                   </div>
                   <div class="col-md-12 stretch-card">
                     <div class="card">
@@ -119,9 +107,9 @@
                                   <tr>
                                     <td>{{ forloop.counter }}</td>
                                     <td>{{pro.name_show}}</td>
-                                    <td>{{pro.Groups}}</td>
+                                    <td>{{pro.project_category}}</td>
                                     <td>{{ pro.budget }} تومان </td>
-                                    <td>{{ pro.Currentـbudget }} تومان </td>
+                                    <td>{{ pro.current_budget }} تومان </td>
                                     <td>{{ pro.needed_time }}</td>
                                       {% if pro.status == 'disable' %}
                                     <td>غیر فعال</td>

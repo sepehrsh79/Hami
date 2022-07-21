@@ -4,19 +4,13 @@
     <div class="container">
         <section id="form">
             <h4> پروژه مورد نظر خود را انتخاب کنید. </h4>
-            <h5>            در صورتی که میخواهید حامی به پروژه ای که اولویت بیشتری دارد حمایت شما را تخصیص دهد
-                <u>هیچکدام</u> را انتخاب کنید.</h5>
             <hr>
             <div class="row">
                 <div class="col-sm-10">
                     <div class="payment-form">
                         <form method="post" action="">
                             {% csrf_token %}
-                                <div id="select_pro" class="col-md-4">
-                                    <input class="form-check-input" value="none" type="radio" name="Radio" id="flexRadioDefault1" required>
-                                    <label class="form-check-label" for="flexRadioDefault1">
-                                        هیچکدام
-                                    </label>
+                            <div id="select_pro" class="col-md-4">
                                 {% for project in projects %}
                                 <div class="form-check">
                                     <input class="form-check-input" value="{{ project.pk }}" type="radio" name="Radio" id="flexRadioDefault1">
@@ -27,9 +21,9 @@
                                 {% endfor %}
                             </div>
                             <div class="col-md-6">
-                            <label for="{{ support_form.price.id_for_label }}">{{ support_form.price.label }}</label>
-                            {{ support_form.price }}
-                            {% for error in support_form.price.errors %}
+                            <label for="{{ support_form.amount.id_for_label }}">{{ support_form.amount.label }}</label>
+                            {{ support_form.amount }}
+                            {% for error in support_form.amount.errors %}
                                 <p style="color: red;">{{ error }}</p>
                             {% endfor %}
                             {% for message in messages %}

@@ -1,6 +1,7 @@
 __pycache__
 statics/
 venv/
+env/
 db.sqlite3
 .vscode/
 *pyc

@@ -89,16 +89,15 @@
                                   <tr>
                                     <td>{{ forloop.counter }}</td>
                                     <td> {{project.name_show}}</td>
-                                    <td> {{project.Groups}}</td>
-                                    <td>{{project.order}}</td>
+                                    <td> {{project.project_category}}</td>
                                     <td>{{project.budget}}</td>
-                                    <td>{{project.Currentـbudget}}</td>
+                                    <td>{{project.current_budget}}</td>
                                     {% if project.status == "enable" %}
                                       <td>فعال</td>
                                     {% else %}
                                       <td>غیر فعال</td>
                                     {% endif %}
-                                    <td>{{project.discribtion_show|truncatewords:14}}</td>
+                                    <td>{{project.description_show|truncatewords:14}}</td>
                                   </tr>
                                 {% endfor %}
                                 </tbody>

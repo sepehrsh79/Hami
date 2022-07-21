@@ -1,17 +1,8 @@
 from django import forms
-from django.core import validators
-from .models import Group
+from .models import ProjectCategory
 
-groups_form = []
-
-def add_group(n):
-    groups = Group.objects.all()
-    for group in groups:
-        n += ((f'{group.slug}', f'{group.title}'),)
-    return n
 
 class CommentForm(forms.Form):
-
     name = forms.CharField(
         widget=forms.TextInput(attrs={'placeholder': 'لطفا نام و نام خانوادگی خود را وارد نمایید','class': 'form-control'}),
         label='نام و نام خانوادگی',
@@ -35,12 +26,12 @@ class CreateProject(forms.Form):
         label='نام پروژه',
     )
 
-    groups = forms.ChoiceField(
-        choices = add_group(groups_form),
+    project_category = forms.ModelChoiceField(
+        queryset=ProjectCategory.objects.all(),
         label='دسته بندی',
     )
 
-    discribtion_show = forms.CharField(
+    description_show = forms.CharField(
         widget=forms.Textarea(attrs={'placeholder': 'لطفا توضیحات پروژه خود را وارد نمایید', 'class': 'form-control'}),
         label='توضیحات'
     )

@@ -21,15 +21,14 @@
 
                                     {% else %}
                                     <form action="/support/" method="get">
-                                    {% csrf_token %}
-                                    {{support_form.project_id}}
+                                    {{ support_form.project_id }}
                                     <button style="margin: 20px 30px ;" type="submit" class="btn cart">
                                         حمایت از پروژه
                                     </button>
                                    </form>
                                     {% endif %}
                                     <h2>{{ project.name_show }}</h2>
-                                    <p>دسته بندی  : {{ project.Groups }}</p>
+                                    <p>دسته بندی  : {{ project.project_category }}</p>
                                     <p>سرپرست پروژه : {{ project.supportsـfullname }}</p>
                                 </div>
                                 <hr>
@@ -39,7 +38,7 @@
                                         <div  class="progress pull-left  text-center " style="width: 300px;"> 
                                             <div id="progres" class="progress-bar " role="progressbar" style="width:{{project.percent}}%;color:black;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{project.percent}}%</div>
                                         </div>
-                                        <span>&nbsp {{ project.Currentـbudget}} </span> <span> از </span><span> {{ project.budget }} &nbsp</span>
+                                        <span>&nbsp {{ project.current_budget}} </span> <span> از </span><span> {{ project.budget }} &nbsp</span>
                                     </span>
                                     <br>
                                 </div>
@@ -72,7 +71,7 @@
                             <div class="tab-pane fade active in" id="details">
                                 <div class="col-md-12">
                                     <p>
-                                        {{ project.discribtion_show }}
+                                        {{ project.description_show }}
                                     </p>
                                 </div>
                             </div>

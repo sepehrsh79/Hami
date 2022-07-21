@@ -1,16 +1,15 @@
 from django import forms
 from django.contrib.auth.models import User
-from django.core import validators
 
 
 class LoginForm(forms.Form):
     phone = forms.IntegerField(
-        widget=forms.TextInput(attrs={'placeholder': 'لطفا شماره خود را وارد نمایید', 'class':'form-control'}),
+        widget=forms.TextInput(attrs={'placeholder': 'لطفا شماره خود را وارد نمایید', 'class': 'form-control'}),
         label='شماره موبایل'
     )
 
     password = forms.CharField(
-        widget=forms.PasswordInput(attrs={'placeholder': 'لطفا کلمه عبور خود را وارد نمایید', 'class':'form-control'}),
+        widget=forms.PasswordInput(attrs={'placeholder': 'لطفا کلمه عبور خود را وارد نمایید', 'class': 'form-control'}),
         label='کلمه ی عبور'
     )
 
@@ -24,35 +23,29 @@ class LoginForm(forms.Form):
 
 class RegisterForm(forms.Form):
 
+    phone = forms.IntegerField(
+        widget=forms.TextInput(attrs={'placeholder': 'لطفا شماره موبایل خود را وارد نمایید', 'class': 'form-control'}),
+        label='شماره موبایل (نام کاربری)',
+    )
+
     first_name = forms.CharField(
-        widget=forms.TextInput(attrs={'placeholder': 'لطفا نام خود را وارد نمایید', 'class':'form-control'}),
+        widget=forms.TextInput(attrs={'placeholder': 'لطفا نام خود را وارد نمایید', 'class': 'form-control'}),
         label='نام',
     )
 
     last_name = forms.CharField(
-        widget=forms.TextInput(attrs={'placeholder': 'لطفا نام خانوادگی خود را وارد نمایید', 'class':'form-control'}),
+        widget=forms.TextInput(attrs={'placeholder': 'لطفا نام خانوادگی خود را وارد نمایید', 'class': 'form-control'}),
         label='نام خانوادگی',
     )
 
-    identifier_code = forms.IntegerField(
-        widget=forms.TextInput(attrs={'placeholder': 'لطفا کد معرف را وارد نمایید', 'class':'form-control'}),
-        label='کد معرف (اختیاری)',
-        required=False
-    )
-
     password = forms.CharField(
-        widget=forms.PasswordInput(attrs={'placeholder': 'لطفا کلمه عبور خود را وارد نمایید', 'class':'form-control'}),
+        widget=forms.PasswordInput(attrs={'placeholder': 'لطفا کلمه عبور خود را وارد نمایید', 'class': 'form-control'}),
         label='کلمه ی عبور'
     )
 
     re_password = forms.CharField(
-        widget=forms.PasswordInput(attrs={'placeholder': 'لطفا تکرار کلمه عبور خود را وارد نمایید', 'class':'form-control'}),
+        widget=forms.PasswordInput(attrs={'placeholder': 'لطفا تکرار کلمه عبور خود را وارد نمایید', 'class': 'form-control'}),
         label='تکرار کلمه ی عبور'
-    )
-
-    phone = forms.IntegerField(
-        widget=forms.TextInput(attrs={'placeholder': 'لطفا شماره موبایل خود را وارد نمایید', 'class':'form-control'}),
-        label='شماره موبایل (نام کاربری)',
     )
 
     def clean_phone(self):
@@ -64,7 +57,7 @@ class RegisterForm(forms.Form):
 
     def clean_password(self):
         password = self.cleaned_data.get('password')
-        if password.isdigit() or len(password) < 6 :
+        if password.isdigit() or len(password) < 6:
             raise forms.ValidationError('کلمه عبور باید بیشتر از 5 کارکتر و شامل حروف و اعداد باشد!')
         return password
 
@@ -79,24 +72,24 @@ class RegisterForm(forms.Form):
 class Verify(forms.Form):
 
     verification_code = forms.IntegerField(
-        widget=forms.TextInput(attrs={'placeholder': 'لطفا کد تایید پیامکی  را وارد نمایید', 'class':'form-control'}),
+        widget=forms.TextInput(attrs={'placeholder': 'لطفا کد تایید پیامکی  را وارد نمایید', 'class': 'form-control'}),
         label='کد پیامکی',
     )
 
 
-class EditGroups(forms.Form):
+class EditProjectCategory(forms.Form):
 
     title = forms.CharField(
-        widget=forms.TextInput(attrs={'placeholder': 'لطفا عنوان دسته را وارد نمایید', 'class':'form-control'}),
+        widget=forms.TextInput(attrs={'placeholder': 'لطفا عنوان دسته را وارد نمایید', 'class': 'form-control'}),
         label='عنوان دسته'
     )
     admin_title = forms.CharField(
-        widget=forms.TextInput(attrs={'placeholder': 'لطفا عنوان مدیریتی دسته را وارد نمایید', 'class':'form-control'}),
+        widget=forms.TextInput(attrs={'placeholder': 'لطفا عنوان مدیریتی دسته را وارد نمایید', 'class': 'form-control'}),
         label='عنوان مدیریتی دسته'
     )
 
-    discribtion = forms.CharField(
-        widget=forms.Textarea(attrs={'placeholder': 'لطفاتوضیحات را وارد نمایید', 'class':'form-control'}),
+    description = forms.CharField(
+        widget=forms.Textarea(attrs={'placeholder': 'لطفاتوضیحات را وارد نمایید', 'class': 'form-control'}),
         label='توضیحات دسته'
     )
 
@@ -105,14 +98,15 @@ class EditGroups(forms.Form):
         widget=forms.FileInput(attrs={'class':'form-control btn'})
     )
     
+    
 class EditAccount(forms.Form):
 
     first_name = forms.CharField(
-        widget=forms.TextInput(attrs={'placeholder': 'لطفا نام خود را وارد نمایید', 'class':'form-control'}),
+        widget=forms.TextInput(attrs={'placeholder': 'لطفا نام خود را وارد نمایید', 'class': 'form-control'}),
         label='نام'
     )
     last_name = forms.CharField(
-        widget=forms.TextInput(attrs={'placeholder': 'لطفا نام خانوادگی خود را وارد نمایید', 'class':'form-control'}),
+        widget=forms.TextInput(attrs={'placeholder': 'لطفا نام خانوادگی خود را وارد نمایید', 'class': 'form-control'}),
         label='نام خانوادگی'
     )
 

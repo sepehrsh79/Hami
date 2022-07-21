@@ -1,28 +1,27 @@
 {% extends 'shared/_MainLayout.html' %}
 {% block content %}
-
-    <div class="container">
-        <section id="form">
-            <div class="row">
-                <div class="col-sm-5">
-                    <div class="payment-form">
-                        <form method="post" action="">
-                            {% csrf_token %}
-                            <label for="{{ support_form.price.id_for_label }}">{{ support_form.price.label }}</label>
-                            {{ support_form.price }}
-                            {% for error in support_form.price.errors %}
-                                <p style="color: red;">{{ error }}</p>
-                            {% endfor %}
-                            {% for message in messages %}
-                                <p style="color: green;">{{ message }}</p>
-                            {% endfor %}
-                            {{support_form.project_id}}
-                            <br>
-                            <button type="submit" class="btn btn-default">انتقال به درگاه پرداخت</button>
-                        </form>
-                    </div>
+<div class="container">
+    <section id="form">
+        <div class="row">
+            <div class="col-sm-5">
+                <div class="payment-form">
+                    <form method="post" action="">
+                        {% csrf_token %}
+                        <label for="{{ support_form.amount.id_for_label }}">{{ support_form.amount.label }}</label>
+                        {{ support_form.amount }}
+                        {% for error in support_form.amount.errors %}
+                            <p style="color: red;">{{ error }}</p>
+                        {% endfor %}
+                        {% for message in messages %}
+                            <p style="color: green;">{{ message }}</p>
+                        {% endfor %}
+                        {{support_form.project_id}}
+                        <br>
+                        <button type="submit" class="btn btn-default">انتقال به درگاه پرداخت</button>
+                    </form>
                 </div>
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
+</div>
 {% endblock %}
