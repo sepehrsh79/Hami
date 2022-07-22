@@ -23,8 +23,8 @@
   <!-- partial -->
   <div class="main-panel">
     <div class="content-wrapper">
-      <div class="row">
-        <div class="col-md-12 grid-margin stretch-card">
+        <div class="row">
+           <div class="col-md-12 stretch-card">
           <div class="card">
             <div class="card-body dashboard-tabs p-0">
               <ul class="nav nav-tabs px-4" role="tablist">
@@ -49,94 +49,89 @@
                             </div>
                         </div>
                   </div>
-                  <div class="col-md-12 stretch-card">
-                    <div class="card">
-                      <br>
-                      <div class="col-md-12 stretch-card">
-                        <div class="card">
-                          <div class="card-body">
-                            <p class="card-title">حمایت های من</p>
-                            <div class="table-responsive">
-                              <table id="recent-purchases-listing" class="table table-hover text-center">
-                                <thead>
-                                  <tr>
-                                    <th>ردیف</th>
-                                    <th>مبلغ حمایت</th>
-                                    <th>پروژه</th>
-                                    <th>تاریخ</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                  {% for sup in user_supports  %}
-                                  <tr>
-                                    <td>{{ forloop.counter }}</td>
-                                    <td>{{sup.price}} تومان</td>
-                                      {% if sup.project == None %}
-                                    <td>بدون پروژه</td>
-                                      {% else %}
-                                    <td>{{sup.project}}</td>
-                                      {% endif %}
-                                    <td>{{ sup.date }}</td>
-                                  </tr>
-                                {% endfor %}
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                        <div class="col-md-12 stretch-card">
-                        <div class="card">
-                          <div class="card-body">
-                            <p class="card-title">پروژه های من</p>
-                            <div class="table-responsive">
-                              <table id="recent-purchases-listing" class="table table-hover text-center">
-                                <thead>
-                                  <tr>
-                                    <th>ردیف</th>
-                                    <th>عنوان پروژه</th>
-                                    <th>دسته بندی</th>
-                                    <th>مبلغ اولیه</th>
-                                    <th>مبلغ حمایت شده</th>
-                                    <th> زمان مورد نیاز </th>
-                                    <th>وضعیت</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                  {% for pro in user_projects  %}
-                                  <tr>
-                                    <td>{{ forloop.counter }}</td>
-                                    <td>{{pro.name_show}}</td>
-                                    <td>{{pro.project_category}}</td>
-                                    <td>{{ pro.budget }} تومان </td>
-                                    <td>{{ pro.current_budget }} تومان </td>
-                                    <td>{{ pro.needed_time }}</td>
-                                      {% if pro.status == 'disable' %}
-                                    <td>غیر فعال</td>
-                                      {% else %}
-                                    <td> فعال</td>
-                                      {% endif %}
-                                  </tr>
-                                {% endfor %}
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="row">
-       
-      </div>
-    </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <p class="card-title">حمایت های من</p>
+                <div class="table-responsive">
+                  <table id="recent-purchases-listing" class="table table-hover text-center">
+                    <thead>
+                      <tr>
+                        <th>ردیف</th>
+                        <th>مبلغ حمایت</th>
+                        <th>پروژه</th>
+                        <th>تاریخ</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                      {% for sup in user_supports  %}
+                      <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{sup.price}} تومان</td>
+                          {% if sup.project == None %}
+                        <td>بدون پروژه</td>
+                          {% else %}
+                        <td>{{sup.project}}</td>
+                          {% endif %}
+                        <td>{{ sup.date }}</td>
+                      </tr>
+                    {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 stretch-card">
+                            <div class="card">
+                              <div class="card-body">
+                                <p class="card-title">پروژه های من</p>
+                                <div class="table-responsive">
+                                  <table id="recent-purchases-listing2" class="table table-hover text-center">
+                                    <thead>
+                                      <tr>
+                                        <th>ردیف</th>
+                                        <th>عنوان پروژه</th>
+                                        <th>دسته بندی</th>
+                                        <th>مبلغ اولیه</th>
+                                        <th>مبلغ حمایت شده</th>
+                                        <th> زمان مورد نیاز </th>
+                                        <th>وضعیت</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                      {% for pro in user_projects  %}
+                                      <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{pro.name_show}}</td>
+                                        <td>{{pro.project_category}}</td>
+                                        <td>{{ pro.budget }} تومان </td>
+                                        <td>{{ pro.current_budget }} تومان </td>
+                                        <td>{{ pro.needed_time }}</td>
+                                          {% if pro.status == 'disable' %}
+                                        <td>غیر فعال</td>
+                                          {% else %}
+                                        <td> فعال</td>
+                                          {% endif %}
+                                      </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+        </div>
     <!-- content-wrapper ends -->
 
   </div>
