@@ -1,5 +1,5 @@
 from django.http import Http404
-from .forms import LoginForm, RegisterForm, Verify, EditProjectCategory, EditAccount
+from .forms import LoginForm, RegisterForm, Verify, EditProjectCategory, EditAccount, ChangePass
 from hami_supports.models import Support
 from hami_projects.models import ProjectCategory, Project
 from django.shortcuts import render, redirect
@@ -160,6 +160,32 @@ def logout_user(request):
     request.session['logout_user'] = data
     return redirect('/')
 
+
+def change_password(request):
+    if request.user.is_authenticated:
+        return redirect("/")
+    else:
+        user_username = request.user.username
+        user = User.objects.filter(username=user_username).first()
+        if user:
+            change_pass_form = ChangePass(request.POST, None)
+            if change_pass_form.is_valid():
+                password = change_pass_form.cleaned_data.get('password')
+                user.set_password(f'{password}')
+                user.save()
+        else:
+            redirect('/account/register')
+    context = {
+        'change_pass': ChangePass,
+    }
+    return render(request, 'change_password.html', context)
+
+
+def logout_user(request):
+    logout(request)
+    data = {'status': 'ok'}
+    request.session['logout_user'] = data
+    return redirect('/')
 
 def user_profile(request):
     if not request.user.is_authenticated:

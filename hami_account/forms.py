@@ -115,3 +115,28 @@ class EditAccount(forms.Form):
         label='شماره تماس جدید',
     )
 
+
+class ChangePass(forms.Form):
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={'placeholder': 'لطفا کلمه عبور جدید را وارد نمایید', 'class': 'form-control'}),
+        label='کلمه عبور جدید'
+    )
+
+    re_password = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={'placeholder': 'لطفا تکرار کلمه عبور خود را وارد نمایید', 'class': 'form-control'}),
+        label='تکرار کلمه عبور جدید'
+    )
+
+    def clean_password(self):
+        password = self.cleaned_data.get('password')
+        if password.isdigit() or len(password) < 6:
+            raise forms.ValidationError('کلمه عبور باید بیشتر از 5 کارکتر و شامل حروف و اعداد باشد!')
+        return password
+
+    def clean_re_password(self):
+        password = self.cleaned_data.get('password')
+        re_password = self.cleaned_data.get('re_password')
+        if password != re_password:
+            raise forms.ValidationError('کلمه های عبور مغایرت دارند!')
+        return password
