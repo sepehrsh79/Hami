@@ -149,6 +149,7 @@ def edit_account(request):
         user.last_name = last_name
         user.username = int(phone)
         user.save()
+        return redirect('/account/admin') if user.is_staff else redirect('/account/user')
 
     context = {'edit_form': edit_form}
     return render(request, 'edit_account.html', context)
@@ -180,12 +181,6 @@ def change_password(request):
     }
     return render(request, 'change_password.html', context)
 
-
-def logout_user(request):
-    logout(request)
-    data = {'status': 'ok'}
-    request.session['logout_user'] = data
-    return redirect('/')
 
 def user_profile(request):
     if not request.user.is_authenticated:
@@ -248,3 +243,29 @@ def create_group(request):
         }
 
         return render(request, 'panel/create_group.html', context)
+
+
+def manage_users(request):
+    # check admin verification
+    if not request.user.is_staff:
+        return redirect("/account/login")
+
+    all_users = User.objects.all()
+
+    context = {
+        'all_users': all_users,
+    }
+    return render(request, 'panel/manage_users.html', context)
+
+
+def manage_supports(request):
+    # check admin verification
+    if not request.user.is_staff:
+        return redirect("/account/login")
+
+    all_supports = Support.objects.all().order_by('date')
+
+    context = {
+        'all_supports': all_supports,
+    }
+    return render(request, 'panel/manage-supports.html', context)

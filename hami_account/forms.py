@@ -112,7 +112,7 @@ class EditAccount(forms.Form):
 
     phone = forms.IntegerField(
         widget=forms.TextInput(attrs={'placeholder': 'لطفا  شماره تماس جدید را وارد نمایید', 'class': 'form-control'}),
-        label='شماره تماس جدید',
+        label='شماره تماس',
     )
 
 

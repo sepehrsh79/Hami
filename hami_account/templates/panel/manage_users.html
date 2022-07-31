@@ -1,0 +1,51 @@
+{% extends 'panel/shared/_Panel_MainLayput.html' %}
+{% load static %}
+{% block content %}
+<div class="container-fluid page-body-wrapper">
+  {% include 'panel/shared/side_bar.html' %}
+  <div class="main-panel">
+    <div class="content-wrapper">
+      <div class="row">
+        <div class="col-md-12 grid-margin stretch-card">
+          <div class="card">
+                          <div class="card-body">
+                            <p class="card-title">کاربران</p>
+                            <div class="table-responsive">
+                              <table id="recent-purchases-listing" class="table table-hover text-center">
+                                <thead>
+                                  <tr>
+                                    <th>ردیف</th>
+                                    <th>نام</th>
+                                    <th>نام خانوادگی</th>
+                                    <th>شماره تماس</th>
+                                    <th>عملیات</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                  {% for user in all_users  %}
+                                  <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{user.first_name}}</td>
+                                    <td>{{user.last_name}}</td>
+                                    <td>{{user.username}}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-sm btn-primary">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-secondary">
+                                            <i class="fa fa-pencil"></i>
+                                        </button>
+                                    </td>
+                                  </tr>
+                                {% endfor %}
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+        </div>
+      </div>
+  </div>
+</div>
+</div>
+{% endblock %}

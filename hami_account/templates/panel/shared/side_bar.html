@@ -1,0 +1,44 @@
+<nav class="sidebar sidebar-offcanvas" id="sidebar">
+    <ul class="nav">
+      {% with url='/account/admin' %}
+      <li class="nav-item {% if request.path == url %}active{% endif %}">
+      {% endwith %}
+        <a class="nav-link" href="/account/admin">
+          <i class="mdi mdi-home menu-icon"></i>
+          <span class="menu-title">داشبورد مدیریت</span>
+        </a>
+      </li>
+      {% with url='/account/admin/manage-users' %}
+      <li class="nav-item {% if request.path == url %}active{% endif %}">
+      {% endwith %}
+        <a class="nav-link"  href="/account/admin/manage-users">
+          <i class="mdi mdi-account menu-icon"></i>
+          <span class="menu-title">مدیریت کاربران</span>
+        </a>
+      </li>
+      {% with url='/account/admin/manage-supports' %}
+      <li class="nav-item {% if request.path == url %}active{% endif %}">
+      {% endwith %}
+        <a class="nav-link"  href="/account/admin/manage-supports">
+          <i class="mdi mdi-cash menu-icon"></i>
+          <span class="menu-title">حمایت ها</span>
+        </a>
+      </li>
+      {% with url='/account/admin/edit-groups' %}
+      <li class="nav-item {% if request.path == url %}active{% endif %}">
+      {% endwith %}
+        <a class="nav-link" href="/account/admin/edit-groups">
+          <i class="mdi mdi-grid-large menu-icon"></i>
+          <span class="menu-title">دسته ها</span>
+        </a>
+      </li>
+      {% with url='/account/edit' %}
+      <li class="nav-item {% if request.path == url %}active{% endif %}">
+      {% endwith %}
+        <a class="nav-link" href="/account/edit">
+          <i class="mdi mdi-grid-edit menu-icon"></i>
+          <span class="menu-title">ویرایش مشخصات </span>
+        </a>
+      </li>
+    </ul>
+</nav>

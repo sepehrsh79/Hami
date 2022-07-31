@@ -3,7 +3,10 @@
 
 {% block content %}
 <div class="container-fluid page-body-wrapper">
-  <nav class="sidebar" id="sidebar">
+    {% if request.user.is_superuser %}
+        {% include 'panel/shared/side_bar.html' %}
+    {% else %}
+        <nav class="sidebar" id="sidebar">
     <ul class="nav">
       <li class="navman">
         <a class="nav-link"
@@ -23,28 +26,18 @@
         </a>
       </li>
     </ul>
-  </nav>
-  <div class="main-panel">
+</nav>
+    {% endif %}
+
+<div class="main-panel">
     <div class="content-wrapper">
       <div class="row">
         <div class="col-md-12 grid-margin stretch-card">
-          <div class="card">
-            <div class="card-body dashboard-tabs p-0">
-              <div class="tab-content py-0 px-0">
-                <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
-                  <div class="d-flex flex-wrap justify-content-xl-between">
-                    <div class="d-none d-xl-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                      <div class="col-12 grid-margin stretch-card">
-                        <div class="card">
+            <div class="card">
                           <div class="card-body">
                             <h4 class="card-title">ویرایش مشخصات کاربری</h4>
-                            <form class="forms-sample" method="post"
-                                    {% if request.user.is_authenticated and not request.user.is_staff %}
-                                           action="/account/user"
-                                    {% elif request.user.is_authenticated and request.user.is_staff %}
-                                            action="/account/admin"
-                                    {% endif %}>
-                                    {% csrf_token %}
+                            <form class="forms-sample" method="post">
+                                {% csrf_token %}
                               <div class="form-group">
                                 <label for="{{ edit_form.first_name.id_for_label }}">{{ edit_form.first_name.label }}</label>
                                 {{ edit_form.first_name }}
@@ -70,16 +63,9 @@
                             </form>
                           </div>
                         </div>
-                      </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
-  </div>
 </div>
 </div>
 {% endblock %}

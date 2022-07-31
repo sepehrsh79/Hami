@@ -8,13 +8,17 @@ from .views import (login_user,
                     verify_user,
                     create_group,
                     edit_account,
-                    change_password
+                    change_password,
+                    manage_users,
+                    manage_supports
                     )
 
 urlpatterns = [
     path('account/user', user_profile),
     path('account/admin', admin_profile),
     path('account/admin/edit-groups', create_group),
+    path('account/admin/manage-users', manage_users),
+    path('account/admin/manage-supports', manage_supports),
     path('account/login', login_user),
     path('account/logout', logout_user),
     path('account/register', register_user),
