@@ -10,7 +10,7 @@
                     <div class="product-details">
                         <div class="col-sm-5">
                             <div class="view-product">
-                                <img src="{{ project.logo.url }}" alt="">
+                                <img src="{% if project.logo %}{{ project.logo.url }}{% else %}{% static '/images/img.png' %}{% endif %}" alt="">
                             </div>
                             
                         </div>

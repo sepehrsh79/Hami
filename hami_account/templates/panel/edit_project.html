@@ -1,0 +1,82 @@
+{% extends 'panel/shared/_Panel_MainLayput.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid page-body-wrapper">
+    {% include 'panel/shared/side_bar.html' %}
+     <div class="main-panel">
+          <div class="content-wrapper">
+              <div class="row">
+                    <div class="col-12 stretch-card">
+                        <div class="card">
+                          <div class="card-body">
+                            <h4 class="card-title">ویرایش {{ instance }}</h4>
+                            <form class="forms-sample" action="" method="post" enctype="multipart/form-data"> {% csrf_token %}
+                                {% csrf_token %}
+                            <div class="form-group">
+                                <label for="{{ project_form.name_show.id_for_label }}">{{ project_form.name_show.label }}</label>
+                                {{ project_form.name_show }}
+                                {% for error in project_form.name_show.errors %}
+                                    <p style="color: red;">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            <div class="form-group">
+                                <label for="{{ project_form.project_category.id_for_label }}">{{ project_form.project_category.label }}</label>
+                                {{ project_form.project_category }}
+                                {% for error in project_form.project_category.errors %}
+                                    <p style="color: red;">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            <div class="form-group">
+                                <label for="{{ project_form.budget.id_for_label }}">{{ project_form.budget.label }}</label>
+                                {{ project_form.budget }}
+                                {% for error in project_form.budget.errors %}
+                                    <p style="color: red;">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            <div class="form-group">
+                                <label for="{{ project_form.needed_time.id_for_label }}">{{ project_form.needed_time.label }}</label>
+                                {{ project_form.needed_time }}
+                                {% for error in project_form.needed_time.errors %}
+                                <p style="color: red;">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            <div class="form-group">
+                                <label for="{{ project_form.site.id_for_label }}">{{ project_form.site.label }}</label>
+                                {{ project_form.site }}
+                                {% for error in project_form.site.errors %}
+                                    <p style="color: red;">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            <div class="form-group">
+                                <label for="{{ project_form.email.id_for_label }}">{{ project_form.email.label }}</label>
+                                {{ project_form.email }}
+                                {% for error in project_form.email.errors %}
+                                    <p style="color: red;">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            <div class="form-group">
+                                <label for="{{ project_form.logo.id_for_label }}">{{ project_form.logo.label }}</label>
+                                {{ project_form.logo }}
+                                {% for error in project_form.logo.errors %}
+                                    <p style="color: red;">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            <div class="form-group">
+                                <label for="{{ project_form.description_show.id_for_label }}">{{ project_form.description_show.label }}</label>
+                                {{ project_form.description_show }}
+                                {% for error in project_form.description_show.errors %}
+                                    <p style="color: red;">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                                <button type="submit" class="btn btn-primary">ویرایش</button>
+                                <a href="/account/admin" class="btn btn-secondary" >بازگشت</a>
+                            </form>
+                          </div>
+                        </div>
+                    </div>
+              </div>
+          </div>
+     </div>
+</div>
+{% endblock %}

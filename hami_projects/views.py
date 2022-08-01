@@ -3,7 +3,7 @@ from .models import Project, Comment, ProjectCategory
 from django.contrib.auth.models import User
 from django.views.generic import ListView
 from django.http import Http404
-from .forms import CommentForm, CreateProject
+from .forms import CommentForm, ProjectForm
 from datetime import datetime
 from hami_supports.forms import SupportForm
 
@@ -157,7 +157,7 @@ def create_project(request):
     if request.user.is_authenticated:
         user_id = request.user.id
         if request.method == "POST":
-            create_project_form = CreateProject(request.POST, request.FILES)
+            create_project_form = ProjectForm(request.POST, request.FILES)
 
             if create_project_form.is_valid():
                 name_show = create_project_form.cleaned_data.get('name_show')
@@ -189,8 +189,50 @@ def create_project(request):
                 data = {'status': 'ok'}
                 request.session['create_project'] = data
                 return redirect('/')
-        create_project_form = CreateProject()
+        create_project_form = ProjectForm()
         context = {'create_project_form': create_project_form}
         return render(request, 'create_project.html', context)
     else:
         return redirect("/account/login")
+
+
+def edit_project(request, project_id):
+    if not request.user.is_staff:
+        return redirect("/account/login")
+    instance = Project.objects.get(pk=project_id)
+    if request.method == "POST":
+        project_form = ProjectForm(request.POST, request.FILES)
+        if project_form.is_valid():
+            instance.name_show = project_form.cleaned_data.get('name_show')
+            instance.project_category = project_form.cleaned_data.get('project_category')
+            instance.description_show = project_form.cleaned_data.get('description_show')
+            instance.budget = project_form.cleaned_data.get('budget')
+            instance.needed_time = project_form.cleaned_data.get('needed_time')
+            instance.site = project_form.cleaned_data.get('site')
+            instance.email = project_form.cleaned_data.get('email')
+            instance.logo = project_form.cleaned_data.get('logo')
+            instance.save()
+            return redirect('/account/admin')
+
+    project_form = ProjectForm(initial={
+        "name_show": instance.name_show,
+        "project_category": instance.project_category,
+        "description_show": instance.description_show,
+        "budget": instance.budget,
+        "needed_time": instance.needed_time,
+        "site": instance.site,
+        "email": instance.email,
+        "logo": instance.logo
+    })
+    context = {'project_form': project_form, 'instance': instance}
+    return render(request, 'panel/edit_project.html', context)
+
+
+def remove_project(request, project_id):
+    if not request.user.is_staff:
+        return redirect("/account/login")
+    Project.objects.get(pk=project_id).delete()
+    data = {'status': 'true'}
+    request.session['remove_project'] = data
+    return redirect('/account/admin')
+

@@ -217,6 +217,10 @@ def admin_profile(request):
             'all_supports': all_supports.count(),
             'projects': projects
         }
+        if 'remove_project' in request.session:
+            context['remove_project'] = request.session['remove_project']['status']
+            del request.session['remove_project']
+
         return render(request, 'panel/admin_panel.html', context)
 
 
@@ -255,6 +259,9 @@ def manage_users(request):
     context = {
         'all_users': all_users,
     }
+    if 'change_user_role' in request.session:
+        context['change_user_role'] = request.session['change_user_role']['status']
+        del request.session['change_user_role']
     return render(request, 'panel/manage_users.html', context)
 
 
@@ -269,3 +276,23 @@ def manage_supports(request):
         'all_supports': all_supports,
     }
     return render(request, 'panel/manage-supports.html', context)
+
+
+def change_user_role(request, user_id):
+    if not request.user.is_staff:
+        return redirect("/account/login")
+    user = User.objects.get(pk=user_id)
+    user.is_staff = not user.is_staff
+    user.save()
+    data = {'status': 'true'}
+    request.session['change_user_role'] = data
+    return redirect('/account/admin/manage-users')
+
+
+def remove_user(request, user_id):
+    if not request.user.is_staff:
+        return redirect("/account/login")
+    User.objects.get(pk=user_id).delete()
+    data = {'status': 'true'}
+    request.session['remove_user'] = data
+    return redirect('/account/admin/manage-users')

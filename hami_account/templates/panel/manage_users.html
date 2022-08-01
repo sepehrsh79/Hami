@@ -8,44 +8,57 @@
       <div class="row">
         <div class="col-md-12 grid-margin stretch-card">
           <div class="card">
-                          <div class="card-body">
-                            <p class="card-title">کاربران</p>
-                            <div class="table-responsive">
-                              <table id="recent-purchases-listing" class="table table-hover text-center">
-                                <thead>
-                                  <tr>
-                                    <th>ردیف</th>
-                                    <th>نام</th>
-                                    <th>نام خانوادگی</th>
-                                    <th>شماره تماس</th>
-                                    <th>عملیات</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                  {% for user in all_users  %}
-                                  <tr>
-                                    <td>{{ forloop.counter }}</td>
-                                    <td>{{user.first_name}}</td>
-                                    <td>{{user.last_name}}</td>
-                                    <td>{{user.username}}</td>
-                                    <td>
-                                        <button type="button" class="btn btn-sm btn-primary">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-sm btn-secondary">
-                                            <i class="fa fa-pencil"></i>
-                                        </button>
-                                    </td>
-                                  </tr>
-                                {% endfor %}
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                        </div>
+              <div class="card-body">
+                <p class="card-title">کاربران</p>
+                <div class="table-responsive">
+                  <table id="recent-purchases-listing" class="table table-hover text-center">
+                    <thead>
+                      <tr>
+                        <th>ردیف</th>
+                        <th>نام</th>
+                        <th>نام خانوادگی</th>
+                        <th>شماره تماس</th>
+                        <th>عملیات</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                      {% for user in all_users  %}
+                      <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{user.first_name}}</td>
+                        <td>{{user.last_name}}</td>
+                        <td>{{user.username}}</td>
+                        <td>
+                            {% if request.user == user %}
+                                <a href="/account/edit" type="button" class="btn btn-sm btn-secondary"
+                                   data-toggle="tooltip" data-placement="top" title="ویرایش مشخصت">
+                                    <i class="fa fa-pencil"></i>
+                                </a>
+                            {% else %}
+                                <a href="/account/{{ user.id }}/change-role" type="button" class="btn btn-sm btn-secondary"
+                                   data-toggle="tooltip" data-placement="top" title="{% if user.is_staff %}تبدیل به کاربر{% else %}تبدیل به مدیر{% endif %}">
+                                    <i class="fa fa-user"></i>
+                                </a>
+                                <a href="/account/{{ user.id }}/remove" type="button" class="btn btn-sm btn-primary" data-placement="top" title="حذف کاربر">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            {% endif %}
+                        </td>
+                      </tr>
+                    {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
         </div>
       </div>
   </div>
 </div>
 </div>
+<script>
+{% if change_user_role == 'true' %}
+    swal('نقش کاربر مورد نظر تغییر کرد.');
+{% endif %}
+</script>
 {% endblock %}

@@ -21,62 +21,67 @@
                         </div>
                     </div>
                     <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                              <div class="d-flex flex-column justify-content-around">
-                                <small class="mb-1 text-muted">مجموع حمایت ها </small>
+                          <div class="d-flex flex-column justify-content-around">
+                                <small class="mb-1 text-muted">مجموع حمایت ها</small>
                                 <h5 class="mt-1 text-center">{{all_supports}}</h5>
-                              </div>
                           </div>
+                      </div>
                 </div>
                 <div class="col-md-12 grid-margin stretch-card">
                     <div class="card">
-                              <div class="card-body">
-                                <p class="card-title">لیست پروژه ها </p>
-                                <div class="table-responsive">
-                                  <table id="recent-purchases-listing" class="table table-hover text-center">
-                                    <thead>
-                                      <tr>
-                                        <th>ردیف</th>
-                                        <th>عنوان</th>
-                                        <th>دسته بندی</th>
-                                        <th>مبلغ اولیه</th>
-                                        <th>مبلغ حمایت</th>
-                                        <th>وضعیت</th>
-                                        <th>توضیحات</th>
-                                        <th>عملیات</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                      {% for project in projects  %}
-                                      <tr>
-                                        <td>{{ forloop.counter }}</td>
-                                        <td> {{project.name_show}}</td>
-                                        <td> {{project.project_category}}</td>
-                                        <td>{{project.budget}}</td>
-                                        <td>{{project.current_budget}}</td>
-                                        {% if project.status == "enable" %}
-                                          <td>فعال</td>
-                                        {% else %}
-                                          <td>غیر فعال</td>
-                                        {% endif %}
-                                        <td>{{project.description_show|truncatewords:14}}</td>
-                                        <td>
-                                            <button type="button" class="btn btn-sm btn-primary">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-secondary">
-                                                <i class="fa fa-pencil"></i>
-                                            </button>
-                                        </td>
-                                      </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                  </table>
-                                </div>
-                              </div>
-                            </div>
+                      <div class="card-body">
+                        <p class="card-title">لیست پروژه ها </p>
+                        <div class="table-responsive">
+                          <table id="recent-purchases-listing" class="table table-hover text-center">
+                            <thead>
+                              <tr>
+                                <th>ردیف</th>
+                                <th>عنوان</th>
+                                <th>دسته بندی</th>
+                                <th>مبلغ اولیه</th>
+                                <th>مبلغ حمایت</th>
+                                <th>وضعیت</th>
+                                <th>توضیحات</th>
+                                <th>عملیات</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                              {% for project in projects  %}
+                              <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td> {{project.name_show}}</td>
+                                <td> {{project.project_category}}</td>
+                                <td>{{project.budget}}</td>
+                                <td>{{project.current_budget}}</td>
+                                {% if project.status == "enable" %}
+                                  <td>فعال</td>
+                                {% else %}
+                                  <td>غیر فعال</td>
+                                {% endif %}
+                                <td>{{project.description_show|truncatewords:14}}</td>
+                                <td>
+                                    <a href="/projects/{{ project.id}}/remove" type="button" class="btn btn-sm btn-primary" data-placement="top" title="حذف پروژه">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                    <a href="/projects/{{ project.id}}/edit" type="button" class="btn btn-sm btn-secondary" data-placement="top" title="ویرایش پروژه">
+                                        <i class="fa fa-pencil"></i>
+                                    </a>
+                                </td>
+                              </tr>
+                            {% endfor %}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<script>
+{% if remove_project == 'true' %}
+    swal('پروژه مورد نظر حذف شد.');
+{% endif %}
+</script>
 {% endblock %}

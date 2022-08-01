@@ -114,7 +114,7 @@
                                             
                                     </div>
                                     <div class="col-sm-6">
-                                        <img src="{{ project.logo.url }}" style="margin-right: 0px"
+                                        <img src="{% if project.logo %}{{ project.logo.url }}{% else %}{% static '/images/img.png' %}{% endif %}" style="margin-right: 0px"
                                              alt="{{ project.name }}" width="350px" height="280x"/>
                                     </div>
                                 </div>

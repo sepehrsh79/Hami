@@ -54,7 +54,7 @@
                             <div class="product-image-wrapper">
                                 <div class="single-products">
                                     <div class="productinfo text-center">
-                                        <img src="{{ project.logo.url }}" alt="">
+                                        <img src="{% if project.logo %}{{ project.logo.url }}{% else %}{% static '/images/img.png' %}{% endif %}" alt="">
                                         <p>{{ project.name_show }}</p>
                                         <p>{{ project.project_category }}</p>
                                     </div>

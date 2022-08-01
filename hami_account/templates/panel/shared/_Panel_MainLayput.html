@@ -41,11 +41,17 @@
         </div>
     </nav>
     </div>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
     <!-- partial -->
     {% block content %}{% endblock %}
   <!-- container-scroller -->
   {% include 'panel/shared/_FooterReferences.html' %}
+  <script>
+  $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+  })
+  </script>
 </body>
 </html>
 

@@ -19,7 +19,7 @@ class CommentForm(forms.Form):
     )
 
 
-class CreateProject(forms.Form):
+class ProjectForm(forms.Form):
 
     name_show = forms.CharField(
         widget=forms.TextInput(attrs={'placeholder': 'لطفا نام پروژه خود را وارد نمایید', 'class': 'form-control'}),
@@ -57,5 +57,6 @@ class CreateProject(forms.Form):
     )
 
     logo = forms.ImageField(
+        required=False,
         label='تصویر پروژه',
     )
