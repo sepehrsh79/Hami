@@ -10,7 +10,6 @@
                         <h2 style="margin-right: 40px;" >ثبت نام کاربـر جدیـد</h2>
                         <form method="post" action="">
                             {% csrf_token %}
-
                             <label for="{{ verify_form.verification_code.id_for_label }}">{{ verify_form.verification_code.label }}</label>
                             {{ verify_form.verification_code}}
                             {% for error in verify_form.verification_code.errors %}

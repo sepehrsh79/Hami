@@ -1,15 +1,16 @@
-from django.http import Http404
-from .forms import LoginForm, RegisterForm, Verify, EditProjectCategory, EditAccount, ChangePass
-from hami_supports.models import Support
-from hami_projects.models import ProjectCategory, Project
-from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
-from django.contrib.auth import login, authenticate, logout
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required
-from sms import send_sms
+import jdatetime
 import random
 from datetime import datetime
+from django.contrib import messages
+from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.http import Http404
+from django.shortcuts import render, redirect
+from sms import send_sms
+from hami_projects.models import ProjectCategory, Project
+from hami_supports.models import Support
+from .forms import LoginForm, RegisterForm, Verify, EditProjectCategory, EditAccount, ChangePass
 
 
 def code_generator():
@@ -27,7 +28,6 @@ def sending_sms(code, phone):
 
 
 verify_code = None
-user_info = None
 
 
 def register_user(request):
@@ -43,7 +43,6 @@ def register_user(request):
         password = str(password)
         first_name = register_form.cleaned_data.get('first_name')
         last_name = register_form.cleaned_data.get('last_name')
-        identifier_code = register_form.cleaned_data.get('identifier_code')
 
         user = User.objects.filter(username=phone)
         register_form = RegisterForm()
@@ -54,17 +53,9 @@ def register_user(request):
             code = code_generator()
             global verify_code
             verify_code = sending_sms(code, phone)
-            global user_info
 
-            def user_info():
-                info = {'phone': phone,
-                        'password': password,
-                        'first_name': first_name,
-                        'last_name': last_name,
-                        'identifier_code': identifier_code,
-                        }
-                return info
-
+            data = {'phone': phone, 'password': password, 'first_name':first_name , 'last_name': last_name}
+            request.session['user_info'] = data
             return redirect('/account/verify')
 
     context['register_form'] = register_form
@@ -75,11 +66,11 @@ def verify_user(request):
     if request.user.is_authenticated:
         return redirect('/')
 
-    user_informations = user_info()
-    user_phone = user_informations['phone']
-    user_password = user_informations['password']
-    user_fname = user_informations['first_name']
-    user_lname = user_informations['last_name']
+    user_info = request.session['user_info']
+    user_phone = user_info['phone']
+    user_password = user_info['password']
+    user_fname = user_info['first_name']
+    user_lname = user_info['last_name']
     global verify_code
 
     if request.method == 'GET':
@@ -100,6 +91,7 @@ def verify_user(request):
                 last_name=user_lname
             )
 
+            del request.session['user_info']
             login(request, user)
             data = {'status': 'ok'}
             request.session['register_user'] = data
@@ -269,7 +261,11 @@ def manage_supports(request):
     # check admin verification
     if not request.user.is_staff:
         return redirect("/account/login")
-
+    if request.POST:
+        date_from = datetime.strptime(request.POST.get('date-from', None), '%Y/%m/%d').date()
+        date_to = datetime.strptime(request.POST.get('date-to', None), "%Y/%m/%d").date()
+        date_from = jdatetime.JalaliToGregorian(date_from.year, date_from.month, date_from.day)
+        date_to = jdatetime.JalaliToGregorian(date_to.year, date_to.month, date_to.day)
     all_supports = Support.objects.all().order_by('date')
 
     context = {
