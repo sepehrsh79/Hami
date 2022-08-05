@@ -1,5 +1,5 @@
 {% extends 'shared/_MainLayout.html' %}
-{% load static %}
+{% load static jformat %}
 {% load render_partial %}
 
 {% block content %}
@@ -17,7 +17,7 @@
                         <div class="col-sm-7">
                             <div class="product-information">
                                 <div>
-                                   {% if project.status == 'disable' %}
+                                   {% if project.status == 'disable' or project.status == 'notshow' %}
 
                                     {% else %}
                                     <form action="/support/" method="get">
@@ -38,21 +38,21 @@
                                         <div  class="progress pull-left  text-center " style="width: 300px;"> 
                                             <div id="progres" class="progress-bar " role="progressbar" style="width:{{project.percent}}%;color:black;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{project.percent}}%</div>
                                         </div>
-                                        <span>&nbsp {{ project.current_budget}} </span> <span> از </span><span> {{ project.budget }} &nbsp</span>
+                                        <span>&nbsp {{ project.current_budget}} تومان </span> <span> از </span><span> {{ project.budget }} تومان &nbsp</span>
                                     </span>
                                     <br>
                                 </div>
                                 <hr>
                                 <div>
                                     {%if project.status == 'enable' %}
-                                    <p><b>وضعیت :</b> در حال اجرا</p>
+                                    <p><b>وضعیت :</b> در حال اجرا </p>
                                     {% else %}
-                                    <p><b>وضعیت :</b> غیر فعال</p>
+                                    <p><b>وضعیت :</b> غیر فعال </p>
                                     {%endif%}
                                     <p><b>حمایت ها :</b> {{project.supports}}</p>
-                                    <p><b>مدت زمان مورد نیاز:</b>{{project.needed_time}}</p>
-                                    <p><b>سایت :</b>{{project.site}}</p>
-                                    <p><b>ایمیل :</b>{{project.email}}</p>
+                                    <p><b>مدت زمان مورد نیاز:</b> {{project.needed_time|jformat:'%Y/%m/%d'}} </p>
+                                    <p><b>سایت :</b> {{project.site}}</p>
+                                    <p><b>ایمیل :</b> {{project.email}}</p>
                                 </div>
                                 <hr>
                             </div>
@@ -80,13 +80,13 @@
                                 {% for support in supports %}
                                 <div class="row" style="padding: 10px 0px;">
                                     <div class="col-md-3">
-                                        <div style="margin-top:25px; color: #000000; font-weight: 900">{{support.price}}<span style="color: grey;"> تومان</span></div>
+                                        <div style="margin-top:25px; color: #000000; font-weight: 900">{{support.amount}}<span style="color: grey;"> تومان</span></div>
                                     </div>
                                     <div class="col-md-7">
                                         {% if support.supporter %}
                                             <div class="row">
                                                 <div class="col-md-9">
-                                                    <div style="margin-top:10px; color: #000000;">{{support.supporter}}</div>
+                                                    <div style="margin-top:10px; color: #000000;">{{support.supporter.get_full_name}}</div>
                                                 </div>
                                             </div>
                                         {% else %}
@@ -97,7 +97,7 @@
                                         </div>
                                         {% endif %}
                                         <div class="row" style="font-size: 10px;">
-                                            <div class="col-md-9">{{support.date}} </div>            
+                                            <div class="col-md-9">{{support.date|jformat:'%Y/%m/%d'}} </div>
                                         </div>
                                     </div>
                                     <div class="col-md-2 text-center">
@@ -188,4 +188,12 @@
             </div>
         </div>
     </section>
+<script>
+{% if support == 'ok' %}
+    swal({
+          text:'حمایت شما با موفقیت انجام شد. :)',
+          button: "بستن",
+    })
+{% endif %}
+</script>
 {% endblock %}

@@ -1,3 +1,5 @@
+import jdatetime
+from unidecode import unidecode
 from django.shortcuts import redirect, render
 from .models import Project, Comment, ProjectCategory
 from django.contrib.auth.models import User
@@ -138,8 +140,10 @@ def project_detail(request, **kwargs):
         'comments_count': comments.count(),
         'comment_form': comment_form,
         'support_form': support_form
-        
     }
+    if 'support' in request.session:
+        context['support'] = request.session['support']['status']
+        del request.session['support']
 
     return render(request, 'project_detail.html', context)
 
@@ -165,7 +169,8 @@ def create_project(request):
                 usr = User.objects.filter(id=user_id).first()
                 description_show = create_project_form.cleaned_data.get('description_show')
                 budget = create_project_form.cleaned_data.get('budget')
-                needed_time = create_project_form.cleaned_data.get('needed_time')
+                time = datetime.strptime(unidecode(create_project_form.cleaned_data.get('needed_time')), '%Y/%m/%d').date()
+                needed_time = jdatetime.date(time.year, time.month, time.day).togregorian()
                 site = create_project_form.cleaned_data.get('site')
                 email = create_project_form.cleaned_data.get('email')
                 logo = create_project_form.cleaned_data.get('logo')
@@ -236,3 +241,13 @@ def remove_project(request, project_id):
     request.session['remove_project'] = data
     return redirect('/account/admin')
 
+
+def update_project(request, project_id):
+    if not request.user.is_staff:
+        return redirect("/account/login")
+    project = Project.objects.get(pk=project_id)
+    project.status = 'enable' if project.status == 'notshow' else 'notshow'
+    project.save()
+    data = {'status': project.status}
+    request.session['update_project'] = data
+    return redirect('/account/admin')

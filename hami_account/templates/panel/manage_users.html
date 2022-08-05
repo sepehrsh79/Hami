@@ -58,7 +58,10 @@
 </div>
 <script>
 {% if change_user_role == 'true' %}
-    swal('نقش کاربر مورد نظر تغییر کرد.');
+swal({
+    text: 'نقش کاربر مورد نظر تغییر کرد.',
+    button: "بسیار خوب",
+})
 {% endif %}
 </script>
 {% endblock %}

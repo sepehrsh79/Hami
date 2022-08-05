@@ -52,6 +52,25 @@
         $('[data-toggle="tooltip"]').tooltip()
   })
   </script>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $(".date").pDatepicker({
+        timePicker:{
+            enabled:false
+        },
+        initialValue: false,
+        format: 'YYYY/MM/DD',
+        calendar: {
+            persian: {
+                locale: 'fa'
+            }
+        },
+        toolbox: {
+                enabled: false
+        }
+    });
+  });
+</script>
 </body>
 </html>
 

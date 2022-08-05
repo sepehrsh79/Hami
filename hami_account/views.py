@@ -1,5 +1,6 @@
 import jdatetime
 import random
+from unidecode import unidecode
 from datetime import datetime, timedelta
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
@@ -214,6 +215,9 @@ def admin_profile(request):
         if 'remove_project' in request.session:
             context['remove_project'] = request.session['remove_project']['status']
             del request.session['remove_project']
+        if 'update_project' in request.session:
+            context['update_project'] = request.session['update_project']['status']
+            del request.session['update_project']
 
         return render(request, 'panel/admin_panel.html', context)
 
@@ -263,15 +267,34 @@ def manage_supports(request):
     # check admin verification
     if not request.user.is_staff:
         return redirect("/account/login")
+    _date_from = ''
+    _date_to = ''
+    supports = Support.objects.all().order_by('date')
+
     if request.POST:
-        date_from = datetime.strptime(request.POST.get('date-from', None), '%Y/%m/%d').date()
-        date_to = datetime.strptime(request.POST.get('date-to', None), "%Y/%m/%d").date()
-        date_from = jdatetime.JalaliToGregorian(date_from.year, date_from.month, date_from.day)
-        date_to = jdatetime.JalaliToGregorian(date_to.year, date_to.month, date_to.day)
-    all_supports = Support.objects.all().order_by('date')
+        _date_from = request.POST.get('date-from', None)
+        _date_to = request.POST.get('date-to', None)
+        if _date_from and _date_to:
+            jalali_date_from = datetime.strptime(unidecode(_date_from), '%Y/%m/%d').date()
+            jalali_date_to = datetime.strptime(unidecode(_date_to), "%Y/%m/%d").date()
+            date_from = jdatetime.date(jalali_date_from.year, jalali_date_from.month, jalali_date_from.day).togregorian()
+            date_to = jdatetime.date(jalali_date_to.year, jalali_date_to.month, jalali_date_to.day).togregorian()
+            supports = Support.objects.filter(date__gte=date_from, date__lte=date_to).order_by('date')
+        elif _date_from and not _date_to:
+            jalali_date_from = datetime.strptime(unidecode(_date_from), '%Y/%m/%d').date()
+            date_from = jdatetime.date(jalali_date_from.year, jalali_date_from.month, jalali_date_from.day).togregorian()
+            supports = Support.objects.filter(date__gte=date_from).order_by('date')
+        elif not _date_from and _date_to:
+            jalali_date_to = datetime.strptime(unidecode(_date_to), "%Y/%m/%d").date()
+            date_to = jdatetime.date(jalali_date_to.year, jalali_date_to.month, jalali_date_to.day).togregorian()
+            supports = Support.objects.filter(date__lte=date_to).order_by('date')
+        else:
+            supports = Support.objects.all().order_by('date')
 
     context = {
-        'all_supports': all_supports,
+        'supports': supports,
+        'date_from': _date_from,
+        'date_to': _date_to
     }
     return render(request, 'panel/manage-supports.html', context)
 

@@ -1,9 +1,13 @@
-{% extends 'shared/_MainLayout.html' %}
+    {% extends 'shared/_MainLayout.html' %}
 {% block content %}
 
     <div class="container">
         <section id="form">
+            {% if projects %}
             <h4> پروژه مورد نظر خود را انتخاب کنید. </h4>
+            {% else %}
+            <h4>پروژه ای برای حمایت وجود ندارد.</h4>
+            {% endif %}
             <hr>
             <div class="row">
                 <div class="col-sm-10">
@@ -20,7 +24,8 @@
                                 </div>
                                 {% endfor %}
                             </div>
-                            <div class="col-md-6">
+                            {% if projects %}
+                                <div class="col-md-6">
                             <label for="{{ support_form.amount.id_for_label }}">{{ support_form.amount.label }}</label>
                             {{ support_form.amount }}
                             {% for error in support_form.amount.errors %}
@@ -33,6 +38,7 @@
                             <br>
                             <button type="submit" class="btn btn-default">انتقال به درگاه پرداخت</button>
                         </div>
+                            {% endif %}
                         </form>
                     </div>
                 </div>

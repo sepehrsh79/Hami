@@ -1,51 +1,85 @@
 {% extends 'panel/shared/_Panel_MainLayput.html' %}
-{% load static %}
+{% load static jformat %}
 {% block content %}
 <div class="container-fluid page-body-wrapper">
     {% include 'panel/shared/side_bar.html' %}
     <div class="main-panel">
         <div class="content-wrapper">
             <div class="row">
-                <div class="col-md-12 grid-margin stretch-card">
+                <div class="col-md-12 stretch-card">
                     <div class="card">
-                              <div class="card-body">
-                                <p class="card-title">کاربران</p>
-                                <div class="table-responsive">
-                                  <table id="recent-purchases-listing" class="table table-hover text-center">
-                                    <thead>
-                                      <tr>
-                                        <th>ردیف</th>
-                                        <th>حمایت کننده</th>
-                                        <th>پروژه</th>
-                                        <th>مبلغ</th>
-                                        <th>تاریخ</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                      {% for support in all_supports %}
-                                      <tr>
-                                        <td>{{forloop.counter}}</td>
-                                        <td>{{support.supporter}}</td>
-                                        <td>{{support.project}}</td>
-                                        <td>{{support.amount}}</td>
-                                        <td>{{support.date}}</td>
-                                        <td>
-                                            <button type="button" class="btn btn-sm btn-primary">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-secondary">
-                                                <i class="fa fa-pencil"></i>
-                                            </button>
-                                        </td>
-                                      </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                  </table>
+                        <div class="card-body">
+                            <h4 class="card-title">فیلتر</h4>
+                            <form class="forms-sample" method="post">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-2 col-form-label">تاریخ (از)</label>
+                                                <div class="col-sm-10">
+                                                    <input autocomplete="off" type="text" name="date-from" class="form-control date" value="{{ date_from }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-2 col-form-label">تاریخ (تا)</label>
+                                                <div class="col-sm-10">
+                                                    <input autocomplete="off" type="text" name="date-to" class="form-control date" value="{{ date_to }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                              </div>
-                            </div>
+                                <button type="submit" class="btn btn-primary ml-2">اعمال</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+          <div class="row">
+                <div class="col-md-12 grid-margin stretch-card">
+                    <div class="card">
+                      <div class="card-body">
+                        <p class="card-title">حمایت ها</p>
+                        <div class="table-responsive">
+                          <table id="recent-purchases-listing" class="table table-hover text-center">
+                            <thead>
+                            <tr>
+                              <th>ردیف</th>
+                              <th>حمایت کننده</th>
+                              <th>پروژه</th>
+                              <th>مبلغ</th>
+                              <th>تاریخ</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                              {% for support in supports %}
+                              <tr>
+                                <td>{{forloop.counter}}</td>
+                                <td>{{support.supporter}}</td>
+                                <td>{{support.project}}</td>
+                                <td>{{support.amount}}</td>
+                                <td>{{support.date|jformat:'%Y/%m/%d'}}</td>
+                              <td>
+                              <button type="button" class="btn btn-sm btn-primary">
+                                  <i class="fa fa-trash"></i>
+                              </button>
+                              <button type="button" class="btn btn-sm btn-secondary">
+                                  <i class="fa fa-pencil"></i>
+                              </button>
+                            </td>
+                            </tr>
+                            {% endfor %}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+          </div>
         </div>
     </div>
 </div>

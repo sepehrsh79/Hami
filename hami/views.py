@@ -57,7 +57,11 @@ def home_page(request):
 
     if 'register_user' in request.session:
         context['register_user'] = request.session['register_user']['status']
-        del request.session['register_user']
+        del request.session['register_user'] 
+        
+    if 'general_support' in request.session:
+        context['general_support'] = request.session['general_support']['status']
+        del request.session['general_support']
 
     all_supports_amount = Support.objects.all()
     if all_supports_amount:

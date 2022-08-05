@@ -3,7 +3,7 @@ from django.contrib import messages
 from .models import Support
 from .forms import SupportForm
 from datetime import datetime
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 
 def support(request):
@@ -28,7 +28,9 @@ def support(request):
             if selected_project.current_budget > selected_project.budget:
                 selected_project.status = 'disable'
                 selected_project.save()
-            messages.success(request, 'حمایت شما با موفقیت انجام شد. :)')
+            data = {'status': 'ok'}
+            request.session['support'] = data
+            return redirect(f'/projects/{project_id}')
     else:
         support_form = SupportForm()
 
@@ -58,7 +60,9 @@ def general_support(request):
                 selected_project.status = 'disable'
                 selected_project.save()
             Support.objects.create(amount=amount, project=selected_project, supporter=user, date=dateN)
-            messages.success(request, 'حمایت شما با موفقیت انجام شد. :)')
+            data = {'status': 'ok'}
+            request.session['general_support'] = data
+            return redirect('/')
     else:
         support_form = SupportForm()
 

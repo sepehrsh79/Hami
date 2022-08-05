@@ -3,6 +3,7 @@
 
 {% block content %}
 <br>
+{% if slides %}
     <section id="slider"><!--slider-->
         <div class="container">
             <div class="row">
@@ -33,6 +34,7 @@
         </div>
     </section><!--/slider-->
     <hr>
+{% endif %}
     <div class="row counters">
         <div class="col-lg-4 col-6 text-center">
             <span data-toggle="counter-up">{{ enb_project_count }}</span>
@@ -80,72 +82,91 @@
                                 </div>
                             {% endfor %}
                         </div>
-                        <a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev">
-                            <i class="fa fa-angle-left"></i>
-                        </a>
-                        <a class="right recommended-item-control" href="#recommended-item-carousel" data-slide="next">
-                            <i class="fa fa-angle-right"></i>
-                        </a>
+                    <a href="#recommended-item-carousel" class="left control-carousel hidden-xs" data-slide="prev">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    <a href="#recommended-item-carousel" class="right control-carousel hidden-xs" data-slide="next">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
                     </div>
                 </div>
 
             <h2 class="title text-center">پروژه های درحال اجرا</h2>
             <div class="col-sm-12">
-                    <div id="slider-carousel2" class="carousel slide" data-ride="carousel">
-                        <div class="carousel-inner">
-                            {% for project in projects %}
-                                <div class="item {{ forloop.first|yesno:"active," }}">
-                                    <div class="col-sm-6">
-                                        <h2>{{ project.name_show }}</h2>
-                                        <p>
-                                            {{ project.description_show }}
-                                        </p>
+                <div id="slider-carousel2" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner">
+                        {% for project in projects %}
+                            <div class="item {{ forloop.first|yesno:"active," }}">
+                                <div class="col-sm-6">
+                                    <h2>{{ project.name_show }}</h2>
+                                    <p>
+                                        {{ project.description_show }}
+                                    </p>
+                                    <br>
+                                    <div  class="progress pull-left  text-center " style="width: 300px;">
+                                        <div id="progres" class="progress-bar " role="progressbar" style="width:{{project.percent}}%;color:black;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{project.percent}}%</div>
+                                    </div>
+
+                                    <div class="flex-row" ><span> &nbsp {{ project.current_budget}}</span> <span> از </span><span> {{ project.budget }} &nbsp تومان</span>
+                                    </div>
+                                    <a href="{{ project.get_absolute_url }}" class="btn btn-default get">
+                                        مشاهده</a>
                                         <br>
-                                        <div  class="progress pull-left  text-center " style="width: 300px;"> 
-                                            <div id="progres" class="progress-bar " role="progressbar" style="width:{{project.percent}}%;color:black;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{project.percent}}%</div>
-                                        </div>
-                                        
-                                        <div class="flex-row" ><span> &nbsp {{ project.current_budget}}</span> <span> از </span><span> {{ project.budget }} &nbsp تومان</span>
-                                        </div>
-                                        <a href="{{ project.get_absolute_url }}" class="btn btn-default get">
-                                            مشاهده</a>
-                                            <br>
-                                            <p class="pull-left"> حمایت ها: <span> {{project.supports}}</span></p>
-                                            
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <img src="{% if project.logo %}{{ project.logo.url }}{% else %}{% static '/images/img.png' %}{% endif %}" style="margin-right: 0px"
-                                             alt="{{ project.name }}" width="350px" height="280x"/>
-                                    </div>
+                                        <p class="pull-left"> حمایت ها: <span> {{project.supports}}</span></p>
+
                                 </div>
-                            {% endfor %}
-                        </div>
-                        <br>
-                        <a href="#slider-carousel2" class="left control-carousel hidden-xs" data-slide="prev">
-                            <i class="fa fa-angle-left"></i>
-                        </a>
-                        <a href="#slider-carousel2" class="right control-carousel hidden-xs" data-slide="next">
-                            <i class="fa fa-angle-right"></i>
-                        </a>
-                    </div> 
+                                <div class="col-sm-6">
+                                    <img src="{% if project.logo %}{{ project.logo.url }}{% else %}{% static '/images/img.png' %}{% endif %}" style="margin-right: 0px"
+                                         alt="{{ project.name }}" width="350px" height="280x"/>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <br>
+                    <a href="#slider-carousel2" class="left control-carousel hidden-xs" data-slide="prev">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    <a href="#slider-carousel2" class="right control-carousel hidden-xs" data-slide="next">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                </div>
             </div>
             </div>
         </div>
     </section>
 
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
 {% if login_user == 'ok' %}
-swal('خوش آمدید :)', ' ورود شما با موفقیت انجام شد.')
+swal({
+    title: 'خوش آمدید :)',
+    text: 'ورود شما با موفقیت انجام شد.',
+    button: "بسیار خوب",
+})
 {% endif %}
 {% if logout_user == 'ok' %}
-swal('خدانگهدار :(', ' خروج شما با موفقیت انجام شد.')
+swal({
+    title: 'خدانگهدار :(',
+    text: 'خروج شما با موفقیت انجام شد.',
+    button: "بسیار خوب",
+})
 {% endif %}
 {% if create_project == 'ok' %}
-swal('پروژه شما ایجاد گردید.')
+swal({
+    text: 'پروژه شما ایجاد گردید.',
+    button: "بسیار خوب",
+})
 {% endif %}
 {% if register_user == 'ok' %}
-swal('ثبت نام با موفقیت انجام شد.')
+swal({
+    text: 'ثبت نام با موفقیت انجام شد.',
+    button: "بسیار خوب",
+})
+{% endif %}
+{% if general_support == 'ok' %}
+swal({
+    text: 'حمایت شما با موفقیت انجام شد. :)',
+    button: "بسیار خوب",
+})
 {% endif %}
 </script>
 {% endblock %}

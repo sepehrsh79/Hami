@@ -66,6 +66,9 @@
                                     <a href="/projects/{{ project.id}}/edit" type="button" class="btn btn-sm btn-secondary" data-placement="top" title="ویرایش پروژه">
                                         <i class="fa fa-pencil"></i>
                                     </a>
+                                    <a href="/projects/{{ project.id}}/update" type="button" class="btn btn-sm btn-info" data-placement="top" title="تغییر وضعیت پروژه">
+                                        <i class="fa fa-star"></i>
+                                    </a>
                                 </td>
                               </tr>
                             {% endfor %}
@@ -81,7 +84,22 @@
 </div>
 <script>
 {% if remove_project == 'true' %}
-    swal('پروژه مورد نظر حذف شد.');
+swal({
+    text: 'پروژه مورد نظر حذف شد.',
+    button: "بسیار خوب",
+})
 {% endif %}
+{% if update_project == 'enable' %}
+swal({
+    text: 'پروژه مورد نظر فعال شد.',
+    button: "بسیار خوب",
+})
+{% elif update_project == 'notshow' %}
+swal({
+    text: 'پروژه مورد نظر غیر فعال شد.',
+    button: "بسیار خوب",
+})
+{% endif %}
+
 </script>
 {% endblock %}
