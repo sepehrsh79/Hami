@@ -1,6 +1,6 @@
 import jdatetime
 import random
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
@@ -27,20 +27,14 @@ def sending_sms(code, phone):
     return code
 
 
-verify_code = None
-
-
 def register_user(request):
     if request.user.is_authenticated:
         return redirect('/')
-    context = {}
     register_form = RegisterForm(request.POST or None)
 
     if register_form.is_valid():
-        phone = register_form.cleaned_data.get('phone')
-        phone = int(phone)
-        password = register_form.cleaned_data.get('password')
-        password = str(password)
+        phone = int(register_form.cleaned_data.get('phone'))
+        password = str(register_form.cleaned_data.get('password'))
         first_name = register_form.cleaned_data.get('first_name')
         last_name = register_form.cleaned_data.get('last_name')
 
@@ -51,14 +45,16 @@ def register_user(request):
             messages.info(request, 'متاسفانه قبلا کاربری با این شماره تماس ثبت شده است!')
         else:
             code = code_generator()
-            global verify_code
             verify_code = sending_sms(code, phone)
 
-            data = {'phone': phone, 'password': password, 'first_name':first_name , 'last_name': last_name}
+            data = {'phone': phone, 'password': password, 'first_name': first_name, 'last_name': last_name, 'verify_code': verify_code,
+                    'create_date': str(datetime.now())}
             request.session['user_info'] = data
             return redirect('/account/verify')
 
-    context['register_form'] = register_form
+    context = {
+        'register_form': register_form
+    }
     return render(request, 'register.html', context)
 
 
@@ -71,33 +67,39 @@ def verify_user(request):
     user_password = user_info['password']
     user_fname = user_info['first_name']
     user_lname = user_info['last_name']
-    global verify_code
+    verify_code = user_info['verify_code']
+    verify_code_create_date = user_info['create_date']
 
-    if request.method == 'GET':
+    if 'verify' in request.POST:
         code = code_generator()
         verify_code = sending_sms(code, user_phone)
+        request.session['user_info']['verify_code'] = verify_code
 
     verify_form = Verify(request.POST or None)
-    if verify_form.is_valid():
-        verification_code = verify_form.cleaned_data.get('verification_code')
-        verification_code = int(verification_code)
+    if request.POST and 'verify' not in request.POST:
+        if verify_form.is_valid():
+            verification_code = verify_form.cleaned_data.get('verification_code')
+            verification_code = int(verification_code)
+            now = datetime.now()
+            if verification_code == verify_code and \
+                    now - datetime.strptime(verify_code_create_date, "%Y-%m-%d %H:%M:%S.%f") < timedelta(minutes=10):
+                user = User.objects.create_user(
+                    username=user_phone,
+                    email='',
+                    password=user_password,
+                    first_name=user_fname,
+                    last_name=user_lname
+                )
 
-        if verification_code == verify_code:
-            user = User.objects.create_user(
-                username=user_phone,
-                email='',
-                password=user_password,
-                first_name=user_fname,
-                last_name=user_lname
-            )
-
-            del request.session['user_info']
-            login(request, user)
-            data = {'status': 'ok'}
-            request.session['register_user'] = data
-            return redirect('/')
-        else:
-            messages.success(request, 'کد پیامکی وارد شده صحیح نمی باشد!')
+                del request.session['user_info']
+                login(request, user)
+                data = {'status': 'ok'}
+                request.session['register_user'] = data
+                return redirect('/')
+            else:
+                messages.success(request, 'کد پیامکی وارد شده صحیح نمی باشد!')
+    else:
+        verify_form = Verify(request.POST or None)
 
     context = {'verify_form': verify_form}
     return render(request, 'verify.html', context)
@@ -124,6 +126,13 @@ def login_user(request):
     return render(request, 'login.html', context)
 
 
+def logout_user(request):
+    logout(request)
+    data = {'status': 'ok'}
+    request.session['logout_user'] = data
+    return redirect('/')
+
+
 @login_required(login_url='/account/login')
 def edit_account(request):
     username = request.user.username
@@ -145,13 +154,6 @@ def edit_account(request):
 
     context = {'edit_form': edit_form}
     return render(request, 'edit_account.html', context)
-
-
-def logout_user(request):
-    logout(request)
-    data = {'status': 'ok'}
-    request.session['logout_user'] = data
-    return redirect('/')
 
 
 def change_password(request):
