@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 
 class Support(models.Model):
-    amount = models.FloatField(verbose_name='مبلغ حمایت')
+    amount = models.PositiveIntegerField(verbose_name='مبلغ حمایت')
     project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name='پروژه', blank=True, null=True)
     supporter = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='حمایت کننده')
     date = models.DateField(max_length=100, verbose_name='تاریخ')

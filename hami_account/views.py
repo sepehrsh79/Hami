@@ -177,10 +177,13 @@ def change_password(request):
     return render(request, 'change_password.html', context)
 
 
+@login_required
 def user_profile(request):
     if not request.user.is_authenticated:
         return redirect("/account/login")
     else:
+        if request.user.is_staff:
+            return redirect("/account/admin")
         username = request.user.username
         user = User.objects.filter(username=username).first()
 
@@ -195,6 +198,7 @@ def user_profile(request):
         return render(request, 'panel/user_panel.html', context)
 
 
+@login_required
 def admin_profile(request):
     # check admin verification
     if not request.user.is_staff:
@@ -222,6 +226,7 @@ def admin_profile(request):
         return render(request, 'panel/admin_panel.html', context)
 
 
+@login_required
 def create_group(request):
     # check admin verification
     if not request.user.is_staff:
@@ -247,6 +252,7 @@ def create_group(request):
         return render(request, 'panel/create_group.html', context)
 
 
+@login_required
 def manage_users(request):
     # check admin verification
     if not request.user.is_staff:
@@ -263,6 +269,7 @@ def manage_users(request):
     return render(request, 'panel/manage_users.html', context)
 
 
+@login_required
 def manage_supports(request):
     # check admin verification
     if not request.user.is_staff:
@@ -299,6 +306,7 @@ def manage_supports(request):
     return render(request, 'panel/manage-supports.html', context)
 
 
+@login_required
 def change_user_role(request, user_id):
     if not request.user.is_staff:
         return redirect("/account/login")
@@ -310,6 +318,7 @@ def change_user_role(request, user_id):
     return redirect('/account/admin/manage-users')
 
 
+@login_required
 def remove_user(request, user_id):
     if not request.user.is_staff:
         return redirect("/account/login")
