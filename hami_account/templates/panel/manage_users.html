@@ -18,6 +18,7 @@
                         <th>نام</th>
                         <th>نام خانوادگی</th>
                         <th>شماره تماس</th>
+                        <th>نقش</th>
                         <th>عملیات</th>
                     </tr>
                     </thead>
@@ -28,6 +29,7 @@
                         <td>{{user.first_name}}</td>
                         <td>{{user.last_name}}</td>
                         <td>{{user.username}}</td>
+                        <td>{% if user.is_staff %} مدیر {% else %} کاربر {% endif %}</td>
                         <td>
                             {% if request.user == user %}
                                 <a href="/account/edit" type="button" class="btn btn-sm btn-secondary"

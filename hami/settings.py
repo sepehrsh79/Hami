@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_render_partial',
     'django_jalali',
+    'django.contrib.humanize',
     # apps
     'hami_projects.apps.HamiProjectsConfig',
     'hami_supports.apps.HamiSupportsConfig',

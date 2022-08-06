@@ -227,29 +227,77 @@ def admin_profile(request):
 
 
 @login_required
-def create_group(request):
+def create_edit_category(request, category_id=None):
     # check admin verification
     if not request.user.is_staff:
         return redirect("/account/login")
     else:
-        project_categories = ProjectCategory.objects.all()
+        instance = None
+        if category_id:
+            categories = ProjectCategory.objects.filter(id=category_id)
+            if categories.exists():
+                instance = categories.first()
         if request.method == "POST":
-            edit_groups = EditProjectCategory(request.POST, request.FILES)
-            if edit_groups.is_valid():
-                title = edit_groups.cleaned_data.get('title')
-                admin_title = edit_groups.cleaned_data.get('admin_title')
-                description = edit_groups.cleaned_data.get('description')
-                image = edit_groups.cleaned_data.get('image')
+            if instance:
+                edit_category = EditProjectCategory(request.POST, request.FILES, initial={
+                    'title': instance.title, 'slug': instance.slug,
+                    'description': instance.description, 'image': instance.image
+                })
+                if edit_category.is_valid():
+                    instance.title = edit_category.cleaned_data.get('title')
+                    instance.slug = edit_category.cleaned_data.get('slug')
+                    instance.description = edit_category.cleaned_data.get('description')
+                    instance.image = edit_category.cleaned_data.get('image')
+                    instance.save()
+                    data = {'status': 'ok'}
+                    request.session['edit_category'] = data
+            else:
+                edit_category = EditProjectCategory(request.POST, request.FILES)
+                if edit_category.is_valid():
+                    title = edit_category.cleaned_data.get('title')
+                    admin_title = edit_category.cleaned_data.get('slug')
+                    description = edit_category.cleaned_data.get('description')
+                    image = edit_category.cleaned_data.get('image')
+                    ProjectCategory.objects.create(title=title, slug=admin_title, description=description, image=image)
+                    data = {'status': 'ok'}
+                    request.session['create_category'] = data
+        else:
+            edit_category = EditProjectCategory(
+                initial={'title': instance.title, 'slug': instance.slug,
+                         'description': instance.description, 'image': instance.image}) if instance \
+                else EditProjectCategory()
 
-                ProjectCategory.objects.create(title=title, slug=admin_title, description=description, image=image)
-        edit_groups = EditProjectCategory()
-
+        project_categories = ProjectCategory.objects.all()
         context = {
             'project_categories': project_categories,
-            'edit_groups': edit_groups
+            'edit_category': edit_category,
+            'title': 'افزودن' if not instance else 'ویرایش'
         }
 
+        if 'edit_category' in request.session:
+            context['edit_category'] = request.session['edit_category']['status']
+            del request.session['edit_category']
+        if 'create_category' in request.session:
+            context['create_category'] = request.session['create_category']['status']
+            del request.session['create_category']   
+        if 'remove_category' in request.session:
+            context['remove_category'] = request.session['remove_category']['status']
+            del request.session['remove_category']
+
         return render(request, 'panel/create_group.html', context)
+
+
+@login_required
+def remove_category(request, category_id):
+    if not request.user.is_staff:
+        return redirect("/account/login")
+    try:
+        ProjectCategory.objects.get(id=category_id).delete()
+    except ProjectCategory.DoesNotExist:
+        return redirect('/account/admin/manage-category')
+    data = {'status': 'ok'}
+    request.session['remove_category'] = data
+    return redirect('/account/admin/manage-category')
 
 
 @login_required
@@ -310,7 +358,10 @@ def manage_supports(request):
 def change_user_role(request, user_id):
     if not request.user.is_staff:
         return redirect("/account/login")
-    user = User.objects.get(pk=user_id)
+    try:
+        user = User.objects.get(pk=user_id)
+    except User.DoesNotExist:
+        return redirect('/account/admin/manage-users')
     user.is_staff = not user.is_staff
     user.save()
     data = {'status': 'true'}
@@ -322,7 +373,10 @@ def change_user_role(request, user_id):
 def remove_user(request, user_id):
     if not request.user.is_staff:
         return redirect("/account/login")
-    User.objects.get(pk=user_id).delete()
+    try:
+        User.objects.get(pk=user_id).delete()
+    except User.DoesNotExist:
+        return redirect('/account/admin/manage-users')
     data = {'status': 'true'}
     request.session['remove_user'] = data
     return redirect('/account/admin/manage-users')

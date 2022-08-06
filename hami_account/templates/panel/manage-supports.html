@@ -1,5 +1,5 @@
 {% extends 'panel/shared/_Panel_MainLayput.html' %}
-{% load static jformat %}
+{% load static jformat humanize %}
 {% block content %}
 <div class="container-fluid page-body-wrapper">
     {% include 'panel/shared/side_bar.html' %}
@@ -61,16 +61,8 @@
                                 <td>{{forloop.counter}}</td>
                                 <td>{{support.supporter}}</td>
                                 <td>{{support.project}}</td>
-                                <td>{{support.amount}}</td>
+                                <td>{{support.amount|intcomma:False}}</td>
                                 <td>{{support.date|jformat:'%Y/%m/%d'}}</td>
-                              <td>
-                              <button type="button" class="btn btn-sm btn-primary">
-                                  <i class="fa fa-trash"></i>
-                              </button>
-                              <button type="button" class="btn btn-sm btn-secondary">
-                                  <i class="fa fa-pencil"></i>
-                              </button>
-                            </td>
                             </tr>
                             {% endfor %}
                           </tbody>

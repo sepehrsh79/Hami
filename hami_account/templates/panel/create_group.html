@@ -10,37 +10,37 @@
                     <div class="col-12 stretch-card">
                         <div class="card">
                                   <div class="card-body">
-                                    <h4 class="card-title">افزودن دسته</h4>
+                                    <h4 class="card-title">{{ title }} دسته</h4>
                                     <form class="forms-sample" action="" method="post" enctype="multipart/form-data"> {% csrf_token %}
                                       <div class="form-group">
-                                        <label for="{{ edit_groups.title.id_for_label }}">{{ edit_groups.title.label }}</label>
-                                        {{ edit_groups.title }}
-                                        {% for error in edit_groups.title.errors %}
+                                        <label for="{{ edit_category.title.id_for_label }}">{{ edit_category.title.label }}</label>
+                                        {{ edit_category.title }}
+                                        {% for error in edit_category.title.errors %}
                                         <p style="color: red;">{{ error }}</p>
                                         {% endfor %}
                                       </div>
                                       <div class="form-group">
-                                        <label for="{{ edit_groups.admin_title.id_for_label }}">{{ edit_groups.admin_title.label }}</label>
-                                        {{ edit_groups.admin_title }}
-                                        {% for error in edit_groups.admin_title.errors %}
+                                        <label for="{{ edit_category.slug.id_for_label }}">{{ edit_category.slug.label }}</label>
+                                        {{ edit_category.slug }}
+                                        {% for error in edit_category.slug.errors %}
                                         <p style="color: red;">{{ error }}</p>
                                         {% endfor %}
                                       </div>
                                       <div class="form-group">
-                                        <label style="padding-left:10px" for="{{ edit_groups.image.id_for_label }}">{{ edit_groups.image.label }}</label>
-                                        {{ edit_groups.image }}
-                                        {% for error in edit_groups.image.errors %}
+                                        <label style="padding-left:10px" for="{{ edit_category.image.id_for_label }}">{{ edit_category.image.label }}</label>
+                                        {{ edit_category.image }}
+                                        {% for error in edit_category.image.errors %}
                                         <p style="color: red;">{{ error }}</p>
                                         {% endfor %}
                                       </div>
                                       <div class="form-group">
-                                        <label for="{{ edit_groups.discribtion.id_for_label }}">{{ edit_groups.discribtion.label }}</label>
-                                        {{ edit_groups.discribtion }}
-                                        {% for error in edit_groups.discribtion.errors %}
+                                        <label for="{{ edit_category.description.id_for_label }}">{{ edit_category.description.label }}</label>
+                                        {{ edit_category.description }}
+                                        {% for error in edit_category.description.errors %}
                                         <p style="color: red;">{{ error }}</p>
                                         {% endfor %}
                                       </div>
-                                      <button type="submit" class="btn btn-primary ml-2">افزودن</button>
+                                      <button type="submit" class="btn btn-primary ml-2">{{ title }}</button>
                                       <a href="/account/admin" class="btn btn-secondary" >بازگشت</a>
                                     </form>
                                   </div>
@@ -69,14 +69,14 @@
                                     <td>{{category.title}}</td>
                                     <td>{{category.project_count}}</td>
                                     <td>{{category.completed_project_count}}</td>
-                                    <td>{{category.discribtion|truncatewords:14}}</td>
+                                    <td>{{category.description|truncatewords:14}}</td>
                                     <td>
-                                        <button type="button" class="btn btn-sm btn-primary">
+                                        <a href="/account/admin/{{category.id}}/remove-category" type="button" class="btn btn-sm btn-primary">
                                             <i class="fa fa-trash"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-sm btn-secondary">
+                                        </a>
+                                        <a href="/account/admin/{{category.id}}/edit-category" type="button" class="btn btn-sm btn-secondary">
                                             <i class="fa fa-pencil"></i>
-                                        </button>
+                                        </a>
                                     </td>
                                   </tr>
                                 {% endfor %}
@@ -90,4 +90,24 @@
           </div>
      </div>
 </div>
+<script>
+{% if edit_category == 'ok' %}
+swal({
+    text: 'دسته بندی موردنظر ویرایش شد.',
+    button: "بسیار خوب",
+})
+{% endif %}
+{% if create_category == 'ok' %}
+swal({
+    text: 'دسته بندی موردنظر ایجاد شد.',
+    button: "بسیار خوب",
+})
+{% endif %}
+{% if remove_category == 'ok' %}
+swal({
+    text: 'دسته بندی موردنظر حذف شد.',
+    button: "بسیار خوب",
+})
+{% endif %}
+</script>
 {% endblock %}

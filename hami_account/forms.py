@@ -83,7 +83,7 @@ class EditProjectCategory(forms.Form):
         widget=forms.TextInput(attrs={'placeholder': 'لطفا عنوان دسته را وارد نمایید', 'class': 'form-control'}),
         label='عنوان دسته'
     )
-    admin_title = forms.CharField(
+    slug = forms.CharField(
         widget=forms.TextInput(attrs={'placeholder': 'لطفا عنوان مدیریتی دسته را وارد نمایید', 'class': 'form-control'}),
         label='عنوان مدیریتی دسته'
     )

@@ -236,7 +236,10 @@ def edit_project(request, project_id):
 def remove_project(request, project_id):
     if not request.user.is_staff:
         return redirect("/account/login")
-    Project.objects.get(pk=project_id).delete()
+    try:
+        Project.objects.get(pk=project_id).delete()
+    except User.DoesNotExist:
+        return redirect('/account/admin')
     data = {'status': 'true'}
     request.session['remove_project'] = data
     return redirect('/account/admin')
@@ -245,7 +248,10 @@ def remove_project(request, project_id):
 def update_project(request, project_id):
     if not request.user.is_staff:
         return redirect("/account/login")
-    project = Project.objects.get(pk=project_id)
+    try:
+        project = Project.objects.get(pk=project_id)
+    except User.DoesNotExist:
+        return redirect('/account/admin')
     project.status = 'enable' if project.status == 'notshow' else 'notshow'
     project.save()
     data = {'status': project.status}

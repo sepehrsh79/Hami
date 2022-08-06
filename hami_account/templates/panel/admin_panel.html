@@ -1,5 +1,5 @@
 {% extends 'panel/shared/_Panel_MainLayput.html' %}
-{% load static %}
+{% load static humanize %}
 
 {% block content %}
 <div class="container-fluid page-body-wrapper">
@@ -51,8 +51,8 @@
                                 <td>{{ forloop.counter }}</td>
                                 <td> {{project.name_show}}</td>
                                 <td> {{project.project_category}}</td>
-                                <td>{{project.budget}}</td>
-                                <td>{{project.current_budget}}</td>
+                                <td>{{project.budget|intcomma:False}}</td>
+                                <td>{{project.current_budget|intcomma:False}} تومان</td>
                                 {% if project.status == "enable" %}
                                   <td>فعال</td>
                                 {% else %}

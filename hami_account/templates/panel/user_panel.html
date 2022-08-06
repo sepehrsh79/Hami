@@ -1,5 +1,5 @@
 {% extends 'panel/shared/_Panel_MainLayput.html' %}
-{% load static %}
+{% load static jformat humanize %}
 
 {% block content %}
 <div class="container-fluid page-body-wrapper">
@@ -56,13 +56,13 @@
                       {% for sup in user_supports  %}
                       <tr>
                         <td>{{ forloop.counter }}</td>
-                        <td>{{sup.price}} تومان</td>
+                        <td>{{sup.amount|intcomma:False}} تومان</td>
                           {% if sup.project == None %}
                         <td>بدون پروژه</td>
                           {% else %}
                         <td>{{sup.project}}</td>
                           {% endif %}
-                        <td>{{ sup.date }}</td>
+                        <td>{{ sup.date|jformat:'%Y/%m/%d' }}</td>
                       </tr>
                     {% endfor %}
                     </tbody>
@@ -96,9 +96,9 @@
                         <td>{{ forloop.counter }}</td>
                         <td>{{pro.name_show}}</td>
                         <td>{{pro.project_category}}</td>
-                        <td>{{ pro.budget }} تومان </td>
-                        <td>{{ pro.current_budget }} تومان </td>
-                        <td>{{ pro.needed_time }}</td>
+                        <td>{{ pro.budget|intcomma:False }} تومان </td>
+                        <td>{{ pro.current_budget|intcomma:False }} تومان </td>
+                        <td>{{ pro.needed_time|jformat:'%Y/%m/%d' }}</td>
                           {% if pro.status == 'disable' %}
                         <td>غیر فعال</td>
                           {% else %}
