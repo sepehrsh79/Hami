@@ -4,7 +4,7 @@
       <li class="nav-item {% if request.path == url %}active{% endif %}">
       {% endwith %}
         <a class="nav-link" href="/account/admin">
-          <i class="mdi mdi-home menu-icon"></i>
+          <i class="mdi mdi-grid-edit menu-icon"></i>
           <span class="menu-title">داشبورد مدیریت</span>
         </a>
       </li>
@@ -12,7 +12,7 @@
       <li class="nav-item {% if request.path == url %}active{% endif %}">
       {% endwith %}
         <a class="nav-link"  href="/account/admin/manage-users">
-          <i class="mdi mdi-account menu-icon"></i>
+          <i class="mdi mdi-grid-edit menu-icon"></i>
           <span class="menu-title">مدیریت کاربران</span>
         </a>
       </li>
@@ -20,7 +20,7 @@
       <li class="nav-item {% if request.path == url %}active{% endif %}">
       {% endwith %}
         <a class="nav-link"  href="/account/admin/manage-supports">
-          <i class="mdi mdi-cash menu-icon"></i>
+          <i class="mdi mdi-grid-edit menu-icon"></i>
           <span class="menu-title">حمایت ها</span>
         </a>
       </li>
@@ -28,8 +28,24 @@
       <li class="nav-item {% if request.path == url %}active{% endif %}">
       {% endwith %}
         <a class="nav-link" href="/account/admin/manage-category">
-          <i class="mdi mdi-grid-large menu-icon"></i>
+          <i class="mdi mdi-grid-edit menu-icon"></i>
           <span class="menu-title">دسته ها</span>
+        </a>
+      </li>
+      {% with url='/site/setting' %}
+      <li class="nav-item {% if request.path == url %}active{% endif %}">
+      {% endwith %}
+        <a class="nav-link" href="/site/setting">
+          <i class="mdi mdi-grid-edit menu-icon"></i>
+          <span class="menu-title">تنظیمات</span>
+        </a>
+      </li>
+    {% with url='/site/slider' %}
+      <li class="nav-item {% if request.path == url %}active{% endif %}">
+      {% endwith %}
+        <a class="nav-link" href="/site/slider">
+          <i class="mdi mdi-grid-edit menu-icon"></i>
+          <span class="menu-title">اسلایدر</span>
         </a>
       </li>
       {% with url='/account/edit' %}

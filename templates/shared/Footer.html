@@ -1,42 +1,18 @@
 {%load static %}
 <footer id="footer"><!--Footer-->
     <div class="footer-Before">
-        
-    </div>s
-
+    </div>
     <div class="footer-top">
         <div class="container">
             <div class="row">
-                <div class="col-sm-3">
-                    <div class="address">
-                        <img src="{%static 'images/home/map.png'%}" alt=""/>
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="address">
-                        <img src="{%static 'images/home/map.png'%}" alt=""/>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="companyinfo">
-                        <h2><span>HA</span>MI</h2>
-                        <p>
-                            {{ setting.title }}
-                            <br>
-                            {{ setting.address }}
-                            <br>
-                            {{ setting.phone }}
-                        </p>
-                    </div>
-                </div>
+
             </div>
         </div>
     </div>
-
     <div class="footer-widget">
         <div class="container">
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-4">
                     <div class="single-widget">
                         <h2>دسته بندی ها</h2>
                         <ul class="nav nav-pills nav-stacked">
@@ -46,13 +22,25 @@
                         </ul>
                     </div>
                 </div>
-                <div class="col-sm-6">
+                <di class="col-sm-4">
                     <div class="single-widget">
                         <h2>درباره حامی</h2>
                         <ul class="nav nav-pills nav-stacked">
                             <li><a href="https://github.com/sepehrsh79/Hami">درباره</a></li>
                             <li><a href="/projects">پروژه ها</a></li>
                         </ul>
+                    </div>
+                </di>
+                <div class="col-sm-4">
+                    <div class="companyinfo">
+                        <h2><span>HA</span>MI</h2>
+                        <p>
+                            {{ setting.title }}
+                            <br>
+                             آدرس: {{ setting.address }}
+                            <br>
+                             شماره تماس:{{ setting.phone }}
+                        </p>
                     </div>
                 </div>
             </div>

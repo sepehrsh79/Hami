@@ -91,19 +91,27 @@
                     </tr>
                     </thead>
                     <tbody>
-                      {% for pro in user_projects  %}
+                      {% for project in user_projects  %}
                       <tr>
                         <td>{{ forloop.counter }}</td>
-                        <td>{{pro.name_show}}</td>
-                        <td>{{pro.project_category}}</td>
-                        <td>{{ pro.budget|intcomma:False }} تومان </td>
-                        <td>{{ pro.current_budget|intcomma:False }} تومان </td>
-                        <td>{{ pro.needed_time|jformat:'%Y/%m/%d' }}</td>
-                          {% if pro.status == 'disable' %}
+                        <td>{{ project.name_show }}</td>
+                        <td>{{ project.project_category }}</td>
+                        <td>{{ project.budget|intcomma:False }} تومان </td>
+                        <td>{{ project.current_budget|intcomma:False }} تومان </td>
+                        <td>{{ project.needed_time|jformat:'%Y/%m/%d' }}</td>
+                          {% if project.status == 'disable' %}
                         <td>غیر فعال</td>
                           {% else %}
                         <td> فعال</td>
                           {% endif %}
+                        <td>
+                            <a href="/projects/{{project.id}}/remove" type="button" class="btn btn-sm btn-primary" data-placement="top" title="حذف پروژه">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                            <a href="/projects/{{project.id}}/edit" type="button" class="btn btn-sm btn-secondary" data-placement="top" title="ویرایش پروژه">
+                                <i class="fa fa-pencil"></i>
+                            </a>
+                        </td>
                       </tr>
                     {% endfor %}
                     </tbody>
@@ -121,4 +129,18 @@
 </div>
 <!-- page-body-wrapper ends -->
 </div>
+<script>
+{% if edit_project == 'true' %}
+swal({
+    text: 'پروژه مورد نظر ویرایش شد.',
+    button: "بسیار خوب",
+})
+{% endif %}
+{% if remove_project == 'true' %}
+swal({
+    text: 'پروژه مورد نظر حذف شد.',
+    button: "بسیار خوب",
+})
+{% endif %}
+</script>
 {% endblock %}

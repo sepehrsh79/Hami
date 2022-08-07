@@ -1,0 +1,80 @@
+{% extends 'panel/shared/_Panel_MainLayput.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid page-body-wrapper">
+    {% include 'panel/shared/side_bar.html' %}
+     <div class="main-panel">
+          <div class="content-wrapper">
+              <div class="row">
+                    <div class="col-12 stretch-card">
+                        <div class="card">
+                          <div class="card-body">
+                            <h4 class="card-title">افزودن تصویر</h4>
+                            <form class="forms-sample" action="" method="post" enctype="multipart/form-data"> {% csrf_token %}
+                              <div class="form-group">
+                                <label for="{{ site_slider_form.title.id_for_label }}">{{ site_slider_form.title.label }}</label>
+                                {{ site_slider_form.title }}
+                                {% for error in site_slider_form.title.errors %}
+                                <p style="color: red;">{{ error }}</p>
+                                {% endfor %}
+                              </div>
+                              <div class="form-group">
+                                <label for="{{ site_slider_form.image.id_for_label }}">{{ site_slider_form.image.label }}</label>
+                                {{ site_slider_form.image }}
+                                {% for error in site_slider_form.image.errors %}
+                                <p style="color: red;">{{ error }}</p>
+                                {% endfor %}
+                              </div>
+                              <button type="submit" class="btn btn-primary ml-2">افزودن</button>
+                              <a href="/account/admin" class="btn btn-secondary" >بازگشت</a>
+                            </form>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 stretch-card">
+                        <div class="card">
+                          <div class="card-body">
+                            <p class="card-title">لیست تصاویر</p>
+                            <div class="table-responsive">
+                              <table id="recent-purchases-listing" class="table table-hover text-center">
+                                <thead>
+                                  <tr>
+                                    <th>ردیف</th>
+                                    <th>عنوان</th>
+                                    <th>تصویر</th>
+                                    <th>عملیات</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                  {% for slider in sliders %}
+                                  <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{slider.title}}</td>
+                                    <td><img src="{{slider.image.url}}" alt=""></td>
+                                    <td>
+                                        <a href="/site/slider/{{ slider.id }}/delete" type="button" class="btn btn-sm btn-primary">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </td>
+                                  </tr>
+                                {% endfor %}
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+              </div>
+          </div>
+     </div>
+</div>
+<script>
+{% if remove_slider == 'true' %}
+swal({
+    text: 'تصویر موردنظر حذف شد.',
+    button: "بسیار خوب",
+})
+{% endif %}
+</script>
+{% endblock %}

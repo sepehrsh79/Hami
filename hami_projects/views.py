@@ -1,4 +1,5 @@
 import jdatetime
+from django.contrib.auth.decorators import login_required
 from unidecode import unidecode
 from django.shortcuts import redirect, render
 from .models import Project, Comment, ProjectCategory
@@ -148,15 +149,16 @@ def project_detail(request, **kwargs):
     return render(request, 'project_detail.html', context)
 
 
-class ProjectsListByGroup(ListView):
+class ProjectsListByCategory(ListView):
     template_name = 'projects_list.html'
     paginate_by = 6
 
     def get_queryset(self):
-        group_name = self.kwargs['group_name']
-        return Project.objects.get_by_groups(group_name)
+        category_id = self.kwargs['category_id']
+        return Project.objects.get_by_category_id(category_id)
 
 
+@login_required
 def create_project(request):
     if request.user.is_authenticated:
         user_id = request.user.id
@@ -201,59 +203,74 @@ def create_project(request):
         return redirect("/account/login")
 
 
+@login_required
 def edit_project(request, project_id):
-    if not request.user.is_staff:
+    try:
+        instance = Project.objects.get(pk=project_id)
+    except User.DoesNotExist:
+        return redirect('/account/admin') if request.user.is_staff else redirect('/account/user')
+
+    if request.user.is_staff or instance.creator == request.user:
+        if request.method == "POST":
+            project_form = ProjectForm(request.POST, request.FILES)
+            if project_form.is_valid():
+                instance.name_show = project_form.cleaned_data.get('name_show')
+                instance.project_category = project_form.cleaned_data.get('project_category')
+                instance.description_show = project_form.cleaned_data.get('description_show')
+                instance.budget = project_form.cleaned_data.get('budget')
+                time = datetime.strptime(unidecode(project_form.cleaned_data.get('needed_time')), '%Y/%m/%d').date()
+                instance.needed_time = jdatetime.date(time.year, time.month, time.day).togregorian()
+                instance.site = project_form.cleaned_data.get('site')
+                instance.email = project_form.cleaned_data.get('email')
+                instance.logo = project_form.cleaned_data.get('logo')
+                instance.save()
+                data = {'status': 'true'}
+                request.session['edit_project'] = data
+                return redirect('/account/admin') if request.user.is_staff else redirect('/account/user')
+
+        project_form = ProjectForm(initial={
+            "name_show": instance.name_show,
+            "project_category": instance.project_category,
+            "description_show": instance.description_show,
+            "budget": instance.budget,
+            "needed_time": instance.needed_time,
+            "site": instance.site,
+            "email": instance.email,
+            "logo": instance.logo
+        })
+        context = {'project_form': project_form, 'instance': instance}
+        return render(request, 'panel/edit_project.html', context)
+    else:
         return redirect("/account/login")
-    instance = Project.objects.get(pk=project_id)
-    if request.method == "POST":
-        project_form = ProjectForm(request.POST, request.FILES)
-        if project_form.is_valid():
-            instance.name_show = project_form.cleaned_data.get('name_show')
-            instance.project_category = project_form.cleaned_data.get('project_category')
-            instance.description_show = project_form.cleaned_data.get('description_show')
-            instance.budget = project_form.cleaned_data.get('budget')
-            instance.needed_time = project_form.cleaned_data.get('needed_time')
-            instance.site = project_form.cleaned_data.get('site')
-            instance.email = project_form.cleaned_data.get('email')
-            instance.logo = project_form.cleaned_data.get('logo')
-            instance.save()
-            return redirect('/account/admin')
-
-    project_form = ProjectForm(initial={
-        "name_show": instance.name_show,
-        "project_category": instance.project_category,
-        "description_show": instance.description_show,
-        "budget": instance.budget,
-        "needed_time": instance.needed_time,
-        "site": instance.site,
-        "email": instance.email,
-        "logo": instance.logo
-    })
-    context = {'project_form': project_form, 'instance': instance}
-    return render(request, 'panel/edit_project.html', context)
 
 
+@login_required
 def remove_project(request, project_id):
-    if not request.user.is_staff:
-        return redirect("/account/login")
     try:
-        Project.objects.get(pk=project_id).delete()
+        instance = Project.objects.get(pk=project_id)
     except User.DoesNotExist:
-        return redirect('/account/admin')
-    data = {'status': 'true'}
-    request.session['remove_project'] = data
-    return redirect('/account/admin')
+        return redirect('/account/admin') if request.user.is_staff else redirect('/account/user')
+    if request.user.is_staff or instance.creator == request.user:
+        instance.delete()
+        data = {'status': 'true'}
+        request.session['remove_project'] = data
+        return redirect('/account/admin') if request.user.is_staff else redirect('/account/user')
+    else:
+        return redirect("/account/login")
 
 
+@login_required
 def update_project(request, project_id):
-    if not request.user.is_staff:
-        return redirect("/account/login")
     try:
-        project = Project.objects.get(pk=project_id)
+        instance = Project.objects.get(pk=project_id)
     except User.DoesNotExist:
-        return redirect('/account/admin')
-    project.status = 'enable' if project.status == 'notshow' else 'notshow'
-    project.save()
-    data = {'status': project.status}
-    request.session['update_project'] = data
-    return redirect('/account/admin')
+        return redirect('/account/admin') if request.user.is_staff else redirect('/account/user')
+    if request.user.is_staff or instance.creator == request.user:
+        instance.status = 'enable' if instance.status == 'notshow' else 'notshow'
+        instance.save()
+        data = {'status': instance.status}
+        request.session['update_project'] = data
+        return redirect('/account/admin') if request.user.is_staff else redirect('/account/user')
+    else:
+        return redirect("/account/login")
+

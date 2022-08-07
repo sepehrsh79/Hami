@@ -15,8 +15,8 @@ project_status = [
 
 
 class ProjectManager(models.Manager):
-    def get_by_groups(self, group_name):
-        return self.get_queryset().filter(project_category__slug__iexact=group_name)
+    def get_by_category_id(self, category_id):
+        return self.get_queryset().filter(project_category__id=category_id)
 
     def search(self, query):
         lookup = (Q(name_show__icontains=query) | Q(description_show__icontains=query))

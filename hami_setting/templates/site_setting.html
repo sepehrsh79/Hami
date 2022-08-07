@@ -1,0 +1,89 @@
+{% extends 'panel/shared/_Panel_MainLayput.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid page-body-wrapper">
+{% include 'panel/shared/side_bar.html' %}
+
+<div class="main-panel">
+    <div class="content-wrapper">
+      <div class="row">
+        <div class="col-md-12 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">{{ title }} تنظیمات سایت </h4>
+                <form class="forms-sample" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                  <div class="form-group">
+                    <label for="{{ site_setting_form.title.id_for_label }}">{{ site_setting_form.title.label }}</label>
+                    {{ site_setting_form.title }}
+                    {% for error in site_setting_form.title.errors %}
+                    <p style="color: red;">{{ error }}</p>
+                    {% endfor %}
+                  </div>
+                  <div class="form-group">
+                    <label for="{{ site_setting_form.address.id_for_label }}">{{ site_setting_form.address.label }}</label>
+                    {{ site_setting_form.address }}
+                    {% for error in site_setting_form.address.errors %}
+                    <p style="color: red;">{{ error }}</p>
+                    {% endfor %}
+                  </div>
+                  <div class="form-group">
+                    <label for="{{ site_setting_form.phone.id_for_label }}">{{ site_setting_form.phone.label }}</label>
+                    {{ site_setting_form.phone }}
+                    {% for error in site_setting_form.phone.errors %}
+                    <p style="color: red;">{{ error }}</p>
+                    {% endfor %}
+                  </div>
+                  <div class="form-group">
+                    <label for="{{ site_setting_form.mobile.id_for_label }}">{{ site_setting_form.mobile.label }}</label>
+                    {{ site_setting_form.mobile }}
+                    {% for error in site_setting_form.mobile.errors %}
+                    <p style="color: red;">{{ error }}</p>
+                    {% endfor %}
+                  </div>
+                  <div class="form-group">
+                    <label for="{{ site_setting_form.fax.id_for_label }}">{{ site_setting_form.fax.label }}</label>
+                    {{ site_setting_form.fax }}
+                    {% for error in site_setting_form.fax.errors %}
+                    <p style="color: red;">{{ error }}</p>
+                    {% endfor %}
+                  </div>
+                  <div class="form-group">
+                    <label for="{{ site_setting_form.email.id_for_label }}">{{ site_setting_form.email.label }}</label>
+                    {{ site_setting_form.email }}
+                    {% for error in site_setting_form.email.errors %}
+                    <p style="color: red;">{{ error }}</p>
+                    {% endfor %}
+                  </div>
+                  <div class="form-group">
+                    <label for="{{ site_setting_form.about_us.id_for_label }}">{{ site_setting_form.about_us.label }}</label>
+                    {{ site_setting_form.about_us }}
+                    {% for error in site_setting_form.about_us.errors %}
+                    <p style="color: red;">{{ error }}</p>
+                    {% endfor %}
+                  </div>
+                  <div class="form-group">
+                    <label for="{{ site_setting_form.copy_right.id_for_label }}">{{ site_setting_form.copy_right.label }}</label>
+                    {{ site_setting_form.copy_right }}
+                    {% for error in site_setting_form.copy_right.errors %}
+                    <p style="color: red;">{{ error }}</p>
+                    {% endfor %}
+                  </div>
+                  <div class="form-group">
+                    <label for="{{ site_setting_form.logo_image.id_for_label }}">{{ site_setting_form.logo_image.label }}</label>
+                    {{ site_setting_form.logo_image }}
+                    {% for error in site_setting_form.logo_image.errors %}
+                    <p style="color: red;">{{ error }}</p>
+                    {% endfor %}
+                  </div>
+                  <button type="submit" class="btn btn-primary ml-2">{{ title }}</button>
+                </form>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
+</div>
+{% endblock %}

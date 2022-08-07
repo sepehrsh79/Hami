@@ -79,8 +79,11 @@
                                 </div>
                             </div>
                         </div>
+                        {% empty %}
+                            <h4 class="text-center" style="margin: 50px 0 50px 0">پروژه ای یافت نشد. :(</h4>
                         {% endfor %}
                         <div class="clearfix"></div>
+                    {% if page_obj %}
                         <ul class="pagination">
                             {% if page_obj.has_previous %}
                                 <li><a href="?page={{ page_obj.previous_page_number }}">قبلی</a></li>
@@ -96,6 +99,7 @@
                                 <li><a href="?page={{ page_obj.next_page_number }}">بعدی</a></li>
                             {% endif %}
                         </ul>
+                    {% endif %}
                     </div><!--features_items-->
                 </div>
             </div>

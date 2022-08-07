@@ -26,6 +26,7 @@ urlpatterns = [
     path('', include('hami_projects.urls')),
     path('', include('hami_account.urls')),
     path('', include('hami_supports.urls')),
+    path('', include('hami_setting.urls')),
 ]
 
 if settings.DEBUG:

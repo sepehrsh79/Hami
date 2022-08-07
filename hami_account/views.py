@@ -1,5 +1,7 @@
 import jdatetime
 import random
+
+from django.db.models import Sum
 from unidecode import unidecode
 from datetime import datetime, timedelta
 from django.contrib import messages
@@ -195,6 +197,13 @@ def user_profile(request):
             'user_supports_count': user_supports.count(),
             'user_projects_count': user_projects.count()
         }
+        if 'remove_project' in request.session:
+            context['remove_project'] = request.session['remove_project']['status']
+            del request.session['remove_project']
+        if 'edit_project' in request.session:
+            context['edit_project'] = request.session['edit_project']['status']
+            del request.session['edit_project']
+
         return render(request, 'panel/user_panel.html', context)
 
 
@@ -205,15 +214,15 @@ def admin_profile(request):
         return redirect("/account/login")
     else:
         today_date = datetime.now().date()
-        all_supports = Support.objects.all()
-        today_supports = Support.objects.filter(date__iexact=today_date)
+        all_supports = Support.objects.all().aggregate(Sum('amount'))['amount__sum']
+        today_supports = Support.objects.filter(date__iexact=today_date).aggregate(Sum('amount'))['amount__sum']
         completed_project = Project.objects.filter(status="disable")
         projects = Project.objects.all()
 
         context = {
-            'today_supports': today_supports.count(),
+            'today_supports': today_supports if all_supports else 0,
             'completed_project': completed_project.count(),
-            'all_supports': all_supports.count(),
+            'all_supports': all_supports if all_supports else 0,
             'projects': projects
         }
         if 'remove_project' in request.session:
@@ -222,6 +231,9 @@ def admin_profile(request):
         if 'update_project' in request.session:
             context['update_project'] = request.session['update_project']['status']
             del request.session['update_project']
+        if 'edit_project' in request.session:
+            context['edit_project'] = request.session['edit_project']['status']
+            del request.session['edit_project']
 
         return render(request, 'panel/admin_panel.html', context)
 
