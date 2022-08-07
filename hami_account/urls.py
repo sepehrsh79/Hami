@@ -17,6 +17,7 @@ urlpatterns = [
     path('account/verify', views.verify_user),
     path('account/edit', views.edit_account),
     path('account/change-password', views.change_password),
+    path('account/verify-change-password', views.verify_change_password),
     path('account/<int:user_id>/change-role', views.change_user_role),
     path('account/<int:user_id>/remove', views.remove_user),
 ]

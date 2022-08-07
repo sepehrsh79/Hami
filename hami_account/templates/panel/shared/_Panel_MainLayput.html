@@ -25,7 +25,13 @@
         <ul class="navbar-nav navbar-nav-left">
             <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-                <span class="nav-profile-name">{{ request.user.first_name }} {{ request.user.last_name }}</span>
+                <span class="nav-profile-name">
+                    {% if request.user.first_name or request.user.last_name %}
+                        {{ request.user.first_name }} {{ request.user.last_name }}
+                    {% else %}
+                        {{ request.user.username }}
+                    {% endif %}
+                </span>
             </a>
             <div class="dropdown-menu dropdown-menu-left navbar-dropdown" aria-labelledby="profileDropdown">
                 <a href="/" class="dropdown-item">

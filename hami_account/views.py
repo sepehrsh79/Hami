@@ -159,20 +159,75 @@ def edit_account(request):
     return render(request, 'edit_account.html', context)
 
 
+def verify_change_password(request):
+    user = None
+    error = None
+
+    if 'verify' in request.POST:
+        code = code_generator()
+        username = request.session['verify_user_info']['username']
+        user = User.objects.get(username=int(username))
+        verify_code = sending_sms(code, user.username)
+        request.session['verify_user_info'] = {'username': username, 'verify_code': verify_code, 'create_date': str(datetime.now())}
+        request.session.modified = True
+
+    if 'verify_user_info' in request.session:
+        now = datetime.now()
+        if now - datetime.strptime(request.session['verify_user_info']['create_date'],
+                                   "%Y-%m-%d %H:%M:%S.%f") > timedelta(minutes=10):
+            del request.session['verify_user_info']
+
+    if 'username' in request.POST:
+        username = request.POST.get('username')
+        users = User.objects.filter(username=int(username))
+        if users.exists():
+            user = users.first()
+            code = code_generator()
+            verify_code = sending_sms(code, user.username)
+            data = {'username': username, 'verify_code': verify_code, 'create_date': str(datetime.now())}
+            request.session['verify_user_info'] = data
+        else:
+            error = 'کاربری با این نام کاربری یافت نشد.'
+    if 'verify-code' in request.POST and 'verify_user_info' in request.session:
+        input_verify_code = request.POST.get('verify-code')
+        user_verify_code = request.session['verify_user_info']['verify_code']
+        now = datetime.now()
+        if int(input_verify_code) == user_verify_code and \
+                now - datetime.strptime(request.session['verify_user_info']['create_date'], "%Y-%m-%d %H:%M:%S.%f") < timedelta(minutes=10):
+            return redirect('/account/change-password')
+        else:
+            error = 'کد وارد شده با کد ارسالی تطابق ندارد یا زمان استفاده از کد به اتمام رسیده است.'
+
+    context = {
+        'username': user,
+        'verify': True if 'verify_user_info' in request.session else False,
+        'error': error
+    }
+    return render(request, 'verify_change_password.html', context)
+
+
 def change_password(request):
     if request.user.is_authenticated:
         return redirect("/")
     else:
-        user_username = request.user.username
-        user = User.objects.filter(username=user_username).first()
-        if user:
-            change_pass_form = ChangePass(request.POST, None)
-            if change_pass_form.is_valid():
-                password = change_pass_form.cleaned_data.get('password')
-                user.set_password(f'{password}')
-                user.save()
+        if 'verify_user_info' in request.session:
+            user_username = request.session['verify_user_info']['username']
+            user = User.objects.filter(username=int(user_username)).first()
+            if user:
+                change_pass_form = ChangePass(request.POST, None)
+                if change_pass_form.is_valid():
+                    password = change_pass_form.cleaned_data.get('password')
+                    user.set_password(f'{password}')
+                    user.save()
+                    del request.session['verify_user_info']
+                    login(request, user)
+                    data = {'status': 'ok'}
+                    request.session['login_user'] = data
+                    return redirect('/')
+            else:
+                redirect('/account/register')
         else:
-            redirect('/account/register')
+            redirect('/account/verify-change-password')
     context = {
         'change_pass': ChangePass,
     }
