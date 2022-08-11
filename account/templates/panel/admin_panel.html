@@ -1,0 +1,111 @@
+{% extends 'panel/shared/_Panel_MainLayput.html' %}
+{% load static humanize %}
+
+{% block content %}
+<div class="container-fluid page-body-wrapper">
+    {% include 'panel/shared/side_bar.html' %}
+    <div class="main-panel">
+        <div class="content-wrapper">
+            <div class="row">
+                <div class="d-flex flex-grow-1 align-items-center justify-content-center">
+                    <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
+                        <div class="d-flex flex-column justify-content-around">
+                          <small class="mb-1 text-muted">حمایت های امروز</small>
+                          <h5 class="mt-1 text-center">{{today_supports}} تومان</h5>
+                        </div>
+                    </div>
+                    <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
+                        <div class="d-flex flex-column justify-content-around">
+                          <small class="mb-1 text-muted">پروژه های تکمیل شده</small>
+                          <h5 class="mt-1 text-center">{{completed_project}}</h5>
+                        </div>
+                    </div>
+                    <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
+                          <div class="d-flex flex-column justify-content-around">
+                                <small class="mb-1 text-muted">مجموع حمایت ها</small>
+                                <h5 class="mt-1 text-center">{{all_supports}} تومان</h5>
+                          </div>
+                      </div>
+                </div>
+                <div class="col-md-12 grid-margin stretch-card">
+                    <div class="card">
+                      <div class="card-body">
+                        <p class="card-title">لیست پروژه ها </p>
+                        <div class="table-responsive">
+                          <table id="recent-purchases-listing" class="table table-hover text-center">
+                            <thead>
+                              <tr>
+                                <th>ردیف</th>
+                                <th>عنوان</th>
+                                <th>دسته بندی</th>
+                                <th>مبلغ اولیه</th>
+                                <th>مبلغ حمایت</th>
+                                <th>وضعیت</th>
+                                <th>توضیحات</th>
+                                <th>عملیات</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                              {% for project in projects  %}
+                              <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td> {{project.name_show}}</td>
+                                <td> {{project.project_category}}</td>
+                                <td>{{project.budget|intcomma:False}}</td>
+                                <td>{{project.current_budget|intcomma:False}} تومان</td>
+                                {% if project.status == "enable" %}
+                                  <td>فعال</td>
+                                {% else %}
+                                  <td>غیر فعال</td>
+                                {% endif %}
+                                <td>{{project.description_show|truncatewords:14}}</td>
+                                <td>
+                                    <a href="/projects/{{ project.id}}/remove" type="button" class="btn btn-sm btn-primary" data-placement="top" title="حذف پروژه">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                    <a href="/projects/{{ project.id}}/edit" type="button" class="btn btn-sm btn-secondary" data-placement="top" title="ویرایش پروژه">
+                                        <i class="fa fa-pencil"></i>
+                                    </a>
+                                    <a href="/projects/{{ project.id}}/update" type="button" class="btn btn-sm btn-info" data-placement="top" title="تغییر وضعیت پروژه">
+                                        <i class="fa fa-star"></i>
+                                    </a>
+                                </td>
+                              </tr>
+                            {% endfor %}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+{% if remove_project == 'true' %}
+swal({
+    text: 'پروژه مورد نظر حذف شد.',
+    button: "بسیار خوب",
+})
+{% endif %}
+{% if edit_project == 'true' %}
+swal({
+    text: 'پروژه مورد نظر ویرایش شد.',
+    button: "بسیار خوب",
+})
+{% endif %}
+{% if update_project == 'enable' %}
+swal({
+    text: 'پروژه مورد نظر فعال شد.',
+    button: "بسیار خوب",
+})
+{% elif update_project == 'notshow' %}
+swal({
+    text: 'پروژه مورد نظر غیر فعال شد.',
+    button: "بسیار خوب",
+})
+{% endif %}
+
+</script>
+{% endblock %}

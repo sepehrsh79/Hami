@@ -1,0 +1,146 @@
+{% extends 'panel/shared/_Panel_MainLayput.html' %}
+{% load static jformat humanize %}
+
+{% block content %}
+<div class="container-fluid page-body-wrapper">
+  <!-- partial:partials/_sidebar.html -->
+  <nav class="sidebar sidebar-offcanvas" id="sidebar">
+    <ul class="nav">
+      <li class="nav-item">
+        <a class="nav-link" href="/account/user">
+          <i class="mdi mdi-home menu-icon"></i>
+          <span class="menu-title">منوی کاربری</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/account/edit">
+          <i class="mdi mdi-grid-edit menu-icon"></i>
+          <span class="menu-title">ویرایش مشخصات </span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <!-- partial -->
+  <div class="main-panel">
+    <div class="content-wrapper">
+        <div class="d-flex flex-grow-1 align-items-center justify-content-center">
+                        <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
+                            <div class="d-flex flex-column justify-content-around">
+                              <small class="mb-1 text-muted">حمایت ها</small>
+                              <h5 class="mt-1 text-center">{{ user_supports_count }}</h5>
+                            </div>
+                        </div>
+                        <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
+                            <div class="d-flex flex-column justify-content-around">
+                              <small class="mb-1 text-muted">پروژه ها</small>
+                              <h5 class="mt-1 text-center">{{ user_projects_count }}</h5>
+                            </div>
+                        </div>
+                  </div>
+        <div class="row">
+            <div class="col-md-12 stretch-card">
+                <div class="card">
+              <div class="card-body">
+                <p class="card-title">حمایت های من</p>
+                <div class="table-responsive">
+                  <table id="recent-purchases-listing" class="table table-hover text-center">
+                    <thead>
+                      <tr>
+                        <th>ردیف</th>
+                        <th>مبلغ حمایت</th>
+                        <th>پروژه</th>
+                        <th>تاریخ</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                      {% for sup in user_supports  %}
+                      <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{sup.amount|intcomma:False}} تومان</td>
+                          {% if sup.project == None %}
+                        <td>بدون پروژه</td>
+                          {% else %}
+                        <td>{{sup.project}}</td>
+                          {% endif %}
+                        <td>{{ sup.date|jformat:'%Y/%m/%d' }}</td>
+                      </tr>
+                    {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 stretch-card">
+                 <div class="card">
+              <div class="card-body">
+                <p class="card-title">پروژه های من</p>
+                <div class="table-responsive">
+                  <table id="recent-purchases-listing2" class="table table-hover text-center">
+                    <thead>
+                      <tr>
+                        <th>ردیف</th>
+                        <th>عنوان پروژه</th>
+                        <th>دسته بندی</th>
+                        <th>مبلغ اولیه</th>
+                        <th>مبلغ حمایت شده</th>
+                        <th> زمان مورد نیاز </th>
+                        <th>وضعیت</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                      {% for project in user_projects  %}
+                      <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ project.name_show }}</td>
+                        <td>{{ project.project_category }}</td>
+                        <td>{{ project.budget|intcomma:False }} تومان </td>
+                        <td>{{ project.current_budget|intcomma:False }} تومان </td>
+                        <td>{{ project.needed_time|jformat:'%Y/%m/%d' }}</td>
+                          {% if project.status == 'disable' %}
+                        <td>غیر فعال</td>
+                          {% else %}
+                        <td> فعال</td>
+                          {% endif %}
+                        <td>
+                            <a href="/projects/{{project.id}}/remove" type="button" class="btn btn-sm btn-primary" data-placement="top" title="حذف پروژه">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                            <a href="/projects/{{project.id}}/edit" type="button" class="btn btn-sm btn-secondary" data-placement="top" title="ویرایش پروژه">
+                                <i class="fa fa-pencil"></i>
+                            </a>
+                        </td>
+                      </tr>
+                    {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            </div>
+        </div>
+    <!-- content-wrapper ends -->
+
+  </div>
+  <!-- main-panel ends -->
+
+</div>
+<!-- page-body-wrapper ends -->
+</div>
+<script>
+{% if edit_project == 'true' %}
+swal({
+    text: 'پروژه مورد نظر ویرایش شد.',
+    button: "بسیار خوب",
+})
+{% endif %}
+{% if remove_project == 'true' %}
+swal({
+    text: 'پروژه مورد نظر حذف شد.',
+    button: "بسیار خوب",
+})
+{% endif %}
+</script>
+{% endblock %}
