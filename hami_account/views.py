@@ -42,8 +42,6 @@ def register_user(request):
         last_name = register_form.cleaned_data.get('last_name')
 
         user = User.objects.filter(username=phone)
-        register_form = RegisterForm()
-
         if user.exists():
             messages.info(request, 'متاسفانه قبلا کاربری با این شماره تماس ثبت شده است!')
         else:
@@ -100,7 +98,7 @@ def verify_user(request):
                 request.session['register_user'] = data
                 return redirect('/')
             else:
-                messages.success(request, 'کد پیامکی وارد شده صحیح نمی باشد!')
+                messages.info(request, 'کد پیامکی وارد شده صحیح نمی باشد!')
     else:
         verify_form = Verify(request.POST or None)
 
