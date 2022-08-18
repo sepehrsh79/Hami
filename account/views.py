@@ -24,7 +24,7 @@ def code_generator():
 def sending_sms(code, phone):
     send_sms(
         f'کد احراز هویت شما:{code}',
-        '+989056967179',
+        '+989901180591',
         [f'+98{phone}'],
     )
     return code
@@ -79,8 +79,7 @@ def verify_user(request):
     verify_form = Verify(request.POST or None)
     if request.POST and 'verify' not in request.POST:
         if verify_form.is_valid():
-            verification_code = verify_form.cleaned_data.get('verification_code')
-            verification_code = int(verification_code)
+            verification_code = int(verify_form.cleaned_data.get('verification_code'))
             now = datetime.now()
             if verification_code == verify_code and \
                     now - datetime.strptime(verify_code_create_date, "%Y-%m-%d %H:%M:%S.%f") < timedelta(minutes=10):
@@ -100,7 +99,7 @@ def verify_user(request):
             else:
                 messages.info(request, 'کد پیامکی وارد شده صحیح نمی باشد!')
     else:
-        verify_form = Verify(request.POST or None)
+        verify_form = Verify()
 
     context = {'verify_form': verify_form}
     return render(request, 'verify.html', context)
@@ -109,7 +108,6 @@ def verify_user(request):
 def login_user(request):
     if request.user.is_authenticated:
         return redirect('/')
-    context = {}
     login_form = LoginForm(request.POST or None)
     if login_form.is_valid():
         phone = login_form.cleaned_data.get('phone')
@@ -123,7 +121,7 @@ def login_user(request):
         else:
             login_form.add_error('phone', 'کاربری با مشخصات وارد شده یافت نشد')
 
-    context['login_form'] = login_form
+    context = {'login_form': login_form}
     return render(request, 'login.html', context)
 
 

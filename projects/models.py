@@ -48,8 +48,8 @@ class ProjectCategory(models.Model):
 class Project(models.Model):
     name = models.CharField(max_length=25, verbose_name='عنوان مدیریتی', blank=True, null=True)
     name_show = models.CharField(max_length=25, verbose_name='عنوان قابل نمایش')
-    creator = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='صاحب پروژه', blank=True, null=True)
-    project_category = models.ForeignKey(ProjectCategory, on_delete=models.CASCADE, verbose_name='دسته بندی')
+    creator = models.ForeignKey(User, on_delete=models.PROTECT, verbose_name='صاحب پروژه', blank=True, null=True)
+    project_category = models.ForeignKey(ProjectCategory, on_delete=models.PROTECT, verbose_name='دسته بندی')
     description = models.TextField(max_length=250, verbose_name='شرح مدیریتی', blank=True, default=0)
     description_show = models.TextField(max_length=250, verbose_name='شرح قابل نمایش')
     budget = models.PositiveIntegerField(verbose_name='مبلغ مورد نیاز')
