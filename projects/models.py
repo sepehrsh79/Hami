@@ -18,12 +18,6 @@ class ProjectManager(models.Manager):
     def get_by_category_id(self, category_id):
         return self.get_queryset().filter(project_category__id=category_id)
 
-    def search(self, query):
-        lookup = (Q(name_show__icontains=query) | Q(description_show__icontains=query))
-        lookup_status = (Q(status='enable') | Q(status='disable'))
-
-        return self.get_queryset().filter(lookup, lookup_status).distinct()
-
 
 class ProjectCategory(models.Model):
     title = models.CharField(max_length=120, unique=True, verbose_name='عنوان')
@@ -59,7 +53,7 @@ class Project(models.Model):
     email = models.CharField(max_length=35, verbose_name='ایمیل')
     logo = models.ImageField(upload_to=None, blank=True, null=True, verbose_name='عکس کاور')
     status = models.CharField(max_length=35, choices=project_status, verbose_name='وضعیت', default='disable')
-    
+        
     objects = ProjectManager()
 
     class Meta:

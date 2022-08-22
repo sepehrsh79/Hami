@@ -9,6 +9,8 @@ from django.http import Http404
 from .forms import CommentForm, ProjectForm
 from datetime import datetime
 from supports.forms import SupportForm
+from django.db.models import Q
+
 
 
 class ProjectsList(ListView):
@@ -109,8 +111,9 @@ class SearchProjectsView(ListView):
         request = self.request
         query = request.GET.get('q')
         if query is not None:
-            return Project.objects.search(query)
-        raise Http404('صفحه ی مورد نظر یافت نشد')
+            return Project.objects.filter(
+                Q(name_show__icontains=query) | Q(description_show__icontains=query), status='enable')
+        raise Http404('پروژه مورد نظر یافت نشد')
 
 
 def project_detail(request, **kwargs):
@@ -158,7 +161,7 @@ class ProjectsListByCategory(ListView):
         return Project.objects.get_by_category_id(category_id)
 
 
-@login_required
+@login_required(login_url='/account/login')
 def create_project(request):
     if request.user.is_authenticated:
         user_id = request.user.id
@@ -203,7 +206,7 @@ def create_project(request):
         return redirect("/account/login")
 
 
-@login_required
+@login_required(login_url='/account/login')
 def edit_project(request, project_id):
     try:
         instance = Project.objects.get(pk=project_id)
@@ -244,7 +247,7 @@ def edit_project(request, project_id):
         return redirect("/account/login")
 
 
-@login_required
+@login_required(login_url='/account/login')
 def remove_project(request, project_id):
     try:
         instance = Project.objects.get(pk=project_id)
@@ -259,7 +262,7 @@ def remove_project(request, project_id):
         return redirect("/account/login")
 
 
-@login_required
+@login_required(login_url='/account/login')
 def update_project(request, project_id):
     try:
         instance = Project.objects.get(pk=project_id)

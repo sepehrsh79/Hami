@@ -135,8 +135,8 @@ def logout_user(request):
 @login_required(login_url='/account/login')
 def edit_account(request):
     username = request.user.username
-    user = User.objects.get(username=username)
-    if user is None:
+    user = User.objects.filter(username=username)
+    if not user.exists():
         raise Http404('کاربر مورد نظر یافت نشد')
     edit_form = EditAccount(request.POST or None, initial={'first_name': user.first_name, 'last_name': user.last_name,
                                                            'phone': user.username})
