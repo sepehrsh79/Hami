@@ -6,7 +6,6 @@ class SupportForm(forms.Form):
     project_id = forms.IntegerField(
         widget=forms.HiddenInput(),
         required=False,
-        initial=1
     )
 
     amount = forms.FloatField(

@@ -138,7 +138,8 @@ def edit_account(request):
     user = User.objects.filter(username=username)
     if not user.exists():
         raise Http404('کاربر مورد نظر یافت نشد')
-    edit_form = EditAccount(request.POST or None, initial={'first_name': user.first_name, 'last_name': user.last_name,
+    user = user.first()
+    edit_form = EditAccount(request.POST or None, initial={'first_name': user.first_name or None, 'last_name': user.last_name or None,
                                                            'phone': user.username})
     if edit_form.is_valid():
         first_name = edit_form.cleaned_data.get('first_name')
